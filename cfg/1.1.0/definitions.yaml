@@ -1,0 +1,26 @@
+---
+controls:
+version: 1.10
+id: 1
+description: "Initial Setup"  
+type: "master"
+groups:
+- id: 1.1
+  description: "Password Policy"
+  checks:
+    - id: 1.1.1
+      description: "(L1) Ensure 'Enforce password history' is set to '24 or more password(s)' (Scored)"
+      powershell: "Get-ADDomain | Select-Object -ExpandProperty Name | Get-ADDefaultDomainPasswordPolicy -Identity {$PSItem} | Convertto-Json"
+      tests:
+        test_items:
+        - flag: "{.PasswordHistoryCount}"
+          compare:
+            op: gte
+            value: 24
+          set: true
+      remediation: |
+        To establish the recommended configuration via GP, set the following UI path to 24 or more password(s):
+          Computer Configuration\Policies\Windows Settings\Security Settings\Account
+          Policies\Password Policy\Enforce password history
+      scored: true
+  
