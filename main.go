@@ -14,6 +14,10 @@
 
 package main
 
+import (
+	"github.com/aquasecurity/windows-bench/cmd"
+)
+
 func main() {
-	Execute()
+	cmd.Execute()
 }

@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -27,7 +27,7 @@ func app(cmd *cobra.Command, args []string) {
 		util.ExitWithError(err)
 	}
 
-	// No Contraints for now
+	// No Constraints for now
 	constraints := make([]string, 0)
 
 	controls, err := getControls(path, constraints)
@@ -85,7 +85,7 @@ func getControls(path string, constraints []string) (*check.Controls, error) {
 }
 
 func getDefinitionFilePath(version string) (string, error) {
-	filename := "definitions.yaml"
+	filename := "domain-controller.yaml"
 
 	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s", version))
 

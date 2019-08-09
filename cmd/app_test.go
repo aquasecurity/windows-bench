@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"os"
@@ -11,7 +11,7 @@ var (
 	path   string
 )
 
-// Tests all standard windows-bench defintion files
+// Tests all standard windows-bench definition files
 func TestGetDefinitionFilePath(t *testing.T) {
 	d, err := os.Open(cfgdir)
 	if err != nil {
