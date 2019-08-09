@@ -20,16 +20,19 @@ import (
 	"github.com/aquasecurity/bench-common/check"
 	ps "github.com/aquasecurity/go-powershell"
 	"github.com/aquasecurity/go-powershell/backend"
+	"github.com/golang/glog"
 )
 
 const TypePowershell = "powershell"
 
-type PowerShell string
+type PowerShell struct {
+	Cmd string
+}
 
 // Execute - Implements the 'check.Auditer' interface
 // It uses the aquasecurity/go-powershell package to interface with
 // the windows powershell to execute the command.
-func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
+func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
 
 	// choose a backend
 	back := &backend.Local{}
@@ -41,12 +44,13 @@ func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMes
 	}
 	defer shell.Exit()
 
-	stdout, stderr, err := shell.Execute(string(*p))
+	stdout, stderr, err := shell.Execute(p.Cmd)
 	errMessage = stderr
 	if err != nil {
 		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
 		return stdout, errMessage, check.FAIL
 	}
 
-	return stdout, stderr, check.PASS
+	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s \nstderr:%q \n", stdout, stderr))
+	return stdout, stderr, ""
 }

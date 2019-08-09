@@ -38,13 +38,13 @@ func runControls(controls *check.Controls, checkList string) check.Summary {
 	return summary
 }
 
-func getControls(path string, constraints []string) (*check.Controls, error) {
+func getControls(bench check.Bench, path string, constraints []string) (*check.Controls, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	controls, err := check.NewControls([]byte(data), constraints)
+	controls, err := bench.NewControls([]byte(data), constraints)
 	if err != nil {
 		return nil, err
 	}
@@ -81,8 +81,8 @@ func getConfigFilePath(fileVersion string, filename string) (path string, err er
 		glog.V(2).Info(fmt.Sprintf("Looking for config file: %s\n", file))
 
 		if _, err = os.Stat(file); !os.IsNotExist(err) {
-			glog.V(1).Info(fmt.Sprintf("No test file found for %s\n", fileVersion))
-			return path, nil
+			return path, err
 		}
+
 	}
 }

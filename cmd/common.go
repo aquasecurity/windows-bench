@@ -39,15 +39,18 @@ func runChecks(nodetype check.NodeType) {
 	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", path))
 
 	b := commonCheck.NewBench()
-	b.RegisterAuditType(check.TypePowershell, func() interface{} {
-		glog.V(1).Info("Returning a PowerShell (Auditer) \n")
-		return check.PowerShell("")
+	err = b.RegisterAuditType(check.TypePowershell, func() interface{} {
+		glog.V(2).Info("Returning a PowerShell (Auditer) \n")
+		return &check.PowerShell{}
 	})
+	if err != nil {
+		util.ExitWithError(err)
+	}
 
 	// No Constraints for now
 	constraints := make([]string, 0)
 
-	controls, err := getControls(path, constraints)
+	controls, err := getControls(b, path, constraints)
 	if err != nil {
 		util.ExitWithError(err)
 	}
