@@ -10,11 +10,12 @@ groups:
   checks:
     - id: 1.1.1
       description: "(L1) Ensure 'Enforce password history' is set to '24 or more password(s)' (Scored)"
-      audit_type: "powershell"
-      audit: "Get-ADDomain | Select-Object -ExpandProperty Name | Get-ADDefaultDomainPasswordPolicy -Identity {$PSItem} | Convertto-Json"
+      audittype: "powershell"
+      audit: 
+        cmd: "Get-ADDomain | Select-Object -ExpandProperty Name | Get-ADDefaultDomainPasswordPolicy -Identity {$PSItem} | Select -ExpandProperty PasswordHistoryCount"
       tests:
         test_items:
-        - flag: "{.PasswordHistoryCount}"
+        - flag: ""
           compare:
             op: gte
             value: 24
