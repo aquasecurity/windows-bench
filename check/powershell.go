@@ -27,6 +27,18 @@ const TypePowershell = "powershell"
 
 type PowerShell struct {
 	Cmd string
+	sh  ps.Shell
+}
+
+func NewPowerShell() (*PowerShell, error) {
+	sh, err := composeShell()
+	if err != nil {
+		return nil, err
+	}
+	return &PowerShell{
+		Cmd: "",
+		sh:  sh,
+	}, nil
 }
 
 // Execute - Implements the 'check.Auditer' interface
@@ -34,17 +46,12 @@ type PowerShell struct {
 // the windows powershell to execute the command.
 func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
 
-	// choose a backend
-	back := &backend.Local{}
-
-	// start a local powershell process
-	shell, err := ps.New(back)
-	if err != nil {
-		return "", err.Error(), check.FAIL
+	if p.sh == nil {
+		errMessage = fmt.Sprintf("PowerShell is not initialized!\n")
+		return "", errMessage, check.FAIL
 	}
-	defer shell.Exit()
 
-	stdout, stderr, err := shell.Execute(p.Cmd)
+	stdout, stderr, err := p.sh.Execute(p.Cmd)
 	errMessage = stderr
 	if err != nil {
 		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
@@ -53,4 +60,26 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 
 	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s \nstderr:%q \n", stdout, stderr))
 	return stdout, stderr, ""
+}
+
+func composeShell() (ps.Shell, error) {
+	be := acquireBackend()
+	sh, err := acquireShell(be)
+	if err != nil {
+		return nil, err
+	}
+	return sh, nil
+}
+
+func acquireShell(be backend.Starter) (ps.Shell, error) {
+	shell, err := ps.New(be)
+	if err != nil {
+		return nil, err
+	}
+
+	return shell, nil
+}
+
+func acquireBackend() backend.Starter {
+	return &backend.Local{}
 }

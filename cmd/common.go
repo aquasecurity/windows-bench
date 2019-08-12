@@ -39,9 +39,13 @@ func runChecks(nodetype check.NodeType) {
 	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", path))
 
 	b := commonCheck.NewBench()
+	ps, err := check.NewPowerShell()
+	if err != nil {
+		util.ExitWithError(err)
+	}
 	err = b.RegisterAuditType(check.TypePowershell, func() interface{} {
 		glog.V(2).Info("Returning a PowerShell (Auditer) \n")
-		return &check.PowerShell{}
+		return ps
 	})
 	if err != nil {
 		util.ExitWithError(err)
