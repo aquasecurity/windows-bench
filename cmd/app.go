@@ -54,8 +54,7 @@ func getControls(bench check.Bench, path string, constraints []string) (*check.C
 
 func getDefinitionFilePath(version, filename string) (string, error) {
 
-	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s", version))
-
+	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s filename: %s\n", version, filename))
 	path := filepath.Join(cfgDir, version)
 	file := filepath.Join(path, filename)
 
