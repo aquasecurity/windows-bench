@@ -1,3 +1,17 @@
+// Copyright © 2019 Aqua Security Software Ltd. <info@aquasec.com>
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package cmd
 
 import (
@@ -9,53 +23,7 @@ import (
 	"github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/bench-common/util"
 	"github.com/golang/glog"
-	"github.com/spf13/cobra"
 )
-
-func app(cmd *cobra.Command, args []string) {
-	var version string
-	var err error
-
-	if windowsCisVersion != "" {
-		version = windowsCisVersion
-	} else {
-		version = "1.1.0"
-	}
-
-	path, err := getDefinitionFilePath(version)
-	if err != nil {
-		util.ExitWithError(err)
-	}
-
-	// No Constraints for now
-	constraints := make([]string, 0)
-
-	controls, err := getControls(path, constraints)
-	if err != nil {
-		util.ExitWithError(err)
-	}
-
-	summary := runControls(controls, checkList)
-	err = outputResults(controls, summary)
-	if err != nil {
-		util.ExitWithError(err)
-	}
-}
-
-func outputResults(controls *check.Controls, summary check.Summary) error {
-	// if we successfully ran some tests and it's json format, ignore the warnings
-	if (summary.Fail > 0 || summary.Warn > 0 || summary.Pass > 0) && jsonFmt {
-		out, err := controls.JSON()
-		if err != nil {
-			return err
-		}
-		util.PrintOutput(string(out), outputFile)
-	} else {
-		util.PrettyPrint(controls, summary, noRemediations, includeTestOutput)
-	}
-
-	return nil
-}
 
 func runControls(controls *check.Controls, checkList string) check.Summary {
 	var summary check.Summary
@@ -70,13 +38,13 @@ func runControls(controls *check.Controls, checkList string) check.Summary {
 	return summary
 }
 
-func getControls(path string, constraints []string) (*check.Controls, error) {
+func getControls(bench check.Bench, path string, constraints []string) (*check.Controls, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	controls, err := check.NewControls([]byte(data), constraints)
+	controls, err := bench.NewControls([]byte(data), constraints)
 	if err != nil {
 		return nil, err
 	}
@@ -84,11 +52,9 @@ func getControls(path string, constraints []string) (*check.Controls, error) {
 	return controls, err
 }
 
-func getDefinitionFilePath(version string) (string, error) {
-	filename := "domain-controller.yaml"
+func getDefinitionFilePath(version, filename string) (string, error) {
 
-	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s", version))
-
+	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s filename: %s\n", version, filename))
 	path := filepath.Join(cfgDir, version)
 	file := filepath.Join(path, filename)
 
@@ -100,4 +66,22 @@ func getDefinitionFilePath(version string) (string, error) {
 	}
 
 	return file, nil
+}
+
+// getConfigFilePath locates the config files we should be using based on either the specified
+// version, or the running version of kubernetes if not specified
+func getConfigFilePath(fileVersion string, filename string) (path string, err error) {
+
+	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s", fileVersion))
+
+	for {
+		path = filepath.Join(cfgDir, fileVersion)
+		file := filepath.Join(path, string(filename))
+		glog.V(2).Info(fmt.Sprintf("Looking for config file: %s\n", file))
+
+		if _, err = os.Stat(file); !os.IsNotExist(err) {
+			return path, err
+		}
+
+	}
 }

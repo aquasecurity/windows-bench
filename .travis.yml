@@ -6,3 +6,7 @@ notifications:
 
 script:
   - go test ./...
+
+env:
+   matrix:
+    - GO111MODULE=on

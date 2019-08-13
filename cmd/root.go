@@ -1,4 +1,4 @@
-// Copyright © 2017 Aqua Security Software Ltd. <info@aquasec.com>
+// Copyright © 2019 Aqua Security Software Ltd. <info@aquasec.com>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,13 +29,15 @@ var (
 	noSummary      bool
 	noRemediations bool
 
-	windowsCisVersion string
-	cfgDir            string
-	cfgFile           string
-	checkList         string
-	jsonFmt           bool
-	includeTestOutput bool
-	outputFile        string
+	windowsCisVersion    string
+	cfgDir               string
+	cfgFile              string
+	checkList            string
+	jsonFmt              bool
+	includeTestOutput    bool
+	outputFile           string
+	domainControllerFile = "domain-controller.yaml"
+	memberServerFile     = "member-server.yaml"
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -43,7 +45,6 @@ var RootCmd = &cobra.Command{
 	Use:   "windows-bench",
 	Short: "windows-bench is a Go application that checks whether the windows operating system is deployed securely",
 	Long:  `This tool runs the CIS Windows Benchmark (https://www.cisecurity.org/cis-benchmarks)`,
-	Run:   app,
 }
 
 // Execute adds all child commands to the root command sets flags appropriately.
