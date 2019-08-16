@@ -16,6 +16,7 @@ package check
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/aquasecurity/bench-common/check"
 	ps "github.com/aquasecurity/go-powershell"
@@ -24,9 +25,10 @@ import (
 )
 
 const TypePowershell = "powershell"
+const osTypePowershellCommand = `Get-ComputerInfo -Property "os*" | Select -ExpandProperty OsProductType`
 
 type PowerShell struct {
-	Cmd string
+	Cmd map[string]string
 	sh  ps.Shell
 }
 
@@ -36,7 +38,7 @@ func NewPowerShell() (*PowerShell, error) {
 		return nil, err
 	}
 	return &PowerShell{
-		Cmd: "",
+		Cmd: make(map[string]string),
 		sh:  sh,
 	}, nil
 }
@@ -51,15 +53,52 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 		return "", errMessage, check.FAIL
 	}
 
-	stdout, stderr, err := p.sh.Execute(p.Cmd)
-	errMessage = stderr
+	osType, err := determineOSType(p.sh)
 	if err != nil {
-		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
+		errMessage = fmt.Sprintf("Failed to get operating system type\n")
+		return "", errMessage, check.FAIL
+	}
+
+	cmd, found := p.Cmd[osType]
+	if !found {
+		errMessage = fmt.Sprintf("Unable to find matching command for OS Type: %q\n", osType)
+		return "", errMessage, check.FAIL
+	}
+
+	stdout, err := performExec(p.sh, cmd)
+	if err != nil {
+		errMessage = fmt.Sprintf("err: %v", err)
 		return stdout, errMessage, check.FAIL
 	}
 
-	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s \nstderr:%q \n", stdout, stderr))
-	return stdout, stderr, ""
+	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s\n", stdout))
+	return stdout, "", ""
+}
+
+func determineOSType(sh ps.Shell) (string, error) {
+	stdout, err := performExec(sh, osTypePowershellCommand)
+	if err != nil {
+		return "", err
+	}
+
+	return stdout, nil
+}
+
+func performExec(sh ps.Shell, cmd string) (string, error) {
+	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - executing command: %q\n", cmd))
+	stdout, stderr, err := sh.Execute(cmd)
+
+	if stderr != "" {
+		glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stderr: %v\n", stderr))
+	}
+
+	if err != nil {
+		glog.V(2).Info(fmt.Sprintf("Powershell.Execute - error: %v\n", err))
+		return "", err
+	}
+	retValue := strings.TrimSpace(stdout)
+	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - returning: %q\n", retValue))
+	return retValue, nil
 }
 
 func composeShell() (ps.Shell, error) {
