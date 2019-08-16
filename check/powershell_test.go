@@ -17,6 +17,7 @@ package check
 import (
 	"fmt"
 	"io"
+	"log"
 	"testing"
 
 	"github.com/aquasecurity/go-powershell/backend"
@@ -28,11 +29,27 @@ type mockShell struct {
 	expectedErr  string
 }
 
+const getOSType = "getOSType"
+
+const osType = "linux"
+
+var errOSType = fmt.Errorf("osError")
+
 func (s mockShell) Execute(cmd string) (string, string, error) {
+
 	if s.fail {
-		return "", "errorMessage", fmt.Errorf("actualError")
+		log.Printf("cmd %s\n", cmd)
+		switch cmd {
+		case getOSType:
+			return osType, "", nil
+		case osType:
+			return "", "osError", errOSType
+		default:
+			return "", "defaultError", fmt.Errorf("defaultError")
+		}
 	}
-	return "good", "", nil
+
+	return "testOS", "", nil
 }
 
 func (s mockShell) Exit() {}
@@ -47,22 +64,47 @@ func TestExecute(t *testing.T) {
 	testCases := []TestCase{
 		{
 			ps: PowerShell{
-				Cmd: "",
+				Cmd: map[string]string{
+					"linux": "linux",
+				},
 				sh: mockShell{
 					fail: true,
 				},
+				osTypePowershellCommand: getOSType,
 			},
-			expectedErr: `stderr: "errorMessage" err: actualError`,
+			expectedErr: `stderr: "osError" err: osError`,
 			fail:        true,
 		},
 		{
 			ps: PowerShell{
-				Cmd: "",
+				Cmd: map[string]string{
+					"testOS": "",
+				},
+				sh: mockShell{
+					fail: true,
+				},
+				osTypePowershellCommand: "testOS",
+			},
+			expectedErr: `stderr: "Failed to get operating system type" err: defaultError`,
+			fail:        true,
+		},
+		{
+			ps: PowerShell{
+				Cmd: map[string]string{},
 				sh: mockShell{
 					fail: false,
 				},
+				osTypePowershellCommand: "testOS",
 			},
 			fail: false,
+		},
+		{
+			ps: PowerShell{
+				Cmd:                     map[string]string{},
+				osTypePowershellCommand: "testOS",
+			},
+			expectedErr: "PowerShell is not initialized!\n",
+			fail:        true,
 		},
 	}
 
@@ -73,6 +115,7 @@ func TestExecute(t *testing.T) {
 		}
 
 		if testCase.fail && em != testCase.expectedErr {
+			log.Printf("%v != %v\n", em, testCase.expectedErr)
 			t.Errorf("error message should be populated correctly")
 		}
 	}

@@ -28,8 +28,9 @@ const TypePowershell = "powershell"
 const osTypePowershellCommand = `Get-ComputerInfo -Property "os*" | Select -ExpandProperty OsProductType`
 
 type PowerShell struct {
-	Cmd map[string]string
-	sh  ps.Shell
+	Cmd                     map[string]string
+	sh                      ps.Shell
+	osTypePowershellCommand string
 }
 
 func NewPowerShell() (*PowerShell, error) {
@@ -38,8 +39,9 @@ func NewPowerShell() (*PowerShell, error) {
 		return nil, err
 	}
 	return &PowerShell{
-		Cmd: make(map[string]string),
-		sh:  sh,
+		Cmd:                     make(map[string]string),
+		sh:                      sh,
+		osTypePowershellCommand: osTypePowershellCommand,
 	}, nil
 }
 
@@ -52,31 +54,52 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 		errMessage = fmt.Sprintf("PowerShell is not initialized!\n")
 		return "", errMessage, check.FAIL
 	}
+	defer p.Exit()
 
-	osType, err := determineOSType(p.sh)
+	stdout, stderr, err := p.DoExcute("")
 	if err != nil {
-		errMessage = fmt.Sprintf("Failed to get operating system type\n")
+		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
 		return "", errMessage, check.FAIL
-	}
-
-	cmd, found := p.Cmd[osType]
-	if !found {
-		errMessage = fmt.Sprintf("Unable to find matching command for OS Type: %q\n", osType)
-		return "", errMessage, check.FAIL
-	}
-
-	stdout, err := performExec(p.sh, cmd)
-	if err != nil {
-		errMessage = fmt.Sprintf("err: %v", err)
-		return stdout, errMessage, check.FAIL
 	}
 
 	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s\n", stdout))
 	return stdout, "", ""
 }
 
-func determineOSType(sh ps.Shell) (string, error) {
-	stdout, err := performExec(sh, osTypePowershellCommand)
+func (p PowerShell) DoExcute(cmd string) (string, string, error) {
+
+	osType, err := determineOSType(&p)
+	if err != nil {
+		errMessage := fmt.Sprintf("Failed to get operating system type")
+		return "", errMessage, err
+	}
+
+	cmd, found := p.Cmd[osType]
+	if !found {
+		errMessage := fmt.Sprintf("Unable to find matching command for OS Type: %q\n", osType)
+		return "", errMessage, fmt.Errorf(errMessage)
+	}
+
+	stdout, err := performExec(p.sh, cmd)
+	if err != nil {
+		errMessage := fmt.Sprintf("%v", err)
+		return "", errMessage, fmt.Errorf(errMessage)
+	}
+
+	return stdout, "", nil
+}
+
+func (p PowerShell) Exit() {
+	glog.V(2).Info(fmt.Sprintf("Powershell.Exit - p.sh valid? %t\n", (p.sh != nil)))
+	if p.sh != nil {
+		glog.V(2).Info("Powershell.Exit - request...")
+		p.sh.Exit()
+		glog.V(2).Info("done!\n")
+	}
+}
+
+func determineOSType(psh *PowerShell) (string, error) {
+	stdout, err := performExec(psh.sh, psh.osTypePowershellCommand)
 	if err != nil {
 		return "", err
 	}
@@ -115,7 +138,6 @@ func acquireShell(be backend.Starter) (ps.Shell, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return shell, nil
 }
 
