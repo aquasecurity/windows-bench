@@ -56,7 +56,7 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 	}
 	defer p.Exit()
 
-	stdout, stderr, err := p.DoExcute("")
+	stdout, stderr, err := p.doExcute()
 	if err != nil {
 		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
 		return "", errMessage, check.FAIL
@@ -66,7 +66,7 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 	return stdout, "", ""
 }
 
-func (p PowerShell) DoExcute(cmd string) (string, string, error) {
+func (p PowerShell) doExcute() (string, string, error) {
 
 	osType, err := determineOSType(&p)
 	if err != nil {
