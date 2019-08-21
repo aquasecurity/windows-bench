@@ -33,11 +33,22 @@ type PowerShell struct {
 	osTypePowershellCommand string
 }
 
+type shellStarter interface {
+	startShell() (ps.Shell, error)
+}
+
+type localShellStarter struct{}
+
 func NewPowerShell() (*PowerShell, error) {
-	sh, err := composeShell()
+	return constructShell(&localShellStarter{})
+}
+
+func constructShell(c shellStarter) (*PowerShell, error) {
+	sh, err := c.startShell()
 	if err != nil {
 		return nil, err
 	}
+
 	return &PowerShell{
 		Cmd:                     make(map[string]string),
 		sh:                      sh,
@@ -45,18 +56,22 @@ func NewPowerShell() (*PowerShell, error) {
 	}, nil
 }
 
+func (p *localShellStarter) startShell() (ps.Shell, error) {
+	// start a local powershell process
+	return ps.New(&backend.Local{})
+}
+
 // Execute - Implements the 'check.Auditer' interface
 // It uses the aquasecurity/go-powershell package to interface with
 // the windows powershell to execute the command.
 func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
-
 	if p.sh == nil {
 		errMessage = fmt.Sprintf("PowerShell is not initialized!\n")
 		return "", errMessage, check.FAIL
 	}
 	defer p.Exit()
 
-	stdout, stderr, err := p.doExcute()
+	stdout, stderr, err := p.executeCommand()
 	if err != nil {
 		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
 		return "", errMessage, check.FAIL
@@ -66,27 +81,49 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 	return stdout, "", ""
 }
 
-func (p PowerShell) doExcute() (string, string, error) {
-
-	osType, err := determineOSType(&p)
+func (p PowerShell) executeCommand() (string, string, error) {
+	cmd, err := p.commandForRuntimeOS()
 	if err != nil {
-		errMessage := fmt.Sprintf("Failed to get operating system type")
-		return "", errMessage, err
+		return "", "", err
 	}
 
-	cmd, found := p.Cmd[osType]
-	if !found {
-		errMessage := fmt.Sprintf("Unable to find matching command for OS Type: %q\n", osType)
-		return "", errMessage, fmt.Errorf(errMessage)
-	}
-
-	stdout, err := performExec(p.sh, cmd)
+	stdout, err := p.performExec(cmd)
 	if err != nil {
 		errMessage := fmt.Sprintf("%v", err)
 		return "", errMessage, fmt.Errorf(errMessage)
 	}
 
 	return stdout, "", nil
+}
+
+func (p PowerShell) commandForRuntimeOS() (string, error) {
+	osType, err := p.performExec(p.osTypePowershellCommand)
+	if err != nil {
+		return "", fmt.Errorf("Failed to get operating system type: %v", err)
+	}
+
+	cmd, found := p.Cmd[osType]
+	if !found {
+		return "", fmt.Errorf("Unable to find matching command for OS Type: %q", osType)
+	}
+
+	return cmd, nil
+}
+
+func (p PowerShell) performExec(cmd string) (string, error) {
+	glog.V(2).Info(fmt.Sprintf("powershell.performExec - executing command: %q\n", cmd))
+	stdout, stderr, err := p.sh.Execute(cmd)
+	if stderr != "" {
+		glog.V(2).Info(fmt.Sprintf("powershell.performExec - stderr: %v\n", stderr))
+	}
+
+	if err != nil {
+		glog.V(2).Info(fmt.Sprintf("powershell.performExec - error: %v\n", err))
+		return "", err
+	}
+	retValue := strings.TrimSpace(stdout)
+	glog.V(2).Info(fmt.Sprintf("powershell.performExec - returning: %q\n", retValue))
+	return retValue, nil
 }
 
 func (p PowerShell) Exit() {
@@ -96,51 +133,4 @@ func (p PowerShell) Exit() {
 		p.sh.Exit()
 		glog.V(2).Info("done!\n")
 	}
-}
-
-func determineOSType(psh *PowerShell) (string, error) {
-	stdout, err := performExec(psh.sh, psh.osTypePowershellCommand)
-	if err != nil {
-		return "", err
-	}
-
-	return stdout, nil
-}
-
-func performExec(sh ps.Shell, cmd string) (string, error) {
-	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - executing command: %q\n", cmd))
-	stdout, stderr, err := sh.Execute(cmd)
-
-	if stderr != "" {
-		glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stderr: %v\n", stderr))
-	}
-
-	if err != nil {
-		glog.V(2).Info(fmt.Sprintf("Powershell.Execute - error: %v\n", err))
-		return "", err
-	}
-	retValue := strings.TrimSpace(stdout)
-	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - returning: %q\n", retValue))
-	return retValue, nil
-}
-
-func composeShell() (ps.Shell, error) {
-	be := acquireBackend()
-	sh, err := acquireShell(be)
-	if err != nil {
-		return nil, err
-	}
-	return sh, nil
-}
-
-func acquireShell(be backend.Starter) (ps.Shell, error) {
-	shell, err := ps.New(be)
-	if err != nil {
-		return nil, err
-	}
-	return shell, nil
-}
-
-func acquireBackend() backend.Starter {
-	return &backend.Local{}
 }

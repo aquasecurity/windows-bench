@@ -16,144 +16,172 @@ package check
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"testing"
 
-	"github.com/aquasecurity/go-powershell/backend"
+	"github.com/aquasecurity/bench-common/check"
+	ps "github.com/aquasecurity/go-powershell"
 )
 
-type mockShell struct {
-	fail         bool
-	expectedGood string
-	expectedErr  string
-}
-
-const getOSType = "getOSType"
-
-const osType = "linux"
-
-var errOSType = fmt.Errorf("osError")
-
-func (s mockShell) Execute(cmd string) (string, string, error) {
-
-	if s.fail {
-		log.Printf("cmd %s\n", cmd)
-		switch cmd {
-		case getOSType:
-			return osType, "", nil
-		case osType:
-			return "", "osError", errOSType
-		default:
-			return "", "defaultError", fmt.Errorf("defaultError")
-		}
-	}
-
-	return "testOS", "", nil
-}
-
-func (s mockShell) Exit() {}
-
-func TestExecute(t *testing.T) {
-	type TestCase struct {
-		ps          PowerShell
-		expectedErr string
-		fail        bool
-	}
-
-	testCases := []TestCase{
-		{
-			ps: PowerShell{
-				Cmd: map[string]string{
-					"linux": "linux",
-				},
-				sh: mockShell{
-					fail: true,
-				},
-				osTypePowershellCommand: getOSType,
-			},
-			expectedErr: `stderr: "osError" err: osError`,
-			fail:        true,
-		},
-		{
-			ps: PowerShell{
-				Cmd: map[string]string{
-					"testOS": "",
-				},
-				sh: mockShell{
-					fail: true,
-				},
-				osTypePowershellCommand: "testOS",
-			},
-			expectedErr: `stderr: "Failed to get operating system type" err: defaultError`,
-			fail:        true,
-		},
-		{
-			ps: PowerShell{
-				Cmd: map[string]string{},
-				sh: mockShell{
-					fail: false,
-				},
-				osTypePowershellCommand: "testOS",
-			},
-			fail: false,
-		},
-		{
-			ps: PowerShell{
-				Cmd:                     map[string]string{},
-				osTypePowershellCommand: "testOS",
-			},
-			expectedErr: "PowerShell is not initialized!\n",
-			fail:        true,
-		},
-	}
-
-	for _, testCase := range testCases {
-		_, em, _ := testCase.ps.Execute()
-		if testCase.fail && len(em) == 0 {
-			t.Errorf("expected err")
-		}
-
-		if testCase.fail && em != testCase.expectedErr {
-			log.Printf("%v != %v\n", em, testCase.expectedErr)
-			t.Errorf("error message should be populated correctly")
-		}
-	}
-}
-
-type mockStarter struct {
+type mockShellStarter struct {
 	fail        bool
 	expectedErr error
 }
 
-var errFailedToStartPowerShell = fmt.Errorf("failed to start powershell")
+var errorStartShell = fmt.Errorf("Failed to start shell")
+var errorGetOSTypeCommand = fmt.Errorf("Failed to execute get OS Type command")
+var errorExecuteCommand = fmt.Errorf("Failed to execute command")
 
-func (m *mockStarter) StartProcess(cmd string, args ...string) (backend.Waiter, io.Writer, io.Reader, io.Reader, error) {
-	if m.fail {
-		return nil, nil, nil, nil, errFailedToStartPowerShell
-	}
-	return nil, nil, nil, nil, nil
+const osTypeCmd = "domain-controller"
+const testPShellCommand = "domain-controller CMD"
+const testSpace = " "
+const testNewLine = "\n"
+const testWinNewLine = "\r\n"
+
+type mockShell struct {
+	getOSTypeFail   bool
+	execCommandFail bool
 }
-func TestAcquireShell(t *testing.T) {
+
+func (ms *mockShell) Execute(cmd string) (string, string, error) {
+	log.Printf("Execute.cmd %s\n", cmd)
+
+	switch cmd {
+	case osTypeCmd:
+		if ms.getOSTypeFail {
+			return "", "", errorGetOSTypeCommand
+		}
+		return cmd, "", nil
+	case testPShellCommand:
+		if ms.execCommandFail {
+			return "", "", errorExecuteCommand
+		}
+		return cmd, "", nil
+	}
+
+	return cmd, "", nil
+}
+func (ms *mockShell) Exit() {}
+
+func (m *mockShellStarter) startShell() (ps.Shell, error) {
+	if m.fail {
+		return nil, m.expectedErr
+	}
+	return &mockShell{}, nil
+}
+
+func TestConstructShell(t *testing.T) {
 	type TestCase struct {
-		ms *mockStarter
+		mss *mockShellStarter
 	}
 
 	testCases := []TestCase{
-		{ms: &mockStarter{
+		{mss: &mockShellStarter{
 			fail: false,
 		}},
-		{ms: &mockStarter{
+		{mss: &mockShellStarter{
 			fail:        true,
-			expectedErr: errFailedToStartPowerShell,
+			expectedErr: errorStartShell,
 		}},
 	}
 
 	for _, testCase := range testCases {
-		_, err := acquireShell(testCase.ms)
-		if testCase.ms.expectedErr != nil && (err != testCase.ms.expectedErr || err != errFailedToStartPowerShell) {
-			t.Errorf("expected: %q and got: %q", testCase.ms.expectedErr, err)
+		ps, err := constructShell(testCase.mss)
+		if testCase.mss.fail {
+			if err == nil {
+				t.Errorf("Expected Error")
+			}
+		} else if ps == nil {
+			t.Errorf("PowerShell must be initialized")
+		} else if ps.sh == nil {
+			t.Errorf("Internal Shell must be initialized")
 		}
 	}
+}
 
+func TestExecute(t *testing.T) {
+	type TestCase struct {
+		ps             *PowerShell
+		expectedResult string
+		fail           bool
+		expectedErr    string
+	}
+
+	testCases := []TestCase{
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testPShellCommand,
+				},
+				sh: &mockShell{
+					getOSTypeFail: true,
+				},
+				osTypePowershellCommand: osTypeCmd,
+			},
+			fail:        true,
+			expectedErr: `stderr: "" err: Failed to get operating system type: Failed to execute get OS Type command`,
+		},
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testPShellCommand,
+				},
+				sh: &mockShell{
+					execCommandFail: true,
+				},
+				osTypePowershellCommand: osTypeCmd,
+			},
+			fail:        true,
+			expectedErr: `stderr: "Failed to execute command" err: Failed to execute command`,
+		},
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testPShellCommand,
+				},
+				sh:                      &mockShell{},
+				osTypePowershellCommand: "missing os command",
+			},
+			fail:        true,
+			expectedErr: `stderr: "" err: Unable to find matching command for OS Type: "missing os command"`,
+		},
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testSpace + testPShellCommand + testSpace, // surrounded by spaces
+				},
+				sh:                      &mockShell{},
+				osTypePowershellCommand: osTypeCmd,
+			},
+			expectedResult: testPShellCommand,
+			fail:           false,
+		},
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testSpace + testPShellCommand + testNewLine, // starts with space end with new lines
+				},
+				sh:                      &mockShell{},
+				osTypePowershellCommand: osTypeCmd,
+			},
+			expectedResult: testPShellCommand,
+			fail:           false,
+		},
+	}
+
+	for _, testCase := range testCases {
+		result, em, st := testCase.ps.Execute()
+		fmt.Printf("result: %q em:%s st:%q lr:%d\n", result, em, st, len(result))
+		if testCase.fail {
+			if st != check.FAIL {
+				t.Errorf("Expected FAIL state but instead got %q", st)
+			} else if testCase.expectedErr != em {
+				t.Errorf("unexpected error: %q but instead got: %s", testCase.expectedErr, em)
+			}
+		} else if len(result) == 0 {
+			t.Errorf("Expected result but instead got empty value")
+		} else if testCase.expectedResult != result {
+			t.Errorf("Expected result: %q but instead got: %q", testCase.expectedResult, result)
+		}
+	}
 }
