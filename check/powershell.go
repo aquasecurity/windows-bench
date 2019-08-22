@@ -69,7 +69,6 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 		errMessage = fmt.Sprintf("PowerShell is not initialized!\n")
 		return "", errMessage, check.FAIL
 	}
-	defer p.Exit()
 
 	stdout, stderr, err := p.executeCommand()
 	if err != nil {
