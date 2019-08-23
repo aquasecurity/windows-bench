@@ -70,9 +70,9 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 		return "", errMessage, check.FAIL
 	}
 
-	stdout, stderr, err := p.executeCommand()
+	stdout, err := p.executeCommand()
 	if err != nil {
-		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
+		errMessage = fmt.Sprintf("err: %v", err)
 		return "", errMessage, check.FAIL
 	}
 
@@ -80,19 +80,18 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 	return stdout, "", ""
 }
 
-func (p PowerShell) executeCommand() (string, string, error) {
+func (p PowerShell) executeCommand() (string, error) {
 	cmd, err := p.commandForRuntimeOS()
 	if err != nil {
-		return "", "", err
+		return "", err
 	}
 
 	stdout, err := p.performExec(cmd)
 	if err != nil {
-		errMessage := fmt.Sprintf("%v", err)
-		return "", errMessage, fmt.Errorf(errMessage)
+		return "", err
 	}
 
-	return stdout, "", nil
+	return stdout, nil
 }
 
 func (p PowerShell) commandForRuntimeOS() (string, error) {

@@ -119,7 +119,7 @@ func TestExecute(t *testing.T) {
 				osTypePowershellCommand: osTypeCmd,
 			},
 			fail:        true,
-			expectedErr: `stderr: "" err: Failed to get operating system type: Failed to execute get OS Type command`,
+			expectedErr: `err: Failed to get operating system type: Failed to execute get OS Type command`,
 		},
 		{
 			ps: &PowerShell{
@@ -132,7 +132,7 @@ func TestExecute(t *testing.T) {
 				osTypePowershellCommand: osTypeCmd,
 			},
 			fail:        true,
-			expectedErr: `stderr: "Failed to execute command" err: Failed to execute command`,
+			expectedErr: `err: Failed to execute command`,
 		},
 		{
 			ps: &PowerShell{
@@ -143,7 +143,7 @@ func TestExecute(t *testing.T) {
 				osTypePowershellCommand: "missing os command",
 			},
 			fail:        true,
-			expectedErr: `stderr: "" err: Unable to find matching command for OS Type: "missing os command"`,
+			expectedErr: `err: Unable to find matching command for OS Type: "missing os command"`,
 		},
 		{
 			ps: &PowerShell{
