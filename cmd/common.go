@@ -24,7 +24,7 @@ import (
 	"github.com/golang/glog"
 )
 
-func runChecks(nodetype check.NodeType) {
+func runChecks() {
 	var version string
 	var err error
 
@@ -34,7 +34,7 @@ func runChecks(nodetype check.NodeType) {
 		version = "1.1.0"
 	}
 
-	path := loadConfig(version, nodetype)
+	path := loadConfig(version)
 
 	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", path))
 
@@ -70,23 +70,14 @@ func runChecks(nodetype check.NodeType) {
 // loadConfig finds the correct config dir based on the kubernetes version,
 // merges any specific config.yaml file found with the main config
 // and returns the benchmark file to use.
-func loadConfig(version string, nodetype check.NodeType) string {
-	var file string
+func loadConfig(version string) string {
 	var err error
-
-	switch nodetype {
-	case check.DomainController:
-		file = domainControllerFile
-	case check.MemberServer:
-		file = memberServerFile
-	}
-
-	path, err := getConfigFilePath(version, file)
+	path, err := getConfigFilePath(version, definitionsFile)
 	if err != nil {
-		util.ExitWithError(fmt.Errorf("can't find %s controls file in %s: %v", nodetype, cfgDir, err))
+		util.ExitWithError(fmt.Errorf("can't find controls file in %s: %v", cfgDir, err))
 	}
 
-	return filepath.Join(path, file)
+	return filepath.Join(path, definitionsFile)
 }
 
 func outputResults(controls *commonCheck.Controls, summary commonCheck.Summary) error {

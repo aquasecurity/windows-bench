@@ -16,6 +16,7 @@ package check
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/aquasecurity/bench-common/check"
 	ps "github.com/aquasecurity/go-powershell"
@@ -24,62 +25,110 @@ import (
 )
 
 const TypePowershell = "powershell"
+const osTypePowershellCommand = `Get-ComputerInfo -Property "os*" | Select -ExpandProperty OsProductType`
 
 type PowerShell struct {
-	Cmd string
-	sh  ps.Shell
+	Cmd                     map[string]string
+	sh                      ps.Shell
+	osTypePowershellCommand string
 }
 
+type shellStarter interface {
+	startShell() (ps.Shell, error)
+}
+
+type localShellStarter struct{}
+
 func NewPowerShell() (*PowerShell, error) {
-	sh, err := composeShell()
+	return constructShell(&localShellStarter{})
+}
+
+func constructShell(c shellStarter) (*PowerShell, error) {
+	sh, err := c.startShell()
 	if err != nil {
 		return nil, err
 	}
+
 	return &PowerShell{
-		Cmd: "",
-		sh:  sh,
+		Cmd:                     make(map[string]string),
+		sh:                      sh,
+		osTypePowershellCommand: osTypePowershellCommand,
 	}, nil
+}
+
+func (p *localShellStarter) startShell() (ps.Shell, error) {
+	// start a local powershell process
+	return ps.New(&backend.Local{})
 }
 
 // Execute - Implements the 'check.Auditer' interface
 // It uses the aquasecurity/go-powershell package to interface with
 // the windows powershell to execute the command.
 func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
-
 	if p.sh == nil {
 		errMessage = fmt.Sprintf("PowerShell is not initialized!\n")
 		return "", errMessage, check.FAIL
 	}
 
-	stdout, stderr, err := p.sh.Execute(p.Cmd)
-	errMessage = stderr
+	stdout, err := p.executeCommand()
 	if err != nil {
-		errMessage = fmt.Sprintf("stderr: %q err: %v", stderr, err)
-		return stdout, errMessage, check.FAIL
+		errMessage = fmt.Sprintf("err: %v", err)
+		return "", errMessage, check.FAIL
 	}
 
-	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s \nstderr:%q \n", stdout, stderr))
-	return stdout, stderr, ""
+	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s\n", stdout))
+	return stdout, "", ""
 }
 
-func composeShell() (ps.Shell, error) {
-	be := acquireBackend()
-	sh, err := acquireShell(be)
+func (p PowerShell) executeCommand() (string, error) {
+	cmd, err := p.commandForRuntimeOS()
 	if err != nil {
-		return nil, err
-	}
-	return sh, nil
-}
-
-func acquireShell(be backend.Starter) (ps.Shell, error) {
-	shell, err := ps.New(be)
-	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return shell, nil
+	stdout, err := p.performExec(cmd)
+	if err != nil {
+		return "", err
+	}
+
+	return stdout, nil
 }
 
-func acquireBackend() backend.Starter {
-	return &backend.Local{}
+func (p PowerShell) commandForRuntimeOS() (string, error) {
+	osType, err := p.performExec(p.osTypePowershellCommand)
+	if err != nil {
+		return "", fmt.Errorf("Failed to get operating system type: %v", err)
+	}
+
+	cmd, found := p.Cmd[osType]
+	if !found {
+		return "", fmt.Errorf("Unable to find matching command for OS Type: %q", osType)
+	}
+
+	return cmd, nil
+}
+
+func (p PowerShell) performExec(cmd string) (string, error) {
+	glog.V(2).Info(fmt.Sprintf("powershell.performExec - executing command: %q\n", cmd))
+	stdout, stderr, err := p.sh.Execute(cmd)
+	if stderr != "" {
+		glog.V(2).Info(fmt.Sprintf("powershell.performExec - stderr: %v\n", stderr))
+	}
+
+	if err != nil {
+		glog.V(2).Info(fmt.Sprintf("powershell.performExec - error: %v\n", err))
+		return "", err
+	}
+	retValue := strings.TrimSpace(stdout)
+	glog.V(2).Info(fmt.Sprintf("powershell.performExec - returning: %q\n", retValue))
+	return retValue, nil
+}
+
+func (p PowerShell) Exit() {
+	glog.V(2).Info(fmt.Sprintf("Powershell.Exit - p.sh valid? %t\n", (p.sh != nil)))
+	if p.sh != nil {
+		glog.V(2).Info("Powershell.Exit - request...")
+		p.sh.Exit()
+		glog.V(2).Info("done!\n")
+	}
 }

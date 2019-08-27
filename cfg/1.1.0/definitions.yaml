@@ -12,7 +12,9 @@ groups:
       description: "(L1) Ensure 'Enforce password history' is set to '24 or more password(s)' (Scored)"
       audittype: "powershell"
       audit: 
-        cmd: "Get-ADDomain | Select-Object -ExpandProperty Name | Get-ADDefaultDomainPasswordPolicy -Identity {$PSItem} | Select -ExpandProperty PasswordHistoryCount"
+        cmd:
+          DomainController: "Get-ADDomain | Select-Object -ExpandProperty Name | Get-ADDefaultDomainPasswordPolicy -Identity {$PSItem} | Select -ExpandProperty PasswordHistoryCount"
+          Server: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty PasswordHistoryCount"
       tests:
         test_items:
         - flag: ""

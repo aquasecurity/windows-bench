@@ -25,7 +25,7 @@ import (
 
 var (
 	ver                = "1.1.0"
-	testDefinitionFile = "domain-controller.yaml"
+	testDefinitionFile = "definitions.yaml"
 	path               string
 )
 
