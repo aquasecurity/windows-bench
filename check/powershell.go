@@ -28,9 +28,9 @@ const TypePowershell = "powershell"
 const osTypePowershellCommand = `Get-ComputerInfo -Property "os*" | Select -ExpandProperty OsProductType`
 
 type PowerShell struct {
-	Cmd                     map[string]string
-	sh                      ps.Shell
-	osTypePowershellCommand string
+	Cmd    map[string]string
+	sh     ps.Shell
+	osType string
 }
 
 type shellStarter interface {
@@ -40,7 +40,17 @@ type shellStarter interface {
 type localShellStarter struct{}
 
 func NewPowerShell() (*PowerShell, error) {
-	return constructShell(&localShellStarter{})
+	p, err := constructShell(&localShellStarter{})
+	if err != nil {
+		return nil, err
+	}
+
+	osType, err := p.performExec(osTypePowershellCommand)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to get operating system type: %v", err)
+	}
+	p.osType = osType
+	return p, nil
 }
 
 func constructShell(c shellStarter) (*PowerShell, error) {
@@ -50,9 +60,8 @@ func constructShell(c shellStarter) (*PowerShell, error) {
 	}
 
 	return &PowerShell{
-		Cmd:                     make(map[string]string),
-		sh:                      sh,
-		osTypePowershellCommand: osTypePowershellCommand,
+		Cmd: make(map[string]string),
+		sh:  sh,
 	}, nil
 }
 
@@ -95,14 +104,9 @@ func (p PowerShell) executeCommand() (string, error) {
 }
 
 func (p PowerShell) commandForRuntimeOS() (string, error) {
-	osType, err := p.performExec(p.osTypePowershellCommand)
-	if err != nil {
-		return "", fmt.Errorf("Failed to get operating system type: %v", err)
-	}
-
-	cmd, found := p.Cmd[osType]
+	cmd, found := p.Cmd[p.osType]
 	if !found {
-		return "", fmt.Errorf("Unable to find matching command for OS Type: %q", osType)
+		return "", fmt.Errorf("Unable to find matching command for OS Type: %q", p.osType)
 	}
 
 	return cmd, nil

@@ -16,7 +16,6 @@ package check
 
 import (
 	"fmt"
-	"log"
 	"testing"
 
 	"github.com/aquasecurity/bench-common/check"
@@ -44,8 +43,6 @@ type mockShell struct {
 }
 
 func (ms *mockShell) Execute(cmd string) (string, string, error) {
-	log.Printf("Execute.cmd %s\n", cmd)
-
 	switch cmd {
 	case osTypeCmd:
 		if ms.getOSTypeFail {
@@ -116,10 +113,9 @@ func TestExecute(t *testing.T) {
 				sh: &mockShell{
 					getOSTypeFail: true,
 				},
-				osTypePowershellCommand: osTypeCmd,
 			},
 			fail:        true,
-			expectedErr: `err: Failed to get operating system type: Failed to execute get OS Type command`,
+			expectedErr: `err: Unable to find matching command for OS Type: ""`,
 		},
 		{
 			ps: &PowerShell{
@@ -129,29 +125,27 @@ func TestExecute(t *testing.T) {
 				sh: &mockShell{
 					execCommandFail: true,
 				},
-				osTypePowershellCommand: osTypeCmd,
 			},
 			fail:        true,
-			expectedErr: `err: Failed to execute command`,
+			expectedErr: `err: Unable to find matching command for OS Type: ""`,
 		},
 		{
 			ps: &PowerShell{
 				Cmd: map[string]string{
 					osTypeCmd: testPShellCommand,
 				},
-				sh:                      &mockShell{},
-				osTypePowershellCommand: "missing os command",
+				sh: &mockShell{},
 			},
 			fail:        true,
-			expectedErr: `err: Unable to find matching command for OS Type: "missing os command"`,
+			expectedErr: `err: Unable to find matching command for OS Type: ""`,
 		},
 		{
 			ps: &PowerShell{
 				Cmd: map[string]string{
 					osTypeCmd: testSpace + testPShellCommand + testSpace, // surrounded by spaces
 				},
-				sh:                      &mockShell{},
-				osTypePowershellCommand: osTypeCmd,
+				sh:     &mockShell{},
+				osType: osTypeCmd,
 			},
 			expectedResult: testPShellCommand,
 			fail:           false,
@@ -161,8 +155,8 @@ func TestExecute(t *testing.T) {
 				Cmd: map[string]string{
 					osTypeCmd: testSpace + testPShellCommand + testNewLine, // starts with space end with new lines
 				},
-				sh:                      &mockShell{},
-				osTypePowershellCommand: osTypeCmd,
+				sh:     &mockShell{},
+				osType: osTypeCmd,
 			},
 			expectedResult: testPShellCommand,
 			fail:           false,
@@ -171,12 +165,11 @@ func TestExecute(t *testing.T) {
 
 	for _, testCase := range testCases {
 		result, em, st := testCase.ps.Execute()
-		fmt.Printf("result: %q em:%s st:%q lr:%d\n", result, em, st, len(result))
 		if testCase.fail {
 			if st != check.FAIL {
 				t.Errorf("Expected FAIL state but instead got %q", st)
 			} else if testCase.expectedErr != em {
-				t.Errorf("unexpected error: %q but instead got: %s", testCase.expectedErr, em)
+				t.Errorf("unexpected error: %q but instead got: %q", testCase.expectedErr, em)
 			}
 		} else if len(result) == 0 {
 			t.Errorf("Expected result but instead got empty value")
