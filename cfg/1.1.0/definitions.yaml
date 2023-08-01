@@ -27,3 +27,27 @@ groups:
           Computer Configuration\Policies\Windows Settings\Security Settings\Account
           Policies\Password Policy\Enforce password history
       scored: true
+    - id: 1.1.2
+      description: "Ensure 'Maximum password age' is set to '365 or fewer days, but not 0' (Automated)"
+      audittype: "powershell"
+      audit: 
+        cmd:
+          DomainController: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MaxPasswordAge | Select -ExpandProperty TotalDays"
+          Server: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MaxPasswordAge | Select -ExpandProperty TotalDays"
+      tests:
+        bin_op: and
+        test_items:
+        - flag: ""
+          compare:
+            op: lte
+            value: 365
+          set: true
+        - flag: ""
+          compare:
+            op: noteq
+            value: 0
+          set: true
+      remediation: |
+        To establish the recommended configuration via GP, set the following UI path to 365 or fewer days, but not 0:
+         Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Maximum password age
+      scored: true
