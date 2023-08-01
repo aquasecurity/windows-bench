@@ -27,4 +27,3 @@ groups:
           Computer Configuration\Policies\Windows Settings\Security Settings\Account
           Policies\Password Policy\Enforce password history
       scored: true
-  
