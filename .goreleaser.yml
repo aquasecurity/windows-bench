@@ -1,0 +1,34 @@
+---
+env:
+  - GO111MODULE=on
+  - LINUXBENCH_CFG=/etc/windows-bench/cfg
+
+builds:
+  - main: .
+    binary: windows-bench
+    goos:
+      - windows
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
+    ldflags:
+      - "-X github.com/aquasecurity/windows-bench/root.cfgDir={{.Env.LINUXBENCH_CFG}}"
+# Archive customization
+archives:
+  - id: compress
+    format: tar.gz
+    name_template: "{{ .Binary }}_{{.Version}}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{.Arm }}{{ end }}"
+    files:
+      - "cfg/**/*"
+nfpms:
+  - vendor: Aqua Security
+    description: "windows-bench checks whether a Linux server according to security best practices as defined in the CIS Distribution-Independent Linux Benchmark"
+    license: Apache-2.0
+    homepage: https://github.com/aquasecurity/windows-bench
+    contents:
+      - src: "cfg/**/*"
+        dst: "/etc/windows-bench/cfg"
