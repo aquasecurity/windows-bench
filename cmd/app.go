@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -39,7 +38,7 @@ func runControls(controls *check.Controls, checkList string) check.Summary {
 }
 
 func getControls(bench check.Bench, path string, constraints []string) (*check.Controls, error) {
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
