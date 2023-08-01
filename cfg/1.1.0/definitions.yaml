@@ -13,7 +13,7 @@ groups:
       audittype: "powershell"
       audit: 
         cmd:
-          DomainController: "Get-ADDomain | Select-Object -ExpandProperty Name | Get-ADDefaultDomainPasswordPolicy -Identity {$PSItem} | Select -ExpandProperty PasswordHistoryCount"
+          DomainController: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty PasswordHistoryCount"
           Server: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty PasswordHistoryCount"
       tests:
         test_items:
