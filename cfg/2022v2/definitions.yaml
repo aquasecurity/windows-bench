@@ -2,14 +2,14 @@
 controls:
 version: 1.1.0
 id: 1
-description: "Initial Setup"  
+description: "Account Policies"  
 type: "domain-controller"
 groups:
 - id: 1.1
   description: "Password Policy"
   checks:
     - id: 1.1.1
-      description: "(L1) Ensure 'Enforce password history' is set to '24 or more password(s)' (Scored)"
+      description: "Ensure 'Enforce password history' is set to '24 or more password(s)' (Automated)"
       audittype: "powershell"
       audit: 
         cmd:
