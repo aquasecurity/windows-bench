@@ -37,10 +37,20 @@ GOOS=windows GOARCH=386 go build -o bin/windows-bench.exe main.go
 [PASS] 1.1.1 Ensure 'Enforce password history' is set to '24 or more password(s)' (Automated)
 [PASS] 1.1.2 Ensure 'Maximum password age' is set to '365 or fewer days, but not 0' (Automated)
 [PASS] 1.1.3 Ensure 'Minimum password age' is set to '1 or more day(s)' (Automated)
+[FAIL] 1.1.4 Ensure 'Minimum password length' is set to '14 or more character(s)' (Automated)
+[FAIL] 1.1.5 Ensure 'Password must meet complexity requirements' is set to 'Enabled' (Automated)
+
+== Remediations ==
+1.1.4 To establish the recommended configuration via GP, set the following UI path to 14 or more character(s):
+    Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Minimum password length
+
+1.1.5 To establish the recommended configuration via GP, set the following UI path to 14 or more character(s):
+     Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Password must meet complexity requirements
+
 
 == Summary ==
 3 checks PASS
-0 checks FAIL
+2 checks FAIL
 0 checks WARN
 0 checks INFO
 

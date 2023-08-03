@@ -69,3 +69,39 @@ groups:
         To establish the recommended configuration via GP, set the following UI path to 1 or more day(s):
            Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Minimum password age
       scored: true
+    - id: 1.1.4
+      description: "Ensure 'Minimum password length' is set to '14 or more character(s)' (Automated)"
+      audittype: "powershell"
+      audit: 
+        cmd:
+          DomainController: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MinPasswordLength"
+          Server: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MinPasswordLength"
+      tests:
+        test_items:
+        - flag: ""
+          compare:
+            op: gte
+            value: 14
+          set: true
+      remediation: |
+        To establish the recommended configuration via GP, set the following UI path to 14 or more character(s):
+            Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Minimum password length
+      scored: true
+    - id: 1.1.5
+      description: "Ensure 'Password must meet complexity requirements' is set to 'Enabled' (Automated)"
+      audittype: "powershell"
+      audit: 
+        cmd:
+          DomainController: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty ComplexityEnabled"
+          Server: "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty ComplexityEnabled"
+      tests:
+        test_items:
+        - flag: ""
+          compare:
+            op: has
+            value: "True"
+          set: true
+      remediation: |
+        To establish the recommended configuration via GP, set the following UI path to 14 or more character(s):
+             Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Password must meet complexity requirements
+      scored: true
