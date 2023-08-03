@@ -3,7 +3,7 @@ module github.com/aquasecurity/windows-bench
 go 1.20
 
 require (
-	github.com/aquasecurity/bench-common v0.0.0-20190809173122-de62def16042
+	github.com/aquasecurity/bench-common v0.4.6
 	github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/spf13/cobra v0.0.5
@@ -21,6 +21,7 @@ require (
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
+	github.com/onsi/ginkgo v1.11.0 // indirect
 	github.com/pelletier/go-toml v1.2.0 // indirect
 	github.com/spf13/afero v1.1.2 // indirect
 	github.com/spf13/cast v1.3.0 // indirect
@@ -30,4 +31,5 @@ require (
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	k8s.io/client-go v11.0.0+incompatible // indirect
 )
