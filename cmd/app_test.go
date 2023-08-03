@@ -24,7 +24,7 @@ import (
 )
 
 var (
-	ver                = "1.1.0"
+	ver                = "2.0.0"
 	testDefinitionFile = "definitions.yaml"
 	path               string
 )
