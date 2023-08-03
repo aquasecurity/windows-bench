@@ -38,8 +38,8 @@ cloud.google.com/go/storage v1.14.0/go.mod h1:GrKmX003DSIwi9o29oFT7YDnHYwZoctc3f
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/aquasecurity/bench-common v0.4.7-0.20230803095326-39d6bb76ccab h1:89uu2LOfguBt9yTbdTxIYUyF9CyZCIEQq2c13+D1NxY=
-github.com/aquasecurity/bench-common v0.4.7-0.20230803095326-39d6bb76ccab/go.mod h1:cqJgzhTs9JOM2vWFRtXIbddIUOUBkwuYoGYf9BZcs8Y=
+github.com/aquasecurity/bench-common v0.4.7-0.20230803133806-c7b9760f4082 h1:0gyAjftNv7Q9Q9r1vvY+HehjV04YEJ1aRPdfxvq9msU=
+github.com/aquasecurity/bench-common v0.4.7-0.20230803133806-c7b9760f4082/go.mod h1:cqJgzhTs9JOM2vWFRtXIbddIUOUBkwuYoGYf9BZcs8Y=
 github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847 h1:e1w2q4MqhHsmBDe5WavHKdGqXbmlvd3f6tH8Qrgn5KA=
 github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847/go.mod h1:uTcLN1HYZA/abvodzFT8Sx0HupFF7sfsYPCFHFSSgF8=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
