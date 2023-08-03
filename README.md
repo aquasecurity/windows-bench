@@ -1,10 +1,11 @@
 # windows-bench
+
 [![GitHub Release][release-img]][release]
 [![License][license-img]][license]
 [![GitHub Build Actions][build-action-img]][actions]
 [![GitHub Release Actions][release-action-img]][actions]
 
-# This Repo is Still Work in Progress !!!
+# This Repo is Still Work in Progress
 
 windows-bench is a Go application that checks whether the windows operating system is configured securely by running the checks documented in the CIS Distribution Independent windows Benchmark.
 
@@ -63,7 +64,6 @@ Tests
 Tests are specified in definition files cfg/<version>/definitions.yaml.
 
 Where <version> is the version of windows cis for which the test applies.
-
 
 [actions]: https://github.com/aquasecurity/windows-bench/actions
 [build-action-img]: https://github.com/aquasecurity/windows-bench/workflows/build/badge.svg
