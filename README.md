@@ -12,7 +12,7 @@ windows-bench is a Go application that checks whether the windows operating syst
 Tests are configured with YAML files, making this tool easy to update as test specifications evolve.
 
 CIS windows Benchmark support
-windows-bench currently supports tests for benchmark version 1.1.0 only.
+windows-bench currently supports tests for Windows server 2022 benchmark version 2.0.0 only.
 
 windows-bench will determine the test set to run on the host machine based on the following:
 
