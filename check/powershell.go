@@ -73,12 +73,14 @@ func (p *localShellStarter) startShell() (ps.Shell, error) {
 // Execute - Implements the 'check.Auditer' interface
 // It uses the aquasecurity/go-powershell package to interface with
 // the windows powershell to execute the command.
-func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
+func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
 	if p.sh == nil {
 		errMessage = fmt.Sprintf("PowerShell is not initialized!\n")
 		return "", errMessage, check.FAIL
 	}
-
+	if len(customConfig) > 0 {
+		p.updateCommand(customConfig[0])
+	}
 	stdout, err := p.executeCommand()
 	if err != nil {
 		errMessage = fmt.Sprintf("err: %v", err)
@@ -89,7 +91,20 @@ func (p PowerShell) Execute(customConfig ...interface{}) (result string, errMess
 	return stdout, "", ""
 }
 
-func (p PowerShell) executeCommand() (string, error) {
+func (p *PowerShell) updateCommand(commands interface{}) {
+	if audit, ok := commands.(map[string]interface{}); ok {
+		if data, ok := audit["cmd"].(map[string]interface{}); ok {
+			for key, val := range data {
+				if v, ok := val.(string); ok {
+					p.Cmd[key] = v
+				}
+			}
+		}
+
+	}
+}
+
+func (p *PowerShell) executeCommand() (string, error) {
 	cmd, err := p.commandForRuntimeOS()
 	if err != nil {
 		return "", err
@@ -103,7 +118,7 @@ func (p PowerShell) executeCommand() (string, error) {
 	return stdout, nil
 }
 
-func (p PowerShell) commandForRuntimeOS() (string, error) {
+func (p *PowerShell) commandForRuntimeOS() (string, error) {
 	cmd, found := p.Cmd[p.osType]
 	if !found {
 		return "", fmt.Errorf("Unable to find matching command for OS Type: %q", p.osType)
@@ -112,7 +127,7 @@ func (p PowerShell) commandForRuntimeOS() (string, error) {
 	return cmd, nil
 }
 
-func (p PowerShell) performExec(cmd string) (string, error) {
+func (p *PowerShell) performExec(cmd string) (string, error) {
 	glog.V(2).Info(fmt.Sprintf("powershell.performExec - executing command: %q\n", cmd))
 	stdout, stderr, err := p.sh.Execute(cmd)
 	if stderr != "" {
@@ -128,7 +143,7 @@ func (p PowerShell) performExec(cmd string) (string, error) {
 	return retValue, nil
 }
 
-func (p PowerShell) Exit() {
+func (p *PowerShell) Exit() {
 	glog.V(2).Info(fmt.Sprintf("Powershell.Exit - p.sh valid? %t\n", (p.sh != nil)))
 	if p.sh != nil {
 		glog.V(2).Info("Powershell.Exit - request...")
