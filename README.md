@@ -31,6 +31,21 @@ GOOS=windows GOARCH=386 go build -o bin/windows-bench.exe main.go
 
 ./windows-bench
 
+```sh
+[INFO] 1 Account Policies
+[INFO] 1.1 Password Policy
+[PASS] 1.1.1 Ensure 'Enforce password history' is set to '24 or more password(s)' (Automated)
+[PASS] 1.1.2 Ensure 'Maximum password age' is set to '365 or fewer days, but not 0' (Automated)
+[PASS] 1.1.3 Ensure 'Minimum password age' is set to '1 or more day(s)' (Automated)
+
+== Summary ==
+3 checks PASS
+0 checks FAIL
+0 checks WARN
+0 checks INFO
+
+```
+
 # Run checks for specified windows cis version
 
 ./windows-bench --version <version>
