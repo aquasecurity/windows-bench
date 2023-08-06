@@ -47,7 +47,7 @@ func NewPowerShell() (*PowerShell, error) {
 
 	osType, err := p.performExec(osTypePowershellCommand)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get operating system type: %v", err)
+		return nil, fmt.Errorf("Failed to get operating system type: %w", err)
 	}
 	p.osType = osType
 	return p, nil
