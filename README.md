@@ -4,6 +4,7 @@
 [![License][license-img]][license]
 [![GitHub Build Actions][build-action-img]][actions]
 [![GitHub Release Actions][release-action-img]][actions]
+[![release-snapshot](https://github.com/aquasecurity/windows-bench/actions/workflows/release-snapshot.yml/badge.svg)](https://github.com/aquasecurity/windows-bench/actions/workflows/release-snapshot.yml)
 
 # This Repo is Still Work in Progress
 
