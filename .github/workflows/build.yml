@@ -13,8 +13,34 @@ on:
       - "LICENSE"
       - "NOTICE"
 jobs:
-  build:
-    name: Build
+  verify-code:
+    name: Verify code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Cached Go dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Verify Go code
+        uses: golangci/golangci-lint-action@v3.6.0
+        with:
+          args: --verbose
+          version: latest
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Verify YAML code
+        uses: ibiqlik/action-yamllint@v3
+  unit-tests:
+    name: Tests
     runs-on: ubuntu-22.04
     steps:
       - name: Setup Go
@@ -29,8 +55,3 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           file: ./coverage.txt
-      - name: Dry-run release snapshot
-        uses: goreleaser/goreleaser-action@v2
-        with:
-          version: v1.7.0
-          args: release --snapshot --skip-publish --rm-dist
