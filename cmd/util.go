@@ -20,7 +20,7 @@ import (
 
 	commonCheck "github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/bench-common/util"
-	"github.com/aquasecurity/windows-bench/check"
+	"github.com/aquasecurity/windows-bench/shell"
 	"github.com/golang/glog"
 )
 
@@ -38,12 +38,15 @@ func runChecks() {
 
 	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", path))
 	b := commonCheck.NewBench()
-	ps, err := check.NewPowerShell()
+	ps, err := shell.NewPowerShell()
 	if err != nil {
 		util.ExitWithError(err)
 	}
 
-	err = b.RegisterAuditType(check.TypePowershell, func() interface{} {
+	err = b.RegisterAuditType(shell.TypePowershell, func() interface{} {
+		if err != nil {
+			return nil
+		}
 		glog.V(2).Info("Returning a PowerShell (Auditer) \n")
 		return ps
 	})

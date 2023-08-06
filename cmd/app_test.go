@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	commonCheck "github.com/aquasecurity/bench-common/check"
-	"github.com/aquasecurity/windows-bench/check"
+	"github.com/aquasecurity/windows-bench/shell"
 )
 
 var (
@@ -107,7 +107,7 @@ func TestRunControls(t *testing.T) {
 func getMockBench() commonCheck.Bench {
 	b := commonCheck.NewBench()
 	ps := &mockPowerShell{}
-	b.RegisterAuditType(check.TypePowershell, func() interface{} {
+	_ = b.RegisterAuditType(shell.TypePowershell, func() interface{} {
 		return ps
 	})
 	return b
