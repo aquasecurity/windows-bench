@@ -65,6 +65,141 @@ Tests are specified in definition files cfg/<version>/definitions.yaml.
 
 Where <version> is the version of windows cis for which the test applies.
 
+# Run checks with json format
+
+./windows-bench --json
+
+```json
+
+{
+  "id": "1",
+  "text": "Account Policies",
+  "tests": [
+    {
+      "section": "1.1",
+      "desc": "Password Policy",
+      "Constraints": null,
+      "type": "",
+      "results": [
+        {
+          "test_number": "1.1.1",
+          "test_desc": "Ensure 'Enforce password history' is set to '24 or more password(s)' (Automated)",
+          "SubChecks": null,
+          "audit_type": "powershell",
+          "audit": {
+            "cmd": {
+              "DomainController": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty PasswordHistoryCount",
+              "Server": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty PasswordHistoryCount"
+            }
+          },
+          "type": "",
+          "test_info": [
+            "To establish the recommended configuration via GP, set the following UI path to 24 or more password(s):\n  Computer Configuration\\Policies\\Windows Settings\\Security Settings\\Account\n  Policies\\Password Policy\\Enforce password history\n"
+          ],
+          "status": "PASS",
+          "actual_value": "24",
+          "expected_result": "'' is greater or equal to 24",
+          "scored": true,
+          "IsMultiple": false
+        },
+        {
+          "test_number": "1.1.2",
+          "test_desc": "Ensure 'Maximum password age' is set to '365 or fewer days, but not 0' (Automated)",
+          "SubChecks": null,
+          "audit_type": "powershell",
+          "audit": {
+            "cmd": {
+              "DomainController": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MaxPasswordAge | Select -ExpandProperty TotalDays",
+              "Server": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MaxPasswordAge | Select -ExpandProperty TotalDays"
+            }
+          },
+          "type": "",
+          "test_info": [
+            "To establish the recommended configuration via GP, set the following UI path to 365 or fewer days, but not 0:\n Computer Configuration\\Policies\\Windows Settings\\Security Settings\\Account Policies\\Password Policy\\Maximum password age\n"
+          ],
+          "status": "PASS",
+          "actual_value": "42",
+          "expected_result": "'' is lower or equal to 365 AND '' is not equal to '0'",
+          "scored": true,
+          "IsMultiple": false
+        },
+        {
+          "test_number": "1.1.3",
+          "test_desc": "Ensure 'Minimum password age' is set to '1 or more day(s)' (Automated)",
+          "SubChecks": null,
+          "audit_type": "powershell",
+          "audit": {
+            "cmd": {
+              "DomainController": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MinPasswordAge | Select -ExpandProperty TotalDays",
+              "Server": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MinPasswordAge | Select -ExpandProperty TotalDays"
+            }
+          },
+          "type": "",
+          "test_info": [
+            "To establish the recommended configuration via GP, set the following UI path to 1 or more day(s):\n   Computer Configuration\\Policies\\Windows Settings\\Security Settings\\Account Policies\\Password Policy\\Minimum password age\n"
+          ],
+          "status": "PASS",
+          "actual_value": "1",
+          "expected_result": "'' is greater or equal to 1",
+          "scored": true,
+          "IsMultiple": false
+        },
+        {
+          "test_number": "1.1.4",
+          "test_desc": "Ensure 'Minimum password length' is set to '14 or more character(s)' (Automated)",
+          "SubChecks": null,
+          "audit_type": "powershell",
+          "audit": {
+            "cmd": {
+              "DomainController": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MinPasswordLength",
+              "Server": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty MinPasswordLength"
+            }
+          },
+          "type": "",
+          "test_info": [
+            "To establish the recommended configuration via GP, set the following UI path to 14 or more character(s):\n    Computer Configuration\\Policies\\Windows Settings\\Security Settings\\Account Policies\\Password Policy\\Minimum password length\n"
+          ],
+          "status": "FAIL",
+          "actual_value": "7",
+          "expected_result": "'' is greater or equal to 14",
+          "scored": true,
+          "IsMultiple": false
+        },
+        {
+          "test_number": "1.1.5",
+          "test_desc": "Ensure 'Password must meet complexity requirements' is set to 'Enabled' (Automated)",
+          "SubChecks": null,
+          "audit_type": "powershell",
+          "audit": {
+            "cmd": {
+              "DomainController": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty ComplexityEnabled",
+              "Server": "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty ComplexityEnabled"
+            }
+          },
+          "type": "",
+          "test_info": [
+            "To establish the recommended configuration via GP, set the following UI path to 14 or more character(s):\n     Computer Configuration\\Policies\\Windows Settings\\Security Settings\\Account Policies\\Password Policy\\Password must meet complexity requirements\n"
+          ],
+          "status": "PASS",
+          "actual_value": "True",
+          "expected_result": "'' has 'True'",
+          "scored": true,
+          "IsMultiple": false
+        }
+      ],
+      "pass": 4,
+      "fail": 1,
+      "warn": 0,
+      "info": 0
+    }
+  ],
+  "total_pass": 4,
+  "total_fail": 1,
+  "total_warn": 0,
+  "total_info": 0
+}
+```
+
 [actions]: https://github.com/aquasecurity/windows-bench/actions
 [build-action-img]: https://github.com/aquasecurity/windows-bench/workflows/build/badge.svg
 [license-img]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
