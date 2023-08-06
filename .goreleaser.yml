@@ -1,7 +1,6 @@
 ---
 env:
   - GO111MODULE=on
-
 builds:
   - main: .
     binary: windows-bench
@@ -14,7 +13,7 @@ builds:
     goarm:
       - 6
       - 7
-   
+
 # Archive customization
 archives:
   - id: compress
