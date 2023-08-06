@@ -82,14 +82,14 @@ func TestConstructShell(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		ps, err := constructShell(testCase.mss)
+		powerShell, err := constructShell(testCase.mss)
 		if testCase.mss.fail {
 			if err == nil {
 				t.Errorf("Expected Error")
 			}
-		} else if ps == nil {
+		} else if powerShell == nil {
 			t.Errorf("PowerShell must be initialized")
-		} else if ps.sh == nil {
+		} else if powerShell.sh == nil {
 			t.Errorf("Internal Shell must be initialized")
 		}
 	}

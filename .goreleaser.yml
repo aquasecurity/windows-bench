@@ -1,7 +1,6 @@
 ---
 env:
   - GO111MODULE=on
-
 builds:
   - main: .
     binary: windows-bench
@@ -14,11 +13,10 @@ builds:
     goarm:
       - 6
       - 7
-   
-# Archive customization
 archives:
   - id: compress
     format: zip
-    name_template: "{{ .Binary }}_{{.Version}}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{.Arm }}{{ end }}"
+    name_template: "{{ .Binary }}_{{.Version}}_{{ .Os }}_{{ .Arch }}{{ if .Arm
+      }}v{{.Arm }}{{ end }}"
     files:
-      - "cfg/**/*"
+      - cfg/**/*

@@ -74,7 +74,7 @@ func loadConfig(version string) string {
 	var err error
 	path, err := getConfigFilePath(version, definitionsFile)
 	if err != nil {
-		util.ExitWithError(fmt.Errorf("can't find controls file in %s: %v", cfgDir, err))
+		util.ExitWithError(fmt.Errorf("can't find controls file in %s: %w", cfgDir, err))
 	}
 
 	return filepath.Join(path, definitionsFile)
