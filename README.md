@@ -65,15 +65,6 @@ Tests are specified in definition files cfg/<version>/definitions.yaml.
 
 Where <version> is the version of windows cis for which the test applies.
 
-[actions]: https://github.com/aquasecurity/windows-bench/actions
-[build-action-img]: https://github.com/aquasecurity/windows-bench/workflows/build/badge.svg
-[license-img]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
-[license]: https://opensource.org/licenses/Apache-2.0
-[release-img]: https://img.shields.io/github/release/aquasecurity/windows-bench.svg
-[release]: https://github.com/aquasecurity/windows-bench/releases
-[release-action-img]: https://github.com/aquasecurity/windows-bench/workflows/release/badge.svg
-
-
 # Run checks with json format
 
 ./windows-bench --json
@@ -208,3 +199,11 @@ Where <version> is the version of windows cis for which the test applies.
   "total_info": 0
 }
 ```
+
+[actions]: https://github.com/aquasecurity/windows-bench/actions
+[build-action-img]: https://github.com/aquasecurity/windows-bench/workflows/build/badge.svg
+[license-img]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+[license]: https://opensource.org/licenses/Apache-2.0
+[release-img]: https://img.shields.io/github/release/aquasecurity/windows-bench.svg
+[release]: https://github.com/aquasecurity/windows-bench/releases
+[release-action-img]: https://github.com/aquasecurity/windows-bench/workflows/release/badge.svg
