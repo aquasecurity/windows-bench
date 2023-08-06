@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package check
+package shell
 
 import (
 	"fmt"
@@ -35,7 +35,6 @@ const osTypeCmd = "domain-controller"
 const testPShellCommand = "domain-controller CMD"
 const testSpace = " "
 const testNewLine = "\n"
-const testWinNewLine = "\r\n"
 
 type mockShell struct {
 	getOSTypeFail   bool

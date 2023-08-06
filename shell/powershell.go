@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package check
+package shell
 
 import (
 	"fmt"
@@ -75,7 +75,7 @@ func (p *localShellStarter) startShell() (ps.Shell, error) {
 // the windows powershell to execute the command.
 func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
 	if p.sh == nil {
-		errMessage = fmt.Sprintf("PowerShell is not initialized!\n")
+		errMessage = "PowerShell is not initialized!\n"
 		return "", errMessage, check.FAIL
 	}
 	if len(customConfig) > 0 {
