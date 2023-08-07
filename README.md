@@ -21,9 +21,13 @@ Operating system platform - windows server 2022
 
 Install Go, then clone this repository and run as follows (assuming your $GOPATH is set):
 
+```sh
 go get github.com/aquasecurity/windows-bench
+
 cd $GOPATH/src/github.com/aquasecurity/windows-bench
+
 GOOS=windows GOARCH=386 go build -o bin/windows-bench.exe main.go
+```
 
 # See all supported options
 
