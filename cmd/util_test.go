@@ -36,7 +36,7 @@ func TestLoadConfig(t *testing.T) {
 		{
 			version: "2.0.0",
 			cfgPath: fmt.Sprintf("%s/../cfg", here),
-			want:    "workspace/windows-bench/cfg/2.0.0/definitions.yaml",
+			want:    "cfg/2.0.0/definitions.yaml",
 		},
 	}
 	for _, tc := range testCases {
