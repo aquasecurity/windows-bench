@@ -132,10 +132,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
-              Select -ExpandProperty MinPasswordLengthLimitEnabled
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
-              -ExpandProperty MinPasswordLengthLimitEnabled
+            DomainController: Test-Path HKLM:\System\CurrentControlSet\Control\SAM\RelaxMinimumPasswordLengthLimits
+            Server: Test-Path HKLM:\System\CurrentControlSet\Control\SAM\RelaxMinimumPasswordLengthLimits
         tests:
           test_items:
             - flag: ""

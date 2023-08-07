@@ -20,6 +20,7 @@ import (
 
 	"github.com/aquasecurity/bench-common/check"
 	ps "github.com/aquasecurity/go-powershell"
+	"github.com/magiconair/properties/assert"
 )
 
 type mockShellStarter struct {
@@ -175,5 +176,69 @@ func TestExecute(t *testing.T) {
 		} else if testCase.expectedResult != result {
 			t.Errorf("Expected result: %q but instead got: %q", testCase.expectedResult, result)
 		}
+	}
+}
+
+func TestUpdateCommand(t *testing.T) {
+	type TestCase struct {
+		ps          *PowerShell
+		param       map[string]interface{}
+		expectedCmd map[string]string
+	}
+
+	testCases := []TestCase{
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testPShellCommand,
+				},
+			},
+			param: map[string]interface{}{
+				"cmd": map[string]interface{}{
+					"key1": "value1",
+					"key2": "value2",
+				},
+			},
+			expectedCmd: map[string]string{
+				"key1": "value1",
+				"key2": "value2",
+			},
+		},
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testPShellCommand,
+				},
+			},
+			param: map[string]interface{}{
+				"ttt": map[string]interface{}{
+					"key1": "value1",
+					"key2": "value2",
+				},
+			},
+			expectedCmd: map[string]string{
+				osTypeCmd: testPShellCommand,
+			},
+		},
+		{
+			ps: &PowerShell{
+				Cmd: map[string]string{
+					osTypeCmd: testPShellCommand,
+				},
+			},
+			param: map[string]interface{}{
+				"cmd": map[string]interface{}{
+					"key1": 2,
+					"key2": "value2",
+				},
+			},
+			expectedCmd: map[string]string{
+				"key2": "value2",
+			},
+		},
+	}
+	for _, testCase := range testCases {
+		testCase.ps.updateCommand(testCase.param)
+		assert.Equal(t, testCase.ps.Cmd, testCase.expectedCmd)
 	}
 }
