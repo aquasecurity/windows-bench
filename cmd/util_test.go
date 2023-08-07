@@ -45,3 +45,12 @@ func TestLoadConfig(t *testing.T) {
 		assert.True(t, strings.Contains(got, tc.want))
 	}
 }
+
+func TestRunChecks(t *testing.T) {
+	b := getMockBench()
+	err := runChecks(b)
+	if err != nil {
+		t.Errorf("unexpected error: %s\n", err)
+	}
+	assert.NoError(t, err)
+}
