@@ -94,6 +94,7 @@ func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMes
 func (p *PowerShell) updateCommand(commands interface{}) {
 	if audit, ok := commands.(map[string]interface{}); ok {
 		if data, ok := audit["cmd"].(map[string]interface{}); ok {
+			p.Cmd = make(map[string]string, 0)
 			for key, val := range data {
 				if v, ok := val.(string); ok {
 					p.Cmd[key] = v
