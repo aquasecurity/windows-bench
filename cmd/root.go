@@ -20,6 +20,9 @@ import (
 
 	goflag "flag"
 
+	commonCheck "github.com/aquasecurity/bench-common/check"
+	"github.com/aquasecurity/windows-bench/shell"
+	"github.com/golang/glog"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -44,8 +47,20 @@ var RootCmd = &cobra.Command{
 	Use:   "windows-bench",
 	Short: "windows-bench is a Go application that checks whether the windows operating system is deployed securely",
 	Long:  `This tool runs the CIS Windows Benchmark (https://www.cisecurity.org/cis-benchmarks)`,
-	Run: func(cmd *cobra.Command, args []string) {
-		runChecks()
+	RunE: func(cmd *cobra.Command, args []string) error {
+		b := commonCheck.NewBench()
+		ps, err := shell.NewPowerShell()
+		if err != nil {
+			return err
+		}
+		err = b.RegisterAuditType(shell.TypePowershell, func() interface{} {
+			if err != nil {
+				return nil
+			}
+			glog.V(2).Info("Returning a PowerShell (Auditer) \n")
+			return ps
+		})
+		return runChecks(b)
 	},
 }
 
