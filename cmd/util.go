@@ -20,11 +20,10 @@ import (
 
 	commonCheck "github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/bench-common/util"
-	"github.com/aquasecurity/windows-bench/shell"
 	"github.com/golang/glog"
 )
 
-func runChecks() {
+func runChecks(b commonCheck.Bench) error {
 	var version string
 	var err error
 
@@ -33,37 +32,22 @@ func runChecks() {
 	} else {
 		version = "2.0.0"
 	}
-
 	path := loadConfig(version)
-
 	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", path))
-	b := commonCheck.NewBench()
-	ps, err := shell.NewPowerShell()
-	if err != nil {
-		util.ExitWithError(err)
-	}
-
-	err = b.RegisterAuditType(shell.TypePowershell, func() interface{} {
-		if err != nil {
-			return nil
-		}
-		glog.V(2).Info("Returning a PowerShell (Auditer) \n")
-		return ps
-	})
 
 	// No Constraints for now
 	constraints := make([]string, 0)
-
 	controls, err := getControls(b, path, constraints)
 	if err != nil {
-		util.ExitWithError(err)
+		return err
 	}
 
 	summary := runControls(controls, checkList)
 	err = outputResults(controls, summary)
 	if err != nil {
-		util.ExitWithError(err)
+		return err
 	}
+	return nil
 
 }
 
