@@ -127,7 +127,8 @@ groups:
                Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Password must meet complexity requirements
         scored: true
       - id: 1.1.6
-        description: Ensure 'Relax minimum password length limits' is set to 'Enabled' (Automated)
+        description: Ensure 'Relax minimum password length limits' is set to 'Enabled'
+          (Automated)
         audittype: powershell
         audit:
           cmd:
@@ -143,11 +144,13 @@ groups:
                 value: "True"
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to Enabled:
+          To establish the recommended configuration via GP, set the
+          following UI path to Enabled:
                Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Relax minimum password length limits
         scored: true
       - id: 1.1.7
-        description: Ensure 'Store passwords using reversible encryption' is set to 'Disabled'
+        description: Ensure 'Store passwords using reversible encryption' is set to
+          'Disabled'
         audittype: powershell
         audit:
           cmd:
@@ -163,7 +166,7 @@ groups:
                 value: "False"
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to Disabled:
+          To establish the recommended configuration via GP, set the
+          following UI path to Disabled:
                 Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Store passwords using reversible encryption
         scored: true
-
