@@ -21,6 +21,7 @@ import (
 
 	commonCheck "github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/windows-bench/shell"
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -91,17 +92,19 @@ func TestGetControls(t *testing.T) {
 
 func TestRunControls(t *testing.T) {
 	b := getMockBench()
+	path = loadConfig("2.0.0")
 	control, err := getControls(b, path, nil)
 	if err != nil {
 		t.Errorf("unexpected error: %s\n", err)
 	}
 
 	// Run all checks
-	_ = runControls(control, "")
-
+	sm := runControls(control, "")
+	assert.True(t, sm.Pass > 0)
 	// Run only specified checks
-	checkList := "1.1"
-	_ = runControls(control, checkList)
+	checkList := "1.1.1"
+	smt := runControls(control, checkList)
+	assert.True(t, smt.Pass == 1)
 }
 
 func getMockBench() commonCheck.Bench {
