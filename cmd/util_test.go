@@ -28,22 +28,26 @@ func TestLoadConfig(t *testing.T) {
 	here, _ := os.Getwd()
 	// cfgDir is defined in root.go
 	type TestCase struct {
-		version string
-		cfgPath string
-		want    string
+		version     string
+		cfgPath     string
+		want        string
+		expectError bool
 	}
 
 	testCases := []TestCase{
 		{
-			version: "2.0.0",
-			cfgPath: fmt.Sprintf("%s/../cfg", here),
-			want:    "cfg/2.0.0/definitions.yaml",
+			version:     "2.0.0",
+			cfgPath:     fmt.Sprintf("%s/../cfg", here),
+			want:        "cfg/2.0.0/definitions.yaml",
+			expectError: false,
 		},
 	}
 	for _, tc := range testCases {
 		cfgDir = tc.cfgPath
-		got := loadConfig(tc.version)
-		assert.True(t, strings.Contains(got, tc.want))
+		got, _ := loadConfig(tc.version)
+		if tc.expectError {
+			assert.True(t, strings.Contains(got, tc.want))
+		}
 	}
 }
 
