@@ -73,14 +73,12 @@ func getConfigFilePath(fileVersion string, filename string) (path string, err er
 
 	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s", fileVersion))
 
-	for {
-		path = filepath.Join(cfgDir, fileVersion)
-		file := filepath.Join(path, string(filename))
-		glog.V(2).Info(fmt.Sprintf("Looking for config file: %s\n", file))
+	path = filepath.Join(cfgDir, fileVersion)
+	file := filepath.Join(path, string(filename))
+	glog.V(2).Info(fmt.Sprintf("Looking for config file: %s\n", file))
 
-		if _, err = os.Stat(file); !os.IsNotExist(err) {
-			return path, err
-		}
-
+	if _, err = os.Stat(file); !os.IsNotExist(err) {
+		return path, err
 	}
+	return "", fmt.Errorf("file %s not found", filename)
 }

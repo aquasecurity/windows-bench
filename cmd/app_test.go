@@ -92,7 +92,8 @@ func TestGetControls(t *testing.T) {
 
 func TestRunControls(t *testing.T) {
 	b := getMockBench()
-	path = loadConfig("2.0.0")
+	path, err := loadConfig("2.0.0")
+	assert.NoError(t, err)
 	control, err := getControls(b, path, nil)
 	if err != nil {
 		t.Errorf("unexpected error: %s\n", err)

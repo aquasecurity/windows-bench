@@ -32,7 +32,10 @@ func runChecks(b commonCheck.Bench) error {
 	} else {
 		version = "2.0.0"
 	}
-	path := loadConfig(version)
+	path, err := loadConfig(version)
+	if err != nil {
+		return err
+	}
 	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", path))
 
 	// No Constraints for now
@@ -54,14 +57,14 @@ func runChecks(b commonCheck.Bench) error {
 // loadConfig finds the correct config dir based on the kubernetes version,
 // merges any specific config.yaml file found with the main config
 // and returns the benchmark file to use.
-func loadConfig(version string) string {
+func loadConfig(version string) (string, error) {
 	var err error
 	path, err := getConfigFilePath(version, definitionsFile)
 	if err != nil {
-		util.ExitWithError(fmt.Errorf("can't find controls file in %s: %w", cfgDir, err))
+		return "", err
 	}
 
-	return filepath.Join(path, definitionsFile)
+	return filepath.Join(path, definitionsFile), nil
 }
 
 func outputResults(controls *commonCheck.Controls, summary commonCheck.Summary) error {
