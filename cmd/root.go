@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"os"
 
 	goflag "flag"
@@ -39,9 +40,9 @@ var (
 	jsonFmt           bool
 	includeTestOutput bool
 	outputFile        string
-	definitionsFile   = "definitions.yaml"
-	outWriter         = os.Stdout
-	OutErr            = os.Stderr
+	definitionsFile             = "definitions.yaml"
+	outputWriter      io.Writer = os.Stdout
+	errWriter         io.Writer = os.Stderr
 )
 
 // RootCmd represents the base command when called without any subcommands
@@ -77,8 +78,8 @@ func Execute() error {
 	if err != nil {
 		return err
 	}
-	RootCmd.SetOut(outWriter)
-	RootCmd.SetErr(OutErr)
+	RootCmd.SetOut(outputWriter)
+	RootCmd.SetErr(errWriter)
 	if err := RootCmd.Execute(); err != nil {
 		return err
 	}

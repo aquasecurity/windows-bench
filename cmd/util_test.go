@@ -15,6 +15,7 @@
 package cmd
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"strings"
@@ -49,6 +50,8 @@ func TestLoadConfig(t *testing.T) {
 func TestRunChecks(t *testing.T) {
 	b := getMockBench()
 	err := runChecks(b)
+	var write bytes.Buffer
+	outputWriter = &write
 	if err != nil {
 		t.Errorf("unexpected error: %s\n", err)
 	}
