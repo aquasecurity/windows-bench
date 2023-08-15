@@ -215,3 +215,23 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 5 or fewer invalid login attempt(s), but not 0:
               Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy\Account lockout threshold
         scored: true
+      - id: 1.2.4
+        description: Ensure 'Reset account lockout counter after' is set to '15 or more minute(s)' (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+              Select -ExpandProperty LockoutThreshold
+            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+              Select -ExpandProperty LockoutThreshold
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 15
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 15 or more minute(s):
+              Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy\Reset account lockout counter after
+        scored: true
