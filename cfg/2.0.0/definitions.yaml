@@ -221,9 +221,9 @@ groups:
         audit:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
-              Select -ExpandProperty LockoutThreshold
+              Select -ExpandProperty LockoutObservationWindow | Select -ExpandProperty Minutes
             Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
-              Select -ExpandProperty LockoutThreshold
+              Select -ExpandProperty LockoutObservationWindow | Select -ExpandProperty Minutes
         tests:
           test_items:
             - flag: ""
