@@ -243,8 +243,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS > $null; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
-            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS > $null; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
