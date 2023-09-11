@@ -12,5 +12,6 @@ bin
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 .vscode
+.idea
 coverage.txt
 dist/
