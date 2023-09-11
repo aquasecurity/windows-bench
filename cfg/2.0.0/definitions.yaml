@@ -241,6 +241,14 @@ groups:
       - id: 2.2.1
         description: Ensure 'Access Credential Manager as a trusted caller' is set to 'No One' (Automated
         audittype: powershell
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: ""
+              set: true
+
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to "No One":
              Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Local Policies\User Rights Assignment\Access Credential Manager as a trusted caller
