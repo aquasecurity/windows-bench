@@ -239,7 +239,7 @@ groups:
     description: User Rights Assignment
     checks:
       - id: 2.2.1
-        description: Ensure 'Access Credential Manager as a trusted caller' is set to 'No One' (Automated
+        description: Ensure 'Access Credential Manager as a trusted caller' is set to 'No One' (Automated)
         audittype: powershell
         audit:
           cmd:
