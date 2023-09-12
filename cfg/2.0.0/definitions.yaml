@@ -268,6 +268,9 @@ groups:
       - id: 2.2.2
         description: Ensure 'Access this computer from the network' is set to 'Administrators, Authenticated Users, ENTERPRISE DOMAIN CONTROLLERS' (DC only) (Automated)
         audittype: powershell
+        audit:
+          cmd:
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeNetworkLogonRight" ; Remove-Item seccfg
         remediation: >
           To establish the recommended configuration via GP, configure the following UI path:
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Access this computer from the network
