@@ -243,3 +243,25 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 15 or more minute(s):
               Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Account Lockout Policy\Reset account lockout counter after
         scored: true
+  - id: 2.2
+    description: User Rights Assignment
+    checks:
+      - id: 2.2.1
+        description: Ensure 'Access Credential Manager as a trusted caller' is set to 'No One' (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: ""
+              set: true
+
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to "No One":
+             Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Local Policies\User Rights Assignment\Access Credential Manager as a trusted caller
+        scored: true
