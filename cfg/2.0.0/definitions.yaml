@@ -263,5 +263,5 @@ groups:
 
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to "No One":
-             Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Local Policies\User Rights Assignment\Access Credential Manager as a trusted caller
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Access Credential Manager as a trusted caller
         scored: true
