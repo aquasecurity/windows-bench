@@ -275,8 +275,8 @@ groups:
           test_items:
             - flag: ""
               compare:
-                op: eq
-                value: ""
+                op: valid_elements
+                value: "S-1-5-32-544,S-1-5-11"
               set: true
 
         remediation: >
