@@ -265,3 +265,21 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to "No One":
              Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Local Policies\User Rights Assignment\Access Credential Manager as a trusted caller
         scored: true
+      - id: 2.2.4
+        description: Ensure 'Act as part of the operating system' is set to 'No One' (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: ""
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to "No One":
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Act as part of the operating system
+        scored: true
