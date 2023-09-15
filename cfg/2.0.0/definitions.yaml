@@ -300,7 +300,6 @@ groups:
           To establish the recommended configuration via GP, configure the following UI path:
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Access this computer from the network
         scored: true
-
       - id: 2.2.4
         description: Ensure 'Act as part of the operating system' is set to 'No One' (Automated)
         audittype: powershell
