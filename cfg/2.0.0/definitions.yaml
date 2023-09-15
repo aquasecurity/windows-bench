@@ -323,7 +323,7 @@ groups:
     description: Security Options
     checks:
       - id: 2.3.1.1
-        description: Ensure 'Accounts: Block Microsoft accounts' is set to 'Users can't add or log on with Microsoft accounts' (Automated)
+        description: Ensure 'Block Microsoft accounts' is set to 'Users can't add or log on with Microsoft accounts' (Automated)
         audittype: powershell
         audit:
           cmd:
