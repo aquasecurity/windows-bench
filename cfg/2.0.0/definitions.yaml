@@ -319,6 +319,23 @@ groups:
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Act as part of the operating system
         scored: true
 
+      - id: 2.2.5
+        description: Ensure 'Add workstations to domain' is set to 'Administrators' (DC only) (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeMachineAccountPrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: valid_elements
+                value: "S-1-5-32-544"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to Administrators:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Add workstations to domain
+        scored: true
   - id: 5
     description: System Services
     checks:
