@@ -352,7 +352,6 @@ groups:
                 op: eq
                 value: "4"
               set: true
-
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Disabled':
              Computer Configuration\Policies\Windows Settings\Security Settings\System Services\Print Spooler
@@ -370,7 +369,6 @@ groups:
                 op: eq
                 value: "4"
               set: true
-
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Disabled':
              Computer Configuration\Policies\Windows Settings\Security Settings\System Services\Print Spooler
