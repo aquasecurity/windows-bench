@@ -335,3 +335,40 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to Administrators:
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Add workstations to domain
         scored: true
+  - id: 5
+    description: System Services
+    checks:
+      - id: 5.1
+        description: Ensure 'Print Spooler (Spooler)' is set to 'Disabled' (DC only) (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Spooler' Start
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "4"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\System Services\Print Spooler
+        scored: true
+      - id: 5.2
+        description: Ensure 'Print Spooler (Spooler)' is set to 'Disabled' (MS only) (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Spooler' Start
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "4"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\System Services\Print Spooler
+        scored: true
