@@ -335,6 +335,99 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to Administrators:
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Add workstations to domain
         scored: true
+  - id: 2.3
+    description: Security Options
+    checks:
+      - id: 2.3.1.1
+        description: Ensure 'Block Microsoft accounts' is set to 'Users can't add or log on with Microsoft accounts' (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' noconnecteduser
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' noconnecteduser
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "3"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Users can't add or log on with Microsoft accounts':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Accounts: Block Microsoft accounts
+        scored: true
+      - id: 2.3.1.2
+        description: Ensure 'Guest account status' is set to 'Disabled' (MS only) (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            Server: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "EnableGuestAccount") -replace '^.*= |[*]' ; Remove-Item seccfg
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Accounts: Guest account status
+        scored: true
+      - id: 2.3.1.3
+        description: Ensure 'Limit local account use of blank passwords to console logon only' is set to 'Enabled' (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' LimitBlankPasswordUse
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' LimitBlankPasswordUse
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Accounts: Limit local account use of blank passwords to console logon only
+        scored: true
+      - id: 2.3.1.4
+        description: Configure 'Rename administrator account' (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewAdministratorName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewAdministratorName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: "Administrator"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, configure the following UI path:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Accounts: Rename administrator account
+        scored: true
+      - id: 2.3.1.5
+        description: Configure 'Rename guest account' (Automated)
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewGuestName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewGuestName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: "Guest"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, configure the following UI path:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Accounts: Rename guest account
+        scored: true
+
   - id: 5
     description: System Services
     checks:
