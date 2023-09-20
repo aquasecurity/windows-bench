@@ -697,6 +697,181 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Require strong (Windows 2000 or later) session key
         scored: true
+      - id: 2.3.7.1
+        description: "Ensure 'Interactive logon: Do not require CTRL+ALT+DEL' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DisableCAD
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DisableCAD
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Do not require CTRL+ALT+DEL
+        scored: true
+      - id: 2.3.7.2
+        description: "Ensure 'Interactive logon: Don't display last signed-in' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DontDisplayLastUserName
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DontDisplayLastUserName
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Don't display last signed-in
+        scored: true
+      - id: 2.3.7.3
+        description: "Ensure 'Interactive logon: Machine inactivity limit' is set to '900 or fewer second(s), but not 0' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' InactivityTimeoutSecs
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' InactivityTimeoutSecs
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 900
+              set: true
+            - flag: ""
+              compare:
+                op: noteq
+                value: 0
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to '900 or fewer seconds, but not 0':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Machine inactivity limit
+        scored: true
+      - id: 2.3.7.4
+        description: "Configure 'Interactive logon: Message text for users attempting to log on' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: ""
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, configure the following UI path to a value that is consistent with the security and operational requirements of your organization:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Message text for users attempting to log on
+        scored: true
+      - id: 2.3.7.5
+        description: "Configure 'Interactive logon: Message title for users attempting to log on' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeCaption
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeCaption
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: ""
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, configure the following UI path to a value that is consistent with the security and operational requirements of your organization:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Message title for users attempting to log on
+        scored: true
+      - id: 2.3.7.6
+        description: "Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' CachedLogonsCount
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 4
+              set: true
+            - flag: ""
+              compare:
+                op: noteq
+                value: 0
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 4 or fewer logon(s):
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Number of previous logons to cache (in case domain controller is not available)
+        scored: true
+      - id: 2.3.7.7
+        description: "Ensure 'Interactive logon: Prompt user to change password before expiration' is set to 'between 5 and 14 days' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' PasswordExpiryWarning
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' PasswordExpiryWarning
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 14
+              set: true
+            - flag: ""
+              compare:
+                op: gte
+                value: 5
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to a value 'between 5 and 14 days':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Prompt user to change password before expiration
+        scored: true
+      - id: 2.3.7.8
+        description: "Ensure 'Interactive logon: Require Domain Controller Authentication to unlock workstation' is set to 'Enabled' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ForceUnlockLogon
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To implement the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Require Domain Controller Authentication to unlock workstation
+        scored: true
+      - id: 2.3.7.9
+        description: "Ensure 'Interactive logon: Smart card removal behavior' is set to 'Lock Workstation' or higher (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScRemoveOption
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScRemoveOption
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to Lock Workstation (or, if applicable for your environment, Force Logoff or Disconnect if a Remote Desktop Services session):
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Smart card removal behavior
+        scored: true
 
   - id: 5
     description: System Services
