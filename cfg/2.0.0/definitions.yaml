@@ -584,6 +584,119 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Disabled':
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain controller: Refuse machine account password changes
         scored: true
+      - id: 2.3.6.1
+        description: "Ensure 'Domain member: Digitally encrypt or sign secure channel data (always)' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireSignOrSeal
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireSignOrSeal
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Digitally encrypt or sign secure channel data (always)
+        scored: true
+      - id: 2.3.6.2
+        description: "Ensure 'Domain member: Digitally encrypt secure channel data (when possible)' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SealSecureChannel
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SealSecureChannel
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Digitally encrypt secure channel data (when possible)
+        scored: true
+      - id: 2.3.6.3
+        description: "Ensure 'Domain member: Digitally sign secure channel data (when possible)' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SignSecureChannel
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SignSecureChannel
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Digitally sign secure channel data (when possible)
+        scored: true
+      - id: 2.3.6.4
+        description: "Ensure 'Domain member: Disable machine account password changes' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' DisablePasswordChange
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' DisablePasswordChange
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Disable machine account password changes
+        scored: true
+      - id: 2.3.6.5
+        description: "Ensure 'Domain member: Maximum machine account password age' is set to '30 or fewer days, but not 0' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' MaximumPasswordAge
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' MaximumPasswordAge
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 30
+              set: true
+            - flag: ""
+              compare:
+                op: noteq
+                value: 0
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 30 or fewer days, but not 0:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Maximum machine account password age
+        scored: true
+      - id: 2.3.6.6
+        description: "Ensure 'Domain member: Require strong (Windows 2000 or later) session key' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireStrongKey
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireStrongKey
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Require strong (Windows 2000 or later) session key
+        scored: true
 
   - id: 5
     description: System Services
