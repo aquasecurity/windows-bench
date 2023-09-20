@@ -427,6 +427,24 @@ groups:
           To establish the recommended configuration via GP, configure the following UI path:
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Accounts: Rename guest account
         scored: true
+      - id: 2.3.2.1
+        description: "Ensure 'Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\System\CurrentControlSet\Control\Lsa' SCENoApplyLegacyAuditPolicy
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' SCENoApplyLegacyAuditPolicy
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings
+        scored: true
 
   - id: 5
     description: System Services
