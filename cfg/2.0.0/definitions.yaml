@@ -541,7 +541,9 @@ groups:
              Computer Configuration\Policies\Windows Settings\Security Settings\Windows Firewall with Advanced Security\Windows Firewall with Advanced Security\Windows Firewall Properties\Domain Profile\Settings Customize\Display a notification
         scored: true
       - id: 9.1.5
-        description: "Ensure 'Windows Firewall: Domain: Logging: Name' is set to '%SystemRoot%\System32\logfiles\firewall\domainfw.log'"
+        description: >
+          "Ensure 'Windows Firewall: Domain: Logging: Name' is set to "
+            '%SystemRoot%\System32\logfiles\firewall\domainfw.log'
         audittype: powershell
         audit:
           cmd:
@@ -552,7 +554,7 @@ groups:
             - flag: ""
               compare:
                 op: eq
-                value: "%SystemRoot%\System32\logfiles\firewall\domainfw.log"
+                value: '%SystemRoot%\System32\logfiles\firewall\domainfw.log'
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to '%SystemRoot%\System32\logfiles\firewall\domainfw.log':
@@ -688,7 +690,9 @@ groups:
              Computer Configuration\Policies\Windows Settings\Security Settings\Windows Firewall with Advanced Security\Windows Firewall with Advanced Security\Windows Firewall Properties\Private Profile\Settings Customize\Display a notification
         scored: true
       - id: 9.2.5
-        description: "Ensure 'Windows Firewall: Private: Logging: Name' is set to '%SystemRoot%\System32\logfiles\firewall\privatefw.log' (Automated)"
+        description: >
+          "Ensure 'Windows Firewall: Private: Logging: Name' is set to "
+            '%SystemRoot%\System32\logfiles\firewall\privatefw.log' (Automated)
         audittype: powershell
         audit:
           cmd:
@@ -699,7 +703,7 @@ groups:
             - flag: ""
               compare:
                 op: eq
-                value: %SystemRoot%\System32\logfiles\firewall\privatefw.log
+                value: '%SystemRoot%\System32\logfiles\firewall\privatefw.log'
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to '%SystemRoot%\System32\logfiles\firewall\privatefw.log':
