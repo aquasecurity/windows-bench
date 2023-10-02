@@ -427,6 +427,451 @@ groups:
           To establish the recommended configuration via GP, configure the following UI path:
              Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Accounts: Rename guest account
         scored: true
+      - id: 2.3.2.1
+        description: "Ensure 'Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\System\CurrentControlSet\Control\Lsa' SCENoApplyLegacyAuditPolicy
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' SCENoApplyLegacyAuditPolicy
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings
+        scored: true
+      - id: 2.3.2.2
+        description: "Ensure 'Audit: Shut down system immediately if unable to log security audits' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\System\CurrentControlSet\Control\Lsa' CrashOnAuditFail
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' CrashOnAuditFail
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Audit: Shut down system immediately if unable to log security audits
+        scored: true
+      - id: 2.3.4.1
+        description: "Ensure 'Devices: Allowed to format and eject removable media' is set to 'Administrators' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' AllocateDASD
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' AllocateDASD
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Administrators':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Devices: Allowed to format and eject removable media
+        scored: true
+      - id: 2.3.4.2
+        description: "Ensure 'Devices: Prevent users from installing printer drivers' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers' AddPrinterDrivers
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers' AddPrinterDrivers
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Devices: Prevent users from installing printer drivers
+        scored: true
+      - id: 2.3.5.1
+        description: "Ensure 'Domain controller: Allow server operators to schedule tasks' is set to 'Disabled' (DC only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\System\CurrentControlSet\Control\Lsa' SubmitControl
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain controller: Allow server operators to schedule tasks
+        scored: true
+      - id: 2.3.5.2
+        description: "Ensure 'Domain controller: Allow vulnerable Netlogon secure channel connections' is set to 'Not Configured' (DC Only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\System\CurrentControlSet\Services\Netlogon\Parameters' VulnerableChannelAllowList
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: ""
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Not Configured':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain controller: Allow vulnerable Netlogon secure channel connections
+        scored: true
+      - id: 2.3.5.3
+        description: "Ensure 'Domain controller: LDAP server channel binding token requirements' is set to 'Always' (DC Only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters' LdapEnforceChannelBinding
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "2"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Always':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain controller: LDAP server channel binding token requirements
+        scored: true
+      - id: 2.3.5.4
+        description: "Ensure 'Domain controller: LDAP server signing requirements' is set to 'Require signing' (DC only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\NTDS\Parameters' LDAPServerIntegrity
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "2"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Require signing':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain controller: LDAP server signing requirements
+        scored: true
+      - id: 2.3.5.5
+        description: "Ensure 'Domain controller: Refuse machine account password changes' is set to 'Disabled' (DC only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RefusePasswordChange
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain controller: Refuse machine account password changes
+        scored: true
+      - id: 2.3.6.1
+        description: "Ensure 'Domain member: Digitally encrypt or sign secure channel data (always)' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireSignOrSeal
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireSignOrSeal
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Digitally encrypt or sign secure channel data (always)
+        scored: true
+      - id: 2.3.6.2
+        description: "Ensure 'Domain member: Digitally encrypt secure channel data (when possible)' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SealSecureChannel
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SealSecureChannel
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Digitally encrypt secure channel data (when possible)
+        scored: true
+      - id: 2.3.6.3
+        description: "Ensure 'Domain member: Digitally sign secure channel data (when possible)' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SignSecureChannel
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SignSecureChannel
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Digitally sign secure channel data (when possible)
+        scored: true
+      - id: 2.3.6.4
+        description: "Ensure 'Domain member: Disable machine account password changes' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' DisablePasswordChange
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' DisablePasswordChange
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Disable machine account password changes
+        scored: true
+      - id: 2.3.6.5
+        description: "Ensure 'Domain member: Maximum machine account password age' is set to '30 or fewer days, but not 0' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' MaximumPasswordAge
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' MaximumPasswordAge
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 30
+              set: true
+            - flag: ""
+              compare:
+                op: noteq
+                value: 0
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 30 or fewer days, but not 0:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Maximum machine account password age
+        scored: true
+      - id: 2.3.6.6
+        description: "Ensure 'Domain member: Require strong (Windows 2000 or later) session key' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireStrongKey
+            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireStrongKey
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Domain member: Require strong (Windows 2000 or later) session key
+        scored: true
+      - id: 2.3.7.1
+        description: "Ensure 'Interactive logon: Do not require CTRL+ALT+DEL' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DisableCAD
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DisableCAD
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Do not require CTRL+ALT+DEL
+        scored: true
+      - id: 2.3.7.2
+        description: "Ensure 'Interactive logon: Don't display last signed-in' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DontDisplayLastUserName
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DontDisplayLastUserName
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Don't display last signed-in
+        scored: true
+      - id: 2.3.7.3
+        description: "Ensure 'Interactive logon: Machine inactivity limit' is set to '900 or fewer second(s), but not 0' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' InactivityTimeoutSecs
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' InactivityTimeoutSecs
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 900
+              set: true
+            - flag: ""
+              compare:
+                op: noteq
+                value: 0
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to '900 or fewer seconds, but not 0':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Machine inactivity limit
+        scored: true
+      - id: 2.3.7.4
+        description: "Configure 'Interactive logon: Message text for users attempting to log on' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: ""
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, configure the following UI path to a value that is consistent with the security and operational requirements of your organization:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Message text for users attempting to log on
+        scored: true
+      - id: 2.3.7.5
+        description: "Configure 'Interactive logon: Message title for users attempting to log on' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeCaption
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeCaption
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: ""
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, configure the following UI path to a value that is consistent with the security and operational requirements of your organization:
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Message title for users attempting to log on
+        scored: true
+      - id: 2.3.7.6
+        description: "Ensure 'Interactive logon: Number of previous logons to cache (in case domain controller is not available)' is set to '4 or fewer logon(s)' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' CachedLogonsCount
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 4
+              set: true
+            - flag: ""
+              compare:
+                op: noteq
+                value: 0
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 4 or fewer logon(s):
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Number of previous logons to cache (in case domain controller is not available)
+        scored: true
+      - id: 2.3.7.7
+        description: "Ensure 'Interactive logon: Prompt user to change password before expiration' is set to 'between 5 and 14 days' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' PasswordExpiryWarning
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' PasswordExpiryWarning
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: 14
+              set: true
+            - flag: ""
+              compare:
+                op: gte
+                value: 5
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to a value 'between 5 and 14 days':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Prompt user to change password before expiration
+        scored: true
+      - id: 2.3.7.8
+        description: "Ensure 'Interactive logon: Require Domain Controller Authentication to unlock workstation' is set to 'Enabled' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ForceUnlockLogon
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To implement the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Require Domain Controller Authentication to unlock workstation
+        scored: true
+      - id: 2.3.7.9
+        description: "Ensure 'Interactive logon: Smart card removal behavior' is set to 'Lock Workstation' or higher (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScRemoveOption
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScRemoveOption
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: noteq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to Lock Workstation (or, if applicable for your environment, Force Logoff or Disconnect if a Remote Desktop Services session):
+             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Interactive logon: Smart card removal behavior
+        scored: true
 
   - id: 5
     description: System Services
