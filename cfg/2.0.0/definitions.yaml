@@ -1393,3 +1393,25 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Yes':
              Computer Configuration\Policies\Windows Settings\Security Settings\Windows Firewall with Advanced Security\Windows Firewall with Advanced Security\Windows Firewall Properties\Public Profile\Logging Customize\Log successful connections
         scored: true
+
+  - id: 17.1
+    description: Account Logon
+    checks:
+      - id: 17.1.1
+        description: "Ensure 'Audit Credential Validation' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: auditpol.exe /get /subcategory:"Credential Validation"
+            Server: auditpol.exe /get /subcategory:"Credential Validation"
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success and Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon\Audit Credential Validation
+        scored: true
