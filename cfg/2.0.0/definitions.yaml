@@ -1402,14 +1402,14 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            DomainController: auditpol.exe /get /subcategory:"Credential Validation"
-            Server: auditpol.exe /get /subcategory:"Credential Validation"
+            DomainController: (auditpol.exe /get /subcategory:"Credential Validation" | Select-String -Pattern 'Credential Validation' ) -replace ".*Credential Validation\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Credential Validation" | Select-String -Pattern 'Credential Validation' ) -replace ".*Credential Validation\s+", ""
         tests:
           test_items:
             - flag: ""
               compare:
                 op: eq
-                value: "1"
+                value: "Success and Failure"
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Success and Failure':
