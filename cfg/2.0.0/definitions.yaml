@@ -1412,6 +1412,6 @@ groups:
                 value: "Success and Failure"
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to 'Success and Failure':
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon\Audit Credential Validation
         scored: true
