@@ -1501,3 +1501,20 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management\Audit Distribution Group Management
         scored: true
+      - id: 17.2.4
+        description: "Ensure 'Audit Other Account Management Events' is set to include 'Success' (DC only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Other Account Management Events" | Select-String -Pattern 'Other Account Management Events' ) -replace ".*Other Account Management Events\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management\Audit Other Account Management Events
+        scored: true
