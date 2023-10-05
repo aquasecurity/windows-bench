@@ -1804,3 +1804,93 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Object Access\Audit Removable Storage
         scored: true
+      - id: 17.7.1
+        description: "Ensure 'Audit Audit Policy Change' is set to include 'Success' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change\Audit Audit Policy Change
+        scored: true
+      - id: 17.7.2
+        description: "Ensure 'Audit Authentication Policy Change' is set to include 'Success' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change\Audit Authentication Policy Change
+        scored: true
+      - id: 17.7.3
+        description: "Ensure 'Audit Authorization Policy Change' is set to include 'Success' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Authorization Policy Change" | Select-String -Pattern 'Authorization Policy Change' ) -replace ".*Authorization Policy Change\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Authorization Policy Change" | Select-String -Pattern 'Authorization Policy Change' ) -replace ".*Authorization Policy Change\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change\Audit Authorization Policy Change
+        scored: true
+      - id: 17.7.4
+        description: "Ensure 'Audit MPSSVC Rule-Level Policy Change' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"MPSSVC Rule-Level Policy Change" | Select-String -Pattern 'MPSSVC Rule-Level Policy Change' ) -replace ".*MPSSVC Rule-Level Policy Change\s+", ""
+            Server: (auditpol.exe /get /subcategory:"MPSSVC Rule-Level Policy Change" | Select-String -Pattern 'MPSSVC Rule-Level Policy Change' ) -replace ".*MPSSVC Rule-Level Policy Change\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success and Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change\Audit MPSSVC Rule-Level Policy Change
+        scored: true
+      - id: 17.7.5
+        description: "Ensure 'Audit Other Policy Change Events' is set to include 'Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Other Policy Change Events" | Select-String -Pattern 'Other Policy Change Events' ) -replace ".*Other Policy Change Events\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Other Policy Change Events" | Select-String -Pattern 'Other Policy Change Events' ) -replace ".*Other Policy Change Events\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change\Audit Other Policy Change Events
+        scored: true
