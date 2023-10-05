@@ -1572,3 +1572,21 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Detailed Tracking\Audit PNP Activity
         scored: true
+      - id: 17.3.2
+        description: "Ensure 'Audit Process Creation' is set to include 'Success' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Process Creation" | Select-String -Pattern 'Process Creation' ) -replace ".*Process Creation\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Process Creation" | Select-String -Pattern 'Process Creation' ) -replace ".*Process Creation\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Detailed Tracking\Audit Process Creation
+        scored: true
