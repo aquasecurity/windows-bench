@@ -1695,8 +1695,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            DomainController: (auditpol.exe /get /subcategory:"Logon" | Select-String -Pattern 'Logon' ) -replace ".*Logon\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Logon" | Select-String -Pattern 'Logon' ) -replace ".*Logon\s+", ""
+            DomainController: (auditpol.exe /get /subcategory:"Logon" | Select-String -Pattern 'Logon ' ) -replace ".*Logon\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Logon" | Select-String -Pattern 'Logon ' ) -replace ".*Logon\s+", ""
         tests:
           test_items:
             - flag: ""
