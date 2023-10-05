@@ -1912,3 +1912,93 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Privilege Use\Audit Sensitive Privilege Use
         scored: true
+      - id: 17.9.1
+        description: "Ensure 'Audit IPsec Driver' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"IPsec Driver" | Select-String -Pattern 'IPsec Driver' ) -replace ".*IPsec Driver\s+", ""
+            Server: (auditpol.exe /get /subcategory:"IPsec Driver" | Select-String -Pattern 'IPsec Driver' ) -replace ".*IPsec Driver\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success and Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System\Audit IPsec Driver
+        scored: true
+      - id: 17.9.2
+        description: "Ensure 'Audit Other System Events' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Other System Events" | Select-String -Pattern 'Other System Events' ) -replace ".*Other System Events\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Other System Events" | Select-String -Pattern 'Other System Events' ) -replace ".*Other System Events\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success and Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System\Audit Other System Events
+        scored: true
+      - id: 17.9.3
+        description: "Ensure 'Audit Security State Change' is set to include 'Success' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Security State Change" | Select-String -Pattern 'Security State Change' ) -replace ".*Security State Change\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Security State Change" | Select-String -Pattern 'Security State Change' ) -replace ".*Security State Change\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System\Audit Security State Change
+        scored: true
+      - id: 17.9.4
+        description: "Ensure 'Audit Security System Extension' is set to include 'Success' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Security System Extension" | Select-String -Pattern 'Security System Extension' ) -replace ".*Security System Extension\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Security System Extension" | Select-String -Pattern 'Security System Extension' ) -replace ".*Security System Extension\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System\Audit Security System Extension
+        scored: true
+      - id: 17.9.5
+        description: "Ensure 'Audit System Integrity' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"System Integrity" | Select-String -Pattern 'System Integrity' ) -replace ".*System Integrity\s+", ""
+            Server: (auditpol.exe /get /subcategory:"System Integrity" | Select-String -Pattern 'System Integrity' ) -replace ".*System Integrity\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success and Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System\Audit System Integrity
+        scored: true
