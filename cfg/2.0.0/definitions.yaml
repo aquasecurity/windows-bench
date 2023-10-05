@@ -1624,3 +1624,39 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\DS Access\Audit Directory Service Changes
         scored: true
+      - id: 17.5.1
+        description: "Ensure 'Audit Account Lockout' is set to include 'Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Account Lockout" | Select-String -Pattern 'Account Lockout' ) -replace ".*Account Lockout\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Account Lockout" | Select-String -Pattern 'Account Lockout' ) -replace ".*Account Lockout\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Logon/Logoff\Audit Account Lockout
+        scored: true
+      - id: 17.5.2
+        description: "Ensure 'Audit Group Membership' is set to include 'Success' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Group Membership" | Select-String -Pattern 'Group Membership' ) -replace ".*Group Membership\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Group Membership" | Select-String -Pattern 'Group Membership' ) -replace ".*Group Membership\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Logon/Logoff\Audit Group Membership
+        scored: true
