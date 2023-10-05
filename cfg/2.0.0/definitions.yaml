@@ -2027,7 +2027,7 @@ groups:
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\System\Audit System Integrity
         scored: true
   - id: 18.1
-    description: System
+    description: Control Panel
     checks:
       - id: 18.1.1.1
         description: "Ensure 'Prevent enabling lock screen camera' is set to 'Enabled' (Automated)"
