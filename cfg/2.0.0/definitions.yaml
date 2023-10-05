@@ -1449,3 +1449,21 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon\Audit Kerberos Service Ticket Operations
         scored: true
+      - id: 17.2.1
+        description: "Ensure 'Audit Application Group Management' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Application Group Management" | Select-String -Pattern 'Application Group Management' ) -replace ".*Application Group Management\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Application Group Management" | Select-String -Pattern 'Application Group Management' ) -replace ".*Application Group Management\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success and Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management\Audit Application Group Management
+        scored: true
