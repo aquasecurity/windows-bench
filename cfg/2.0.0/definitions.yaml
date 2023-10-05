@@ -1449,6 +1449,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Logon\Audit Kerberos Service Ticket Operations
         scored: true
+  - id: 17.2
+    description: Account Management
+    checks:
       - id: 17.2.1
         description: "Ensure 'Audit Application Group Management' is set to 'Success and Failure' (Automated)"
         audittype: powershell
@@ -1554,6 +1557,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management\Audit User Account Management
         scored: true
+  - id: 17.3
+    description: Detailed Tracking
+    checks:
       - id: 17.3.1
         description: "Ensure 'Audit PNP Activity' is set to include 'Success' (Automated)"
         audittype: powershell
@@ -1590,6 +1596,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Detailed Tracking\Audit Process Creation
         scored: true
+  - id: 17.4
+    description: DS Access
+    checks:
       - id: 17.4.1
         description: "Ensure 'Audit Directory Service Access' is set to include 'Failure' (DC only) (Automated)"
         audittype: powershell
@@ -1624,6 +1633,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\DS Access\Audit Directory Service Changes
         scored: true
+  - id: 17.5
+    description: Logon/Logoff
+    checks:
       - id: 17.5.1
         description: "Ensure 'Audit Account Lockout' is set to include 'Failure' (Automated)"
         audittype: powershell
@@ -1732,6 +1744,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Logon/Logoff\Audit Special Logon
         scored: true
+  - id: 17.6
+    description: Object Access
+    checks:
       - id: 17.6.1
         description: "Ensure 'Audit Detailed File Share' is set to include 'Failure' (Automated)"
         audittype: powershell
@@ -1804,6 +1819,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Object Access\Audit Removable Storage
         scored: true
+  - id: 17.7
+    description: Policy Change
+    checks:
       - id: 17.7.1
         description: "Ensure 'Audit Audit Policy Change' is set to include 'Success' (Automated)"
         audittype: powershell
@@ -1894,6 +1912,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change\Audit Other Policy Change Events
         scored: true
+  - id: 17.8
+    description: Privilege Use
+    checks:
       - id: 17.8.1
         description: "Ensure 'Audit Sensitive Privilege Use' is set to 'Success and Failure' (Automated)"
         audittype: powershell
@@ -1912,6 +1933,9 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Privilege Use\Audit Sensitive Privilege Use
         scored: true
+  - id: 17.8
+    description: System
+    checks:
       - id: 17.9.1
         description: "Ensure 'Audit IPsec Driver' is set to 'Success and Failure' (Automated)"
         audittype: powershell
