@@ -1677,8 +1677,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            DomainController: (auditpol.exe /get /subcategory:"Logoff" | Select-String -Pattern 'Logoff' ) -replace ".*Logoff\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Logoff" | Select-String -Pattern 'Logoff' ) -replace ".*Logoff\s+", ""
+            DomainController: (auditpol.exe /get /subcategory:"Logoff" | Select-String -Pattern ' Logoff' ) -replace ".*Logoff\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Logoff" | Select-String -Pattern ' Logoff' ) -replace ".*Logoff\s+", ""
         tests:
           test_items:
             - flag: ""
