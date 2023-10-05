@@ -1536,3 +1536,21 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Success':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management\Audit Security Group Management
         scored: true
+      - id: 17.2.6
+        description: "Ensure 'Audit User Account Management' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"User Account Management" | Select-String -Pattern 'User Account Management' ) -replace ".*User Account Management\s+", ""
+            Server: (auditpol.exe /get /subcategory:"User Account Management" | Select-String -Pattern 'User Account Management' ) -replace ".*User Account Management\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success and Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Account Management\Audit User Account Management
+        scored: true
