@@ -1894,3 +1894,21 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Failure':
              Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Policy Change\Audit Other Policy Change Events
         scored: true
+      - id: 17.8.1
+        description: "Ensure 'Audit Sensitive Privilege Use' is set to 'Success and Failure' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: (auditpol.exe /get /subcategory:"Sensitive Privilege Use" | Select-String -Pattern 'Sensitive Privilege Use' ) -replace ".*Sensitive Privilege Use\s+", ""
+            Server: (auditpol.exe /get /subcategory:"Sensitive Privilege Use" | Select-String -Pattern 'Sensitive Privilege Use' ) -replace ".*Sensitive Privilege Use\s+", ""
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "Success and Failure"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Success' and 'Failure':
+             Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configuration\Audit Policies\Privilege Use\Audit Sensitive Privilege Use
+        scored: true
