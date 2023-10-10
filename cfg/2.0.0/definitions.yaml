@@ -2047,3 +2047,21 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Administrative Templates\Control Panel\Personalization\Prevent enabling lock screen camera
         scored: true
+      - id: 18.1.1.2
+        description: "Ensure 'Prevent enabling lock screen slide show' is set to 'Enabled'"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenSlideshow
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenSlideshow
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Control Panel\Personalization\Prevent enabling lock screen slide show
+        scored: true
