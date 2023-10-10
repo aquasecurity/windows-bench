@@ -2070,8 +2070,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            DomainController: Get-ItemPropertyValue 'HKLM:SOFTWARE\Policies\Microsoft\InputPersonalization' AllowInputPersonalization
-            Server: Get-ItemPropertyValue 'HKLM:SOFTWARE\Policies\Microsoft\InputPersonalization' AllowInputPersonalization
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization' AllowInputPersonalization
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization' AllowInputPersonalization
         tests:
           test_items:
             - flag: ""
@@ -2088,8 +2088,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            DomainController: Get-ItemPropertyValue 'HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' AllowOnlineTips
-            Server: Get-ItemPropertyValue 'HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' AllowOnlineTips
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' AllowOnlineTips
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' AllowOnlineTips
         tests:
           test_items:
             - flag: ""
@@ -2100,4 +2100,44 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Disabled':
              Computer Configuration\Policies\Administrative Templates\Control Panel\Allow Online Tips
+        scored: true
+  - id: 18.3
+    description: Microsoft Local Administrator Password Solution (LAPS)
+    checks:
+      - id: 18.3.1
+        description: "Ensure 'Prevent enabling lock screen camera' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\{D76B9641-3288-4f75-942D-087DE603E3EA}' DllName
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "AdmPwd.dll"
+              set: true
+        remediation: >
+          In order to utilize LAPS, a minor Active Directory Schema update is required,
+          and a Group Policy Client Side Extension (CSE) must be installed on each managed computer.
+          When LAPS is installed, the file AdmPwd.dll must be present in the following location and registered in Windows
+          (the LAPS AdmPwd GPO Extension / CSE installation does this for you):
+             C:\Program Files\LAPS\CSE\AdmPwd.dll
+        scored: true
+      - id: 18.3.2
+        description: "Ensure 'Do not allow password expiration time longer than required by policy' is set to 'Enabled' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PwdExpirationProtectionEnabled
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\LAPS\Do not allow password expiration time longer than required by policy
         scored: true
