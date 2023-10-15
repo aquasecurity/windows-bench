@@ -24,9 +24,9 @@ import (
 	"github.com/golang/glog"
 )
 
-func runControls(controls *check.Controls, checkList string) check.Summary {
+func runControls(controls *check.Controls, checkList string, serverType string) check.Summary {
 	var summary check.Summary
-
+	controls = filterByServerType(controls, serverType)
 	if checkList != "" {
 		ids := util.CleanIDs(checkList)
 		summary = controls.RunChecks(ids...)

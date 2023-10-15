@@ -52,7 +52,7 @@ var RootCmd = &cobra.Command{
 	Long:  `This tool runs the CIS Windows Benchmark (https://www.cisecurity.org/cis-benchmarks)`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		b := commonCheck.NewBench()
-		ps, err := shell.NewPowerShell()
+		ps, serverType, err := shell.NewPowerShell()
 		if err != nil {
 			return err
 		}
@@ -63,7 +63,7 @@ var RootCmd = &cobra.Command{
 			glog.V(2).Info("Returning a PowerShell (Auditer) \n")
 			return ps
 		})
-		return runChecks(b)
+		return runChecks(b, serverType)
 	},
 }
 

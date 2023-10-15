@@ -18,12 +18,13 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/aquasecurity/bench-common/check"
 	commonCheck "github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/bench-common/util"
 	"github.com/golang/glog"
 )
 
-func runChecks(b commonCheck.Bench) error {
+func runChecks(b commonCheck.Bench, serverType string) error {
 	var version string
 	var err error
 
@@ -45,7 +46,7 @@ func runChecks(b commonCheck.Bench) error {
 		return err
 	}
 
-	summary := runControls(controls, checkList)
+	summary := runControls(controls, checkList, serverType)
 	err = outputResults(controls, summary)
 	if err != nil {
 		return err
@@ -65,6 +66,39 @@ func loadConfig(version string) (string, error) {
 	}
 
 	return filepath.Join(path, definitionsFile), nil
+}
+
+func filterByServerType(controls *check.Controls, serverType string) *check.Controls {
+	filterdGroups := make([]*check.Group, 0)
+	for _, group := range controls.Groups {
+		filterdChecks := make([]*check.Check, 0)
+		for _, check := range group.Checks {
+			audit, ok := check.Audit.(map[string]interface{})
+			if !ok {
+				continue
+			}
+			cmd, ok := audit["cmd"].(map[string]interface{})
+			if !ok {
+				continue
+			}
+			if _, ok := cmd[serverType]; ok {
+				filterdChecks = append(filterdChecks, check)
+			}
+		}
+		if len(filterdChecks) > 0 {
+			filterdGroups = append(filterdGroups, &check.Group{
+				ID:          group.ID,
+				Description: group.Description,
+				Checks:      filterdChecks,
+				Type:        group.Type,
+				Text:        group.Text,
+				Constraints: group.Constraints,
+			})
+		}
+	}
+	controls.Groups = filterdGroups
+	return controls
+
 }
 
 func outputResults(controls *commonCheck.Controls, summary commonCheck.Summary) error {

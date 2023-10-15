@@ -100,11 +100,11 @@ func TestRunControls(t *testing.T) {
 	}
 
 	// Run all checks
-	sm := runControls(control, "")
+	sm := runControls(control, "", "Server")
 	assert.True(t, sm.Pass > 0)
 	// Run only specified checks
 	checkList := "1.1.1"
-	smt := runControls(control, checkList)
+	smt := runControls(control, checkList, "Server")
 	assert.True(t, smt.Pass == 1)
 }
 

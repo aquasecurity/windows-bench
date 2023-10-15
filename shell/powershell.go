@@ -39,18 +39,18 @@ type shellStarter interface {
 
 type localShellStarter struct{}
 
-func NewPowerShell() (*PowerShell, error) {
+func NewPowerShell() (*PowerShell, string, error) {
 	p, err := constructShell(&localShellStarter{})
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	osType, err := p.performExec(osTypePowershellCommand)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get operating system type: %w", err)
+		return nil, "", fmt.Errorf("Failed to get operating system type: %w", err)
 	}
 	p.osType = osType
-	return p, nil
+	return p, p.osType, nil
 }
 
 func constructShell(c shellStarter) (*PowerShell, error) {

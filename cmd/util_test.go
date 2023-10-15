@@ -53,7 +53,7 @@ func TestLoadConfig(t *testing.T) {
 
 func TestRunChecks(t *testing.T) {
 	b := getMockBench()
-	err := runChecks(b)
+	err := runChecks(b, "Server")
 	var write bytes.Buffer
 	outputWriter = &write
 	if err != nil {
