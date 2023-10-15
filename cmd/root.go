@@ -37,6 +37,7 @@ var (
 	cfgDir            string
 	cfgFile           string
 	checkList         string
+	serverTypeParam   string
 	jsonFmt           bool
 	includeTestOutput bool
 	outputFile        string
@@ -63,6 +64,9 @@ var RootCmd = &cobra.Command{
 			glog.V(2).Info("Returning a PowerShell (Auditer) \n")
 			return ps
 		})
+		if len(serverTypeParam) > 0 {
+			serverType = serverTypeParam
+		}
 		return runChecks(b, serverType)
 	},
 }
@@ -110,6 +114,13 @@ func init() {
 		"c",
 		"",
 		`A comma-delimited list of checks to run as specified in CIS document. Example --check="1.1.1,1.1.2"`,
+	)
+	RootCmd.PersistentFlags().StringVarP(
+		&serverTypeParam,
+		"server-type",
+		"S",
+		"",
+		`Specify the type of server to run checks for. Example --server-type="Server" or --server-type="DomainController"`,
 	)
 
 	goflag.CommandLine.VisitAll(func(goflag *goflag.Flag) {
