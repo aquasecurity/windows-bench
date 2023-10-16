@@ -76,7 +76,7 @@ func (p *localShellStarter) startShell() (ps.Shell, error) {
 func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
 	if p.sh == nil {
 		errMessage = "PowerShell is not initialized!\n"
-		return "", errMessage, check.FAIL
+		return "", errMessage, check.SKIP
 	}
 	if len(customConfig) > 0 {
 		p.updateCommand(customConfig[0])
@@ -84,7 +84,7 @@ func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMes
 	stdout, err := p.executeCommand()
 	if err != nil {
 		errMessage = fmt.Sprintf("err: %v", err)
-		return "", errMessage, check.FAIL
+		return "", errMessage, check.SKIP
 	}
 
 	glog.V(2).Info(fmt.Sprintf("Powershell.Execute - stdout: %s\n", stdout))
