@@ -58,12 +58,12 @@ var RootCmd = &cobra.Command{
 			return err
 		}
 		err = b.RegisterAuditType(shell.TypePowershell, func() interface{} {
-			if err != nil {
-				return nil
-			}
 			glog.V(2).Info("Returning a PowerShell (Auditer) \n")
 			return ps
 		})
+		if err != nil {
+			return err
+		}
 		if len(serverTypeParam) > 0 {
 			serverType = serverTypeParam
 		}
