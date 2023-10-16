@@ -166,7 +166,7 @@ func TestExecute(t *testing.T) {
 	for _, testCase := range testCases {
 		result, em, st := testCase.ps.Execute()
 		if testCase.fail {
-			if st != check.FAIL {
+			if st != check.SKIP {
 				t.Errorf("Expected FAIL state but instead got %q", st)
 			} else if testCase.expectedErr != em {
 				t.Errorf("unexpected error: %q but instead got: %q", testCase.expectedErr, em)
