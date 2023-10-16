@@ -2141,3 +2141,56 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Administrative Templates\LAPS\Do not allow password expiration time longer than required by policy
         scored: true
+      - id: 18.3.3
+        description: "Ensure 'Enable Local Admin Password Management' is set to 'Enabled' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' AdmPwdEnabled
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\LAPS\Enable Local Admin Password Management
+        scored: true
+      - id: 18.3.4
+        description: "Ensure 'Password Settings: Password Complexity' is set to 'Enabled: Large letters + small letters + numbers + special characters' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordComplexity
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "4"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled'
+          and configure the Password Complexity option to Large letters + small letters + numbers + special characters:
+             Computer Configuration\Policies\Administrative Templates\LAPS\Password Settings
+        scored: true
+      - id: 18.3.5
+        description: "Ensure 'Password Settings: Password Length' is set to 'Enabled: 15 or more' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordLength
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: gte
+                value: 15
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled'
+          and configure the Password Complexity option to Large letters + small letters + numbers + special characters:
+             Computer Configuration\Policies\Administrative Templates\LAPS\Password Settings
+        scored: true
