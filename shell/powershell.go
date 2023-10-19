@@ -15,6 +15,7 @@
 package shell
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -26,6 +27,8 @@ import (
 
 const TypePowershell = "powershell"
 const osTypePowershellCommand = `Get-ComputerInfo -Property "os*" | Select -ExpandProperty OsProductType`
+
+var errWrongOSType = errors.New("wrongOSType")
 
 type PowerShell struct {
 	Cmd    map[string]string
@@ -74,16 +77,15 @@ func (p *localShellStarter) startShell() (ps.Shell, error) {
 // It uses the aquasecurity/go-powershell package to interface with
 // the windows powershell to execute the command.
 func (p *PowerShell) Execute(customConfig ...interface{}) (result string, errMessage string, state check.State) {
-	if p.sh == nil {
-		errMessage = "PowerShell is not initialized!\n"
-		return "", errMessage, check.FAIL
-	}
 	if len(customConfig) > 0 {
 		p.updateCommand(customConfig[0])
 	}
 	stdout, err := p.executeCommand()
 	if err != nil {
 		errMessage = fmt.Sprintf("err: %v", err)
+		if errors.Is(err, errWrongOSType) {
+			return "", errMessage, check.SKIP
+		}
 		return "", errMessage, check.FAIL
 	}
 
@@ -122,9 +124,8 @@ func (p *PowerShell) executeCommand() (string, error) {
 func (p *PowerShell) commandForRuntimeOS() (string, error) {
 	cmd, found := p.Cmd[p.osType]
 	if !found {
-		return "", fmt.Errorf("Unable to find matching command for OS Type: %q", p.osType)
+		return "", errors.Join(errWrongOSType, fmt.Errorf("Unable to find matching command for OS Type: %q", p.osType))
 	}
-
 	return cmd, nil
 }
 
