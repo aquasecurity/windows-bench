@@ -27,8 +27,22 @@ import (
 
 const TypePowershell = "powershell"
 const osTypePowershellCommand = `Get-ComputerInfo -Property "os*" | Select -ExpandProperty OsProductType`
+const roleStatePowershellCommand = "Get-WindowsOptionalFeature -Online -FeatureName %s | Select-Object -ExpandProperty State"
 
 var errWrongOSType = errors.New("wrongOSType")
+
+var memberServerRoles = []string{
+	"ADCertificateServicesRole",
+	"DNS-Server-Full-Role",
+	"DHCPServer",
+	"FileAndStorage-Services",
+	"Microsoft-Hyper-V",
+	"NPAS-Role",
+	"Printing-Server-Role",
+	"RemoteAccessServer",
+	"Remote-Desktop-Services",
+	"IIS-WebServer",
+}
 
 type PowerShell struct {
 	Cmd    map[string]string
@@ -42,6 +56,18 @@ type shellStarter interface {
 
 type localShellStarter struct{}
 
+func getServerType(ps *PowerShell) string {
+	// if any of these roles are enabled we'll detect it as 'MemberServer'
+	for _, role := range memberServerRoles {
+		// we can ignore error here, because `performExec` already logs it
+		res, _ := ps.performExec(fmt.Sprintf(roleStatePowershellCommand, role))
+		if res == "Enabled" {
+			return "MemberServer"
+		}
+	}
+	return "Server"
+}
+
 func NewPowerShell() (*PowerShell, error) {
 	p, err := constructShell(&localShellStarter{})
 	if err != nil {
@@ -52,7 +78,11 @@ func NewPowerShell() (*PowerShell, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Failed to get operating system type: %w", err)
 	}
-	p.osType = osType
+	if osType == "Server" {
+		p.osType = getServerType(p)
+	} else {
+		p.osType = osType
+	}
 	return p, nil
 }
 
