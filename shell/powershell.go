@@ -56,11 +56,11 @@ type shellStarter interface {
 
 type localShellStarter struct{}
 
-func getServerType(ps *PowerShell) string {
+func getServerType(cmd *PowerShell) string {
 	// if any of these roles are enabled we'll detect it as 'MemberServer'
 	for _, role := range memberServerRoles {
 		// we can ignore error here, because `performExec` already logs it
-		res, _ := ps.performExec(fmt.Sprintf(roleStatePowershellCommand, role))
+		res, _ := cmd.performExec(fmt.Sprintf(roleStatePowershellCommand, role))
 		if res == "Enabled" {
 			return "MemberServer"
 		}
