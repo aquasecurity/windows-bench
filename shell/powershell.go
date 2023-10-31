@@ -81,13 +81,12 @@ func NewPowerShell() (*PowerShell, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Failed to get operating system type: %w", err)
 	}
+	p.osType = osType
 	if osType == "Server" {
 		p.osType, err = getServerType(p)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get server type: %w", err)
 		}
-	} else {
-		p.osType = osType
 	}
 	return p, nil
 }
