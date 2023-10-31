@@ -56,16 +56,19 @@ type shellStarter interface {
 
 type localShellStarter struct{}
 
-func getServerType(cmd *PowerShell) string {
+func getServerType(cmd *PowerShell) (string, error) {
 	// if any of these roles are enabled we'll detect it as 'MemberServer'
 	for _, role := range memberServerRoles {
 		// we can ignore error here, because `performExec` already logs it
-		res, _ := cmd.performExec(fmt.Sprintf(roleStatePowershellCommand, role))
+		res, err := cmd.performExec(fmt.Sprintf(roleStatePowershellCommand, role))
+		if err != nil {
+			return "", err
+		}
 		if res == "Enabled" {
-			return "MemberServer"
+			return "MemberServer", nil
 		}
 	}
-	return "Server"
+	return "Server", nil
 }
 
 func NewPowerShell() (*PowerShell, error) {
@@ -79,7 +82,10 @@ func NewPowerShell() (*PowerShell, error) {
 		return nil, fmt.Errorf("Failed to get operating system type: %w", err)
 	}
 	if osType == "Server" {
-		p.osType = getServerType(p)
+		p.osType, err = getServerType(p)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get server type: %w", err)
+		}
 	} else {
 		p.osType = osType
 	}
