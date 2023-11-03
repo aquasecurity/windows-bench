@@ -177,7 +177,7 @@ groups:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
                Select -ExpandProperty LockoutDuration | Select -ExpandProperty Minutes
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
                Select -ExpandProperty LockoutDuration | Select -ExpandProperty Minutes
         tests:
           test_items:
@@ -197,7 +197,7 @@ groups:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
                Select -ExpandProperty LockoutThreshold
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
                Select -ExpandProperty LockoutThreshold
         tests:
           test_items:
@@ -230,7 +230,7 @@ groups:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty LockoutObservationWindow | Select -ExpandProperty Minutes
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty LockoutObservationWindow | Select -ExpandProperty Minutes
         tests:
           test_items:
@@ -252,7 +252,7 @@ groups:
         audit:
           cmd:
             DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
-            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -287,7 +287,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeNetworkLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeNetworkLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -306,7 +306,7 @@ groups:
         audit:
           cmd:
             DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
-            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -344,7 +344,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' noconnecteduser
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' noconnecteduser
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' noconnecteduser
         tests:
           test_items:
             - flag: ""
@@ -361,7 +361,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "EnableGuestAccount") -replace '^.*= |[*]' ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "EnableGuestAccount") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -379,7 +379,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' LimitBlankPasswordUse
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' LimitBlankPasswordUse
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' LimitBlankPasswordUse
         tests:
           test_items:
             - flag: ""
@@ -397,7 +397,7 @@ groups:
         audit:
           cmd:
             DomainController: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewAdministratorName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
-            Server: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewAdministratorName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewAdministratorName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -415,7 +415,7 @@ groups:
         audit:
           cmd:
             DomainController: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewGuestName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
-            Server: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewGuestName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "NewGuestName") -replace '.*"([^"]+)".*','$1' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -433,7 +433,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\System\CurrentControlSet\Control\Lsa' SCENoApplyLegacyAuditPolicy
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' SCENoApplyLegacyAuditPolicy
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' SCENoApplyLegacyAuditPolicy
         tests:
           test_items:
             - flag: ""
@@ -451,7 +451,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\System\CurrentControlSet\Control\Lsa' CrashOnAuditFail
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' CrashOnAuditFail
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Lsa' CrashOnAuditFail
         tests:
           test_items:
             - flag: ""
@@ -469,7 +469,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' AllocateDASD
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' AllocateDASD
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' AllocateDASD
         tests:
           test_items:
             - flag: ""
@@ -487,7 +487,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers' AddPrinterDrivers
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers' AddPrinterDrivers
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers' AddPrinterDrivers
         tests:
           test_items:
             - flag: ""
@@ -590,7 +590,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireSignOrSeal
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireSignOrSeal
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireSignOrSeal
         tests:
           test_items:
             - flag: ""
@@ -608,7 +608,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SealSecureChannel
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SealSecureChannel
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SealSecureChannel
         tests:
           test_items:
             - flag: ""
@@ -626,7 +626,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SignSecureChannel
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SignSecureChannel
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' SignSecureChannel
         tests:
           test_items:
             - flag: ""
@@ -644,7 +644,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' DisablePasswordChange
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' DisablePasswordChange
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' DisablePasswordChange
         tests:
           test_items:
             - flag: ""
@@ -662,7 +662,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' MaximumPasswordAge
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' MaximumPasswordAge
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' MaximumPasswordAge
         tests:
           test_items:
             - flag: ""
@@ -685,7 +685,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireStrongKey
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireStrongKey
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters' RequireStrongKey
         tests:
           test_items:
             - flag: ""
@@ -703,7 +703,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DisableCAD
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DisableCAD
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DisableCAD
         tests:
           test_items:
             - flag: ""
@@ -721,7 +721,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DontDisplayLastUserName
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DontDisplayLastUserName
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' DontDisplayLastUserName
         tests:
           test_items:
             - flag: ""
@@ -739,7 +739,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' InactivityTimeoutSecs
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' InactivityTimeoutSecs
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' InactivityTimeoutSecs
         tests:
           test_items:
             - flag: ""
@@ -762,7 +762,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
         tests:
           test_items:
             - flag: ""
@@ -780,7 +780,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeCaption
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeCaption
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeCaption
         tests:
           test_items:
             - flag: ""
@@ -797,7 +797,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' CachedLogonsCount
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' CachedLogonsCount
         tests:
           test_items:
             - flag: ""
@@ -820,7 +820,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' PasswordExpiryWarning
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' PasswordExpiryWarning
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' PasswordExpiryWarning
         tests:
           test_items:
             - flag: ""
@@ -842,7 +842,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ForceUnlockLogon
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ForceUnlockLogon
         tests:
           test_items:
             - flag: ""
@@ -860,7 +860,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScRemoveOption
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScRemoveOption
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScRemoveOption
         tests:
           test_items:
             - flag: ""
@@ -898,7 +898,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Spooler' Start
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Spooler' Start
         tests:
           test_items:
             - flag: ""
@@ -919,7 +919,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' EnableFirewall
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' EnableFirewall
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' EnableFirewall
         tests:
           test_items:
             - flag: ""
@@ -937,7 +937,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DefaultInboundAction
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DefaultInboundAction
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DefaultInboundAction
         tests:
           test_items:
             - flag: ""
@@ -955,7 +955,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DefaultOutboundAction
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DefaultOutboundAction
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DefaultOutboundAction
         tests:
           test_items:
             - flag: ""
@@ -973,7 +973,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DisableNotifications
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DisableNotifications
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile' DisableNotifications
         tests:
           test_items:
             - flag: ""
