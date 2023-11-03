@@ -15,7 +15,7 @@ groups:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty PasswordHistoryCount
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
               -ExpandProperty PasswordHistoryCount
         tests:
           test_items:
@@ -39,7 +39,7 @@ groups:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty MaxPasswordAge | Select -ExpandProperty
               TotalDays
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
               -ExpandProperty MaxPasswordAge | Select -ExpandProperty TotalDays
         tests:
           bin_op: and
@@ -67,7 +67,7 @@ groups:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty MinPasswordAge | Select -ExpandProperty
               TotalDays
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
               -ExpandProperty MinPasswordAge | Select -ExpandProperty TotalDays
         tests:
           test_items:
@@ -89,7 +89,7 @@ groups:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty MinPasswordLength
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
               -ExpandProperty MinPasswordLength
         tests:
           test_items:
@@ -111,7 +111,7 @@ groups:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty ComplexityEnabled
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
               -ExpandProperty ComplexityEnabled
         tests:
           test_items:
@@ -132,7 +132,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\SAM\RelaxMinimumPasswordLengthLimits
-            Server: Get-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\SAM\RelaxMinimumPasswordLengthLimits
+            MemberServer: Get-ItemProperty -Path HKLM:\System\CurrentControlSet\Control\SAM\RelaxMinimumPasswordLengthLimits
         tests:
           test_items:
             - flag: ""
@@ -153,7 +153,7 @@ groups:
           cmd:
             DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
               Select -ExpandProperty ReversibleEncryptionEnabled
-            Server: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select
               -ExpandProperty ReversibleEncryptionEnabled
         tests:
           test_items:
