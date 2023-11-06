@@ -6,7 +6,7 @@ require (
 	github.com/aquasecurity/bench-common v0.4.7-0.20230803133806-c7b9760f4082
 	github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847
 	github.com/golang/glog v1.1.2
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.17.0
 )
 
