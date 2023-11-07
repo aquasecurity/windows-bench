@@ -993,7 +993,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogFilePath
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogFilePath
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogFilePath
         tests:
           test_items:
             - flag: ""
@@ -1011,7 +1011,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogFileSize
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogFileSize
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogFileSize
         tests:
           test_items:
             - flag: ""
@@ -1029,7 +1029,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogDroppedPackets
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogDroppedPackets
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogDroppedPackets
         tests:
           test_items:
             - flag: ""
@@ -1047,7 +1047,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogSuccessfulConnections
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogSuccessfulConnections
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging' LogSuccessfulConnections
         tests:
           test_items:
             - flag: ""
@@ -1068,7 +1068,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' EnableFirewall
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' EnableFirewall
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' EnableFirewall
         tests:
           test_items:
             - flag: ""
@@ -1086,7 +1086,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DefaultInboundAction
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DefaultInboundAction
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DefaultInboundAction
         tests:
           test_items:
             - flag: ""
@@ -1104,7 +1104,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DefaultOutboundAction
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DefaultOutboundAction
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DefaultOutboundAction
         tests:
           test_items:
             - flag: ""
@@ -1122,7 +1122,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DisableNotifications
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DisableNotifications
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile' DisableNotifications
         tests:
           test_items:
             - flag: ""
@@ -1142,7 +1142,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogFilePath
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogFilePath
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogFilePath
         tests:
           test_items:
             - flag: ""
@@ -1160,7 +1160,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogFileSize
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogFileSize
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogFileSize
         tests:
           test_items:
             - flag: ""
@@ -1178,7 +1178,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogDroppedPackets
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogDroppedPackets
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogDroppedPackets
         tests:
           test_items:
             - flag: ""
@@ -1196,7 +1196,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogSuccessfulConnections
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogSuccessfulConnections
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging' LogSuccessfulConnections
         tests:
           test_items:
             - flag: ""
@@ -1217,7 +1217,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' EnableFirewall
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' EnableFirewall
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' EnableFirewall
         tests:
           test_items:
             - flag: ""
@@ -1235,7 +1235,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DefaultInboundAction
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DefaultInboundAction
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DefaultInboundAction
         tests:
           test_items:
             - flag: ""
@@ -1253,7 +1253,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DefaultOutboundAction
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DefaultOutboundAction
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DefaultOutboundAction
         tests:
           test_items:
             - flag: ""
@@ -1271,7 +1271,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DisableNotifications
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DisableNotifications
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' DisableNotifications
         tests:
           test_items:
             - flag: ""
@@ -1289,7 +1289,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' AllowLocalPolicyMerge
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' AllowLocalPolicyMerge
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' AllowLocalPolicyMerge
         tests:
           test_items:
             - flag: ""
@@ -1307,7 +1307,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' AllowLocalIPsecPolicyMerge
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' AllowLocalIPsecPolicyMerge
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile' AllowLocalIPsecPolicyMerge
         tests:
           test_items:
             - flag: ""
@@ -1327,7 +1327,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogFilePath
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogFilePath
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogFilePath
         tests:
           test_items:
             - flag: ""
@@ -1345,7 +1345,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogFileSize
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogFileSize
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogFileSize
         tests:
           test_items:
             - flag: ""
@@ -1363,7 +1363,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogDroppedPackets
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogDroppedPackets
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogDroppedPackets
         tests:
           test_items:
             - flag: ""
@@ -1403,7 +1403,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Credential Validation" | Select-String -Pattern 'Credential Validation' ) -replace ".*Credential Validation\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Credential Validation" | Select-String -Pattern 'Credential Validation' ) -replace ".*Credential Validation\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Credential Validation" | Select-String -Pattern 'Credential Validation' ) -replace ".*Credential Validation\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1458,7 +1458,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Application Group Management" | Select-String -Pattern 'Application Group Management' ) -replace ".*Application Group Management\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Application Group Management" | Select-String -Pattern 'Application Group Management' ) -replace ".*Application Group Management\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Application Group Management" | Select-String -Pattern 'Application Group Management' ) -replace ".*Application Group Management\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1527,7 +1527,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Security Group Management" | Select-String -Pattern 'Security Group Management' ) -replace ".*Security Group Management\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Security Group Management" | Select-String -Pattern 'Security Group Management' ) -replace ".*Security Group Management\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Security Group Management" | Select-String -Pattern 'Security Group Management' ) -replace ".*Security Group Management\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1545,7 +1545,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"User Account Management" | Select-String -Pattern 'User Account Management' ) -replace ".*User Account Management\s+", ""
-            Server: (auditpol.exe /get /subcategory:"User Account Management" | Select-String -Pattern 'User Account Management' ) -replace ".*User Account Management\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"User Account Management" | Select-String -Pattern 'User Account Management' ) -replace ".*User Account Management\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1566,7 +1566,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Plug and Play Events" | Select-String -Pattern 'Plug and Play Events' ) -replace ".*Plug and Play Events\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Plug and Play Events" | Select-String -Pattern 'Plug and Play Events' ) -replace ".*Plug and Play Events\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Plug and Play Events" | Select-String -Pattern 'Plug and Play Events' ) -replace ".*Plug and Play Events\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1584,7 +1584,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Process Creation" | Select-String -Pattern 'Process Creation' ) -replace ".*Process Creation\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Process Creation" | Select-String -Pattern 'Process Creation' ) -replace ".*Process Creation\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Process Creation" | Select-String -Pattern 'Process Creation' ) -replace ".*Process Creation\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1642,7 +1642,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Account Lockout" | Select-String -Pattern 'Account Lockout' ) -replace ".*Account Lockout\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Account Lockout" | Select-String -Pattern 'Account Lockout' ) -replace ".*Account Lockout\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Account Lockout" | Select-String -Pattern 'Account Lockout' ) -replace ".*Account Lockout\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1660,7 +1660,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Group Membership" | Select-String -Pattern 'Group Membership' ) -replace ".*Group Membership\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Group Membership" | Select-String -Pattern 'Group Membership' ) -replace ".*Group Membership\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Group Membership" | Select-String -Pattern 'Group Membership' ) -replace ".*Group Membership\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1678,7 +1678,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Logoff" | Select-String -Pattern ' Logoff' ) -replace ".*Logoff\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Logoff" | Select-String -Pattern ' Logoff' ) -replace ".*Logoff\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Logoff" | Select-String -Pattern ' Logoff' ) -replace ".*Logoff\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1696,7 +1696,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Logon" | Select-String -Pattern 'Logon ' ) -replace ".*Logon\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Logon" | Select-String -Pattern 'Logon ' ) -replace ".*Logon\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Logon" | Select-String -Pattern 'Logon ' ) -replace ".*Logon\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1714,7 +1714,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Other Logon/Logoff Events" | Select-String -Pattern 'Other Logon/Logoff Events' ) -replace ".*Other Logon/Logoff Events\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Other Logon/Logoff Events" | Select-String -Pattern 'Other Logon/Logoff Events' ) -replace ".*Other Logon/Logoff Events\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Other Logon/Logoff Events" | Select-String -Pattern 'Other Logon/Logoff Events' ) -replace ".*Other Logon/Logoff Events\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1732,7 +1732,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Special Logon" | Select-String -Pattern 'Special Logon' ) -replace ".*Special Logon\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Special Logon" | Select-String -Pattern 'Special Logon' ) -replace ".*Special Logon\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Special Logon" | Select-String -Pattern 'Special Logon' ) -replace ".*Special Logon\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1753,7 +1753,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Detailed File Share" | Select-String -Pattern 'Detailed File Share' ) -replace ".*Detailed File Share\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Detailed File Share" | Select-String -Pattern 'Detailed File Share' ) -replace ".*Detailed File Share\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Detailed File Share" | Select-String -Pattern 'Detailed File Share' ) -replace ".*Detailed File Share\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1771,7 +1771,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"File Share" | Select-String -Pattern 'File Share' ) -replace ".*File Share\s+", ""
-            Server: (auditpol.exe /get /subcategory:"File Share" | Select-String -Pattern 'File Share' ) -replace ".*File Share\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"File Share" | Select-String -Pattern 'File Share' ) -replace ".*File Share\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1789,7 +1789,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Other Object Access Events" | Select-String -Pattern 'Other Object Access Events' ) -replace ".*Other Object Access Events\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Other Object Access Events" | Select-String -Pattern 'Other Object Access Events' ) -replace ".*Other Object Access Events\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Other Object Access Events" | Select-String -Pattern 'Other Object Access Events' ) -replace ".*Other Object Access Events\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1807,7 +1807,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Removable Storage" | Select-String -Pattern 'Removable Storage' ) -replace ".*Removable Storage\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Removable Storage" | Select-String -Pattern 'Removable Storage' ) -replace ".*Removable Storage\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Removable Storage" | Select-String -Pattern 'Removable Storage' ) -replace ".*Removable Storage\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1828,7 +1828,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1846,7 +1846,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Audit Policy Change" | Select-String -Pattern 'Audit Policy Change' ) -replace ".*Audit Policy Change\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1864,7 +1864,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Authorization Policy Change" | Select-String -Pattern 'Authorization Policy Change' ) -replace ".*Authorization Policy Change\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Authorization Policy Change" | Select-String -Pattern 'Authorization Policy Change' ) -replace ".*Authorization Policy Change\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Authorization Policy Change" | Select-String -Pattern 'Authorization Policy Change' ) -replace ".*Authorization Policy Change\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1882,7 +1882,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"MPSSVC Rule-Level Policy Change" | Select-String -Pattern 'MPSSVC Rule-Level Policy Change' ) -replace ".*MPSSVC Rule-Level Policy Change\s+", ""
-            Server: (auditpol.exe /get /subcategory:"MPSSVC Rule-Level Policy Change" | Select-String -Pattern 'MPSSVC Rule-Level Policy Change' ) -replace ".*MPSSVC Rule-Level Policy Change\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"MPSSVC Rule-Level Policy Change" | Select-String -Pattern 'MPSSVC Rule-Level Policy Change' ) -replace ".*MPSSVC Rule-Level Policy Change\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1900,7 +1900,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Other Policy Change Events" | Select-String -Pattern 'Other Policy Change Events' ) -replace ".*Other Policy Change Events\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Other Policy Change Events" | Select-String -Pattern 'Other Policy Change Events' ) -replace ".*Other Policy Change Events\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Other Policy Change Events" | Select-String -Pattern 'Other Policy Change Events' ) -replace ".*Other Policy Change Events\s+", ""
         tests:
           test_items:
             - flag: ""
