@@ -1921,7 +1921,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Sensitive Privilege Use" | Select-String -Pattern 'Sensitive Privilege Use' ) -replace ".*Sensitive Privilege Use\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Sensitive Privilege Use" | Select-String -Pattern 'Sensitive Privilege Use' ) -replace ".*Sensitive Privilege Use\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Sensitive Privilege Use" | Select-String -Pattern 'Sensitive Privilege Use' ) -replace ".*Sensitive Privilege Use\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1942,7 +1942,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"IPsec Driver" | Select-String -Pattern 'IPsec Driver' ) -replace ".*IPsec Driver\s+", ""
-            Server: (auditpol.exe /get /subcategory:"IPsec Driver" | Select-String -Pattern 'IPsec Driver' ) -replace ".*IPsec Driver\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"IPsec Driver" | Select-String -Pattern 'IPsec Driver' ) -replace ".*IPsec Driver\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1960,7 +1960,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Other System Events" | Select-String -Pattern 'Other System Events' ) -replace ".*Other System Events\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Other System Events" | Select-String -Pattern 'Other System Events' ) -replace ".*Other System Events\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Other System Events" | Select-String -Pattern 'Other System Events' ) -replace ".*Other System Events\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1978,7 +1978,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Security State Change" | Select-String -Pattern 'Security State Change' ) -replace ".*Security State Change\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Security State Change" | Select-String -Pattern 'Security State Change' ) -replace ".*Security State Change\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Security State Change" | Select-String -Pattern 'Security State Change' ) -replace ".*Security State Change\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -1996,7 +1996,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"Security System Extension" | Select-String -Pattern 'Security System Extension' ) -replace ".*Security System Extension\s+", ""
-            Server: (auditpol.exe /get /subcategory:"Security System Extension" | Select-String -Pattern 'Security System Extension' ) -replace ".*Security System Extension\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"Security System Extension" | Select-String -Pattern 'Security System Extension' ) -replace ".*Security System Extension\s+", ""
         tests:
           test_items:
             - flag: ""
@@ -2014,7 +2014,7 @@ groups:
         audit:
           cmd:
             DomainController: (auditpol.exe /get /subcategory:"System Integrity" | Select-String -Pattern 'System Integrity' ) -replace ".*System Integrity\s+", ""
-            Server: (auditpol.exe /get /subcategory:"System Integrity" | Select-String -Pattern 'System Integrity' ) -replace ".*System Integrity\s+", ""
+            MemberServer: (auditpol.exe /get /subcategory:"System Integrity" | Select-String -Pattern 'System Integrity' ) -replace ".*System Integrity\s+", ""
         tests:
           test_items:
             - flag: ""
