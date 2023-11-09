@@ -1381,7 +1381,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogSuccessfulConnections
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogSuccessfulConnections
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\WindowsFirewall\PublicProfile\Logging' LogSuccessfulConnections
         tests:
           test_items:
             - flag: ""
