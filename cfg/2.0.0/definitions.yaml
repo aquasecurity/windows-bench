@@ -2035,7 +2035,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenCamera
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenCamera
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenCamera
         tests:
           test_items:
             - flag: ""
@@ -2053,7 +2053,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenSlideshow
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenSlideshow
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization' NoLockScreenSlideshow
         tests:
           test_items:
             - flag: ""
@@ -2071,7 +2071,7 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization' AllowInputPersonalization
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization' AllowInputPersonalization
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization' AllowInputPersonalization
         tests:
           test_items:
             - flag: ""
@@ -2109,7 +2109,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\{D76B9641-3288-4f75-942D-087DE603E3EA}' DllName
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\{D76B9641-3288-4f75-942D-087DE603E3EA}' DllName
         tests:
           test_items:
             - flag: ""
@@ -2129,7 +2129,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PwdExpirationProtectionEnabled
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PwdExpirationProtectionEnabled
         tests:
           test_items:
             - flag: ""
@@ -2146,7 +2146,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' AdmPwdEnabled
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' AdmPwdEnabled
         tests:
           test_items:
             - flag: ""
@@ -2163,7 +2163,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordComplexity
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordComplexity
         tests:
           test_items:
             - flag: ""
@@ -2181,7 +2181,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordLength
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordLength
         tests:
           test_items:
             - flag: ""
@@ -2199,7 +2199,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordAgeDays
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordAgeDays
         tests:
           test_items:
             - flag: ""
