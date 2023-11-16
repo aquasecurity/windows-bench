@@ -2204,8 +2204,8 @@ groups:
           test_items:
             - flag: ""
               compare:
-                op: gte
-                value: 15
+                op: lte
+                value: 30
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled'
