@@ -16,6 +16,7 @@ package shell
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/aquasecurity/bench-common/check"
@@ -115,7 +116,7 @@ func TestExecute(t *testing.T) {
 				},
 			},
 			fail:        true,
-			expectedErr: `err: Unable to find matching command for OS Type: ""`,
+			expectedErr: `Unable to find matching command for OS Type: ""`,
 		},
 		{
 			ps: &PowerShell{
@@ -127,7 +128,7 @@ func TestExecute(t *testing.T) {
 				},
 			},
 			fail:        true,
-			expectedErr: `err: Unable to find matching command for OS Type: ""`,
+			expectedErr: `Unable to find matching command for OS Type: ""`,
 		},
 		{
 			ps: &PowerShell{
@@ -137,7 +138,7 @@ func TestExecute(t *testing.T) {
 				sh: &mockShell{},
 			},
 			fail:        true,
-			expectedErr: `err: Unable to find matching command for OS Type: ""`,
+			expectedErr: `Unable to find matching command for OS Type: ""`,
 		},
 		{
 			ps: &PowerShell{
@@ -166,9 +167,9 @@ func TestExecute(t *testing.T) {
 	for _, testCase := range testCases {
 		result, em, st := testCase.ps.Execute()
 		if testCase.fail {
-			if st != check.FAIL {
+			if st != check.SKIP {
 				t.Errorf("Expected FAIL state but instead got %q", st)
-			} else if testCase.expectedErr != em {
+			} else if !strings.Contains(em, testCase.expectedErr) {
 				t.Errorf("unexpected error: %q but instead got: %q", testCase.expectedErr, em)
 			}
 		} else if len(result) == 0 {

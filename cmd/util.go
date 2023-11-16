@@ -46,11 +46,17 @@ func runChecks(b commonCheck.Bench) error {
 	}
 
 	summary := runControls(controls, checkList)
-	err = outputResults(controls, summary)
-	if err != nil {
-		return err
+
+	// `runControls` can detect some items without correct `cmd`, and the state will be set `SKIP`
+	// We should remove skipped controls, because there is no way to print them.
+	for _, group := range controls.Groups {
+		for i := len(group.Checks) - 1; i >= 0; i-- {
+			if group.Checks[i].State == commonCheck.SKIP {
+				group.Checks = append(group.Checks[:i], group.Checks[i+1:]...)
+			}
+		}
 	}
-	return nil
+	return outputResults(controls, summary)
 
 }
 
