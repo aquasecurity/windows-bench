@@ -2194,3 +2194,21 @@ groups:
           and configure the Password Complexity option to Large letters + small letters + numbers + special characters:
              Computer Configuration\Policies\Administrative Templates\LAPS\Password Settings
         scored: true
+      - id: 18.3.6
+        description: "Ensure 'Password Settings: Password Age (Days)' is set to 'Enabled: 30 or fewer' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft Services\AdmPwd' PasswordAgeDays
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: gte
+                value: 15
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled'
+          and configure the 'Password Age (Days)' option to '30 or fewer':
+             Computer Configuration\Policies\Administrative Templates\LAPS\Password Settings
+        scored: true
