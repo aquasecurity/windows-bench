@@ -2213,7 +2213,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\LAPS\Password Settings
         scored: true
   - id: 18.4
-    description: Control Panel
+    description: MS Security Guide
     checks:
       - id: 18.4.1
         description: "Ensure 'Apply UAC restrictions to local accounts on network logons' is set to 'Enabled' (MS only) (Automated)"
