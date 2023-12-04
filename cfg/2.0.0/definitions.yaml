@@ -2048,7 +2048,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\Control Panel\Personalization\Prevent enabling lock screen camera
         scored: true
       - id: 18.1.1.2
-        description: "Ensure 'Prevent enabling lock screen slide show' is set to 'Enabled'"
+        description: "Ensure 'Prevent enabling lock screen slide show' is set to 'Enabled' (Automated)"
         audittype: powershell
         audit:
           cmd:
