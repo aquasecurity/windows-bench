@@ -2340,3 +2340,42 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Disabled':
              Computer Configuration\Policies\Administrative Templates\MS Security Guide\WDigest Authentication (disabling may require KB2871997)
         scored: true
+  - id: 18.5
+    description: Microsoft Solutions for Security (MSS) (Legacy)
+    checks:
+      - id: 18.5.1
+        description: "Ensure 'MSS: (AutoAdminLogon) Enable Automatic Logon (not recommended)' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' AutoAdminLogon
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' AutoAdminLogon
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (AutoAdminLogon) Enable Automatic Logon (not recommended)
+        scored: true
+      - id: 18.5.2
+        description: "Ensure 'MSS: (DisableIPSourceRouting IPv6) IP source routing protection level (protects against packet spoofing)' is set to 'Enabled: Highest protection, source routing is completely disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters' DisableIPSourceRouting
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip6\Parameters' DisableIPSourceRouting
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Highest protection, source routing is completely disabled':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (AutoAdminLogon) Enable Automatic Logon (not recommended)
+        scored: true
