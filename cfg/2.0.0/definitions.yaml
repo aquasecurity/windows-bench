@@ -2373,9 +2373,9 @@ groups:
             - flag: ""
               compare:
                 op: eq
-                value: "1"
+                value: "2"
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled: Highest protection, source routing is completely disabled':
-             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (AutoAdminLogon) Enable Automatic Logon (not recommended)
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (DisableIPSourceRouting IPv6) IP source routing protection level (protects against packet spoofing)
         scored: true
