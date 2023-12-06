@@ -2559,3 +2559,325 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled: 90% or less':
              Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning
         scored: true
+  - id: 18.6
+    description: Network
+    checks:
+      - id: 18.6.4.1
+        description: "Ensure 'Configure DNS over HTTPS (DoH) name resolution' is set to 'Enabled: Allow DoH' or higher (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' DoHPolicy
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' DoHPolicy
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: gte
+                value: 2
+              set: true
+            - flag: ""
+              compare:
+                op: lte
+                value: 3
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Allow DoH' (configuring to 'Enabled: Require DoH' also conforms to the benchmark):
+             Computer Configuration\Policies\Administrative Templates\Network\DNS Client\Configure DNS over HTTPS (DoH) name resolution
+        scored: true
+      - id: 18.6.4.2
+        description: "Ensure 'Configure NetBIOS settings' is set to 'Enabled: Disable NetBIOS name resolution on public networks' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' EnableNetbios
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' EnableNetbios
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Disable NetBIOS name resolution on public networks':
+             Computer Configuration\Policies\Administrative Templates\Network\DNS Client\Configure NetBIOS settings
+        scored: true
+      - id: 18.6.4.3
+        description: "Ensure 'Turn off multicast name resolution' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' EnableMulticast
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient' EnableMulticast
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Network\DNS Client\Turn off multicast name resolution
+        scored: true
+      - id: 18.6.5.1
+        description: "Ensure 'Enable Font Providers' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' EnableFontProviders
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' EnableFontProviders
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Fonts\Enable Font Providers
+        scored: true
+      - id: 18.6.8.1
+        description: "Ensure 'Enable insecure guest logons' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation' AllowInsecureGuestAuth
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation' AllowInsecureGuestAuth
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Lanman Workstation\Enable insecure guest logons
+        scored: true
+      - id: 18.6.9.1
+        description: "Ensure 'Turn on Mapper I/O (LLTDIO) driver' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD' EnableLLTDIO
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD' EnableLLTDIO
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Link-Layer Topology Discovery\Turn on Mapper I/O (LLTDIO) driver
+        scored: true
+      - id: 18.6.9.2
+        description: "Ensure 'Turn on Responder (RSPNDR) driver' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD' EnableRspndr
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\LLTD' EnableRspndr
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Link-Layer Topology Discovery\Turn on Responder (RSPNDR) driver
+        scored: true
+      - id: 18.6.10.2
+        description: "Ensure 'Turn off Microsoft Peer-to-Peer Networking Services' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Peernet' Disabled
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Peernet' Disabled
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Microsoft Peer-to-Peer Networking Services\Turn off Microsoft Peer-to-Peer Networking Services
+        scored: true
+      - id: 18.6.11.2
+        description: "Ensure 'Prohibit installation and configuration of Network Bridge on your DNS domain network' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections' NC_AllowNetBridge_NLA
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections' NC_AllowNetBridge_NLA
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Network Connections\Prohibit installation and configuration of Network Bridge on your DNS domain network
+        scored: true
+      - id: 18.6.11.3
+        description: "Ensure 'Prohibit use of Internet Connection Sharing on your DNS domain network' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections' NC_ShowSharedAccessUI
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections' NC_ShowSharedAccessUI
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Network Connections\Prohibit use of Internet Connection Sharing on your DNS domain network
+        scored: true
+      - id: 18.6.11.4
+        description: "Ensure 'Require domain users to elevate when setting a network's location' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections' NC_StdDomainUserSetLocation
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Network Connections' NC_StdDomainUserSetLocation
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Network Connections\Require domain users to elevate when setting a network's location
+        scored: true
+      - id: 18.6.14.1
+        description: "Ensure 'Hardened UNC Paths' is set to 'Enabled, with "Require Mutual Authentication" and "Require Integrity" set for all NETLOGON and SYSVOL shares' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths' '\\*\NETLOGON';Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths' '\\*\SYSVOL'
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths' '\\*\NETLOGON';Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\NetworkProvider\HardenedPaths' '\\*\SYSVOL'
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: > 
+                   RequireMutualAuthentication=1, RequireIntegrity=1
+                   RequireMutualAuthentication=1, RequireIntegrity=1
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled' with the following paths configured, at a minimum:
+             '\\*\NETLOGON RequireMutualAuthentication=1, RequireIntegrity=1'
+             '\\*\SYSVOL RequireMutualAuthentication=1, RequireIntegrity=1'
+             Computer Configuration\Policies\Administrative Templates\Network\Network Provider\Hardened UNC Paths
+        scored: true
+      - id: 18.6.19.2.1
+        description: "Disable IPv6 (Ensure TCPIP6 Parameter 'DisabledComponents' is set to '0xff (255)') (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters' DisabledComponents
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters' DisabledComponents
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "255"
+              set: true
+        remediation: >
+          To establish the recommended configuration, set the following Registry value to '0xff (255) (DWORD)':
+             HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters:DisabledComponents
+        scored: true
+      - id: 18.6.20.1
+        description: "Ensure 'Configuration of wireless settings using Windows Connect Now' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' EnableRegistrars; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableUPnPRegistrar; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableInBand802DOT11Registrar; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableFlashConfigRegistrar; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableWPDRegistrar
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' EnableRegistrars; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableUPnPRegistrar; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableInBand802DOT11Registrar; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableFlashConfigRegistrar; Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\Registrars' DisableWPDRegistrar
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: >
+                  0
+                  0
+                  0
+                  0
+                  0
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Windows Connect Now\Configuration of wireless settings using Windows Connect Now
+        scored: true
+      - id: 18.6.20.2
+        description: "Ensure 'Prohibit access of the Windows Connect Now wizards' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\UI' DisableWcnUi
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WCN\UI' DisableWcnUi
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Windows Connect Now\Prohibit access of the Windows Connect Now wizards
+        scored: true
+      - id: 18.6.21.1
+        description: "Ensure 'Minimize the number of simultaneous connections to the Internet or a Windows Domain' is set to 'Enabled: 3 = Prevent Wi-Fi when on Ethernet' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' fMinimizeConnections
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' fMinimizeConnections
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "3"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 3 = Prevent Wi-Fi when on Ethernet':
+             Computer Configuration\Policies\Administrative Templates\Network\Windows Connection Manager\Minimize the number of simultaneous connections to the Internet or a Windows Domain
+        scored: true
+      - id: 18.6.21.2
+        description: "Ensure 'Prohibit connection to non-domain networks when connected to domain authenticated network' is set to 'Enabled' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy' fBlockNonDomain
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\Network\Windows Connection Manager\Prohibit connection to non-domain networks when connected to domain authenticated network
+        scored: true
