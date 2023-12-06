@@ -2379,3 +2379,183 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled: Highest protection, source routing is completely disabled':
              Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (DisableIPSourceRouting IPv6) IP source routing protection level (protects against packet spoofing)
         scored: true
+      - id: 18.5.3
+        description: "Ensure 'MSS: (DisableIPSourceRouting) IP source routing protection level (protects against packet spoofing)' is set to 'Enabled: Highest protection, source routing is completely disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' DisableIPSourceRouting
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' DisableIPSourceRouting
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "2"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Highest protection, source routing is completely disabled':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (DisableIPSourceRouting) IP source routing protection level (protects against packet spoofing)
+        scored: true
+      - id: 18.5.4
+        description: "Ensure 'MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' EnableICMPRedirect
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' EnableICMPRedirect
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (EnableICMPRedirect) Allow ICMP redirects to override OSPF generated routes
+        scored: true
+      - id: 18.5.5
+        description: "Ensure 'MSS: (KeepAliveTime) How often keep-alive packets are sent in milliseconds' is set to 'Enabled: 300,000 or 5 minutes (recommended)' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' KeepAliveTime
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' KeepAliveTime
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "300000"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 300,000 or 5 minutes (recommended)':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (KeepAliveTime) How often keep-alive packets are sent in milliseconds
+        scored: true
+      - id: 18.5.6
+        description: "Ensure 'MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters' NoNameReleaseOnDemand
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters' NoNameReleaseOnDemand
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (NoNameReleaseOnDemand) Allow the computer to ignore NetBIOS name release requests except from WINS servers 
+        scored: true
+      - id: 18.5.7
+        description: "Ensure 'MSS: (PerformRouterDiscovery) Allow IRDP to detect and configure Default Gateway addresses (could lead to DoS)' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' PerformRouterDiscovery
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' PerformRouterDiscovery
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (PerformRouterDiscovery) Allow IRDP to detect and configure Default Gateway addresses (could lead to DoS)
+        scored: true
+      - id: 18.5.8
+        description: "Ensure 'MSS: (SafeDllSearchMode) Enable Safe DLL search mode (recommended)' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager' SafeDllSearchMode
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager' SafeDllSearchMode
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (SafeDllSearchMode) Enable Safe DLL search mode (recommended)
+        scored: true
+      - id: 18.5.9
+        description: "Ensure 'MSS: (ScreenSaverGracePeriod) The time in seconds before the screen saver grace period expires (0 recommended)' is set to 'Enabled: 5 or fewer seconds' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScreenSaverGracePeriod
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' ScreenSaverGracePeriod
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: "5"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 5 or fewer seconds':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (ScreenSaverGracePeriod) The time in seconds before the screen saver grace period expires (0 recommended)
+        scored: true
+      - id: 18.5.10
+        description: "Ensure 'MSS: (TcpMaxDataRetransmissions IPv6) How many times unacknowledged data is retransmitted' is set to 'Enabled: 3' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters' TcpMaxDataRetransmissions
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\TCPIP6\Parameters' TcpMaxDataRetransmissions
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "3"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 3':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS:(TcpMaxDataRetransmissions IPv6) How many times unacknowledged data is retransmitted
+        scored: true
+      - id: 18.5.11
+        description: "Ensure 'MSS: (TcpMaxDataRetransmissions) How many times unacknowledged data is retransmitted' is set to 'Enabled: 3' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' TcpMaxDataRetransmissions
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters' TcpMaxDataRetransmissions
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "3"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 3':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS:(TcpMaxDataRetransmissions) How many times unacknowledged data is retransmitted
+        scored: true
+      - id: 18.5.12
+        description: "Ensure 'MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning' is set to 'Enabled: 90% or less' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Security' WarningLevel
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SYSTEM\CurrentControlSet\Services\Eventlog\Security' WarningLevel
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: lte
+                value: "90"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 90% or less':
+             Computer Configuration\Policies\Administrative Templates\MSS (Legacy)\MSS: (WarningLevel) Percentage threshold for the security event log at which the system will generate a warning
+        scored: true
