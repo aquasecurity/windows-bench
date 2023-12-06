@@ -2763,7 +2763,7 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
-             Computer Configuration\Policies\Administrative Templates\Network\Network Connections\Require domain users to elevate when setting a network's location
+             Computer Configuration\Policies\Administrative Templates\Network\Network Connections\Require domain users to elevate when setting a network\'s location
         scored: true
       - id: 18.6.14.1
         description: "Ensure 'Hardened UNC Paths' is set to 'Enabled, with "Require Mutual Authentication" and "Require Integrity" set for all NETLOGON and SYSVOL shares' (Automated)"
