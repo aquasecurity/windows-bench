@@ -3103,3 +3103,60 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Administrative Templates\Start Menu and Taskbar\Turn off notifications network usage
         scored: true
+  - id: 18.9
+    description: System
+    checks:
+      - id: 18.9.3.1
+        description: "Ensure 'Include command line in process creation events' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit' ProcessCreationIncludeCmdLine_Enabled
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit' ProcessCreationIncludeCmdLine_Enabled
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\System\Audit Process Creation\Include command line in process creation events
+        scored: true
+      - id: 18.9.4.1
+        description: "Ensure 'Encryption Oracle Remediation' is set to 'Enabled: Force Updated Clients' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters' AllowEncryptionOracle
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters' AllowEncryptionOracle
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Force Updated Clients':
+             Computer Configuration\Policies\Administrative Templates\System\Credentials Delegation\Encryption Oracle Remediation
+        scored: true
+      - id: 18.9.4.2
+        description: "Ensure 'Remote host allows delegation of non-exportable credentials' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation' AllowProtectedCreds
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation' AllowProtectedCreds
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\System\Credentials Delegation\Remote host allows delegation of non-exportable credentials
+        scored: true
