@@ -2881,3 +2881,204 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Administrative Templates\Network\Windows Connection Manager\Prohibit connection to non-domain networks when connected to domain authenticated network
         scored: true
+  - id: 18.7
+    description: Printers
+    checks:
+      - id: 18.7.1
+        description: "Ensure 'Allow Print Spooler to accept client connections' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers' RegisterSpoolerRemoteRpcEndPoint
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers' RegisterSpoolerRemoteRpcEndPoint
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "2"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\Printers:Allow Print Spooler to accept client connections
+        scored: true
+      - id: 18.7.2
+        description: "Ensure 'Configure Redirection Guard' is set to 'Enabled: Redirection Guard Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers' RedirectionguardPolicy
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers' RedirectionguardPolicy
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Redirection Guard Enabled':
+             Computer Configuration\Policies\Administrative Templates\Printers\Configure Redirection Guard
+        scored: true
+      - id: 18.7.3
+        description: "Ensure 'Configure RPC connection settings: Protocol to use for outgoing RPC connections' is set to 'Enabled: RPC over TCP' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcUseNamedPipeProtocol
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcUseNamedPipeProtocol
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: RPC over TCP':
+             Computer Configuration\Policies\Administrative Templates\Printers\Configure RPC connection settings: Protocol to use for outgoing RPC connections
+        scored: true
+      - id: 18.7.4
+        description: "Ensure 'Configure RPC connection settings: Use authentication for outgoing RPC connections' is set to 'Enabled: Default' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcAuthentication
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcAuthentication
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Default':
+             Computer Configuration\Policies\Administrative Templates\Printers\Configure RPC connection settings: Protocol to use for outgoing RPC connections
+        scored: true
+      - id: 18.7.5
+        description: "Ensure 'Configure RPC listener settings: Protocols to allow for incoming RPC connections' is set to 'Enabled: RPC over TCP' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcProtocols
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcProtocols
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: RCP over TCP':
+             Computer Configuration\Policies\Administrative Templates\Printers\Configure RPC listener settings: Configure protocol options for incoming RPC connections
+        scored: true
+      - id: 18.7.6
+        description: "Ensure 'Configure RPC listener settings: Authentication protocol to use for incoming RPC connections:' is set to 'Enabled: Negotiate' or higher (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' ForceKerberosForRpc
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' ForceKerberosForRpc
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: gte
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Negotiate' or higher:
+             Computer Configuration\Policies\Administrative Templates\Printers\Configure RPC listener settings: Configure protocol options for incoming RPC connections
+        scored: true
+      - id: 18.7.7
+        description: "Ensure 'Configure RPC over TCP port' is set to 'Enabled: 0' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcTcpPort
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\RPC' RpcTcpPort
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 0':
+             Computer Configuration\Policies\Administrative Templates\Printers\Configure RPC over TCP port
+        scored: true
+      - id: 18.7.8
+        description: "Ensure 'Limits print driver installation to Administrators' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint' trictDriverInstallationToAdministrators
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint' trictDriverInstallationToAdministrators
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: 0':
+             Computer Configuration\Policies\Administrative Templates\Printers\Limits print driver installation to Administrators
+        scored: true
+      - id: 18.7.9
+        description: "Ensure 'Manage processing of Queue-specific files' is set to 'Enabled: Limit Queue-specific files to Color profiles' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers' CopyFilesPolicy
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers' CopyFilesPolicy
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Limit Queue-specific files to Color profiles':
+             Computer Configuration\Policies\Administrative Templates\Printers\Manage processing of Queue-specific files
+        scored: true
+      - id: 18.7.10
+        description: "Ensure 'Point and Print Restrictions: When installing drivers for a new connection' is set to 'Enabled: Show warning and elevation prompt' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint' NoWarningNoElevationOnInstall
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint' NoWarningNoElevationOnInstall
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Show warning and elevation prompt':
+             Computer Configuration\Policies\Administrative Templates\Printers\Point and Print Restrictions: When installing drivers for a new connection
+        scored: true
+      - id: 18.7.11
+        description: "Ensure 'Point and Print Restrictions: When updating drivers for an existing connection' is set to 'Enabled: Show warning and elevation prompt' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers\PointAndPrint' UpdatePromptSettings
+            MemberServer: Get-ItemPropertyValue 'HKLM:\Software\Policies\Microsoft\Windows NT\Printers\PointAndPrint' UpdatePromptSettings
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled: Show warning and elevation prompt':
+             Computer Configuration\Policies\Administrative Templates\Printers\Point and Print Restrictions: When updating drivers for an existing connection
+        scored: true
