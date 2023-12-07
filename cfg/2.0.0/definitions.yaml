@@ -3644,3 +3644,21 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled: Enabled with UEFI Lock':
              Computer Configuration\Policies\Administrative Templates\System\Local Security Authority\Configures LSASS to run as a protected process
         scored: true
+      - id: 18.9.26.1
+        description: "Ensure 'Disallow copying of user input methods to the system account for sign-in' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\ControlPanel\International' BlockUserInputMethodsForSignIn
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\ControlPanel\International' BlockUserInputMethodsForSignIn
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\System\Locale Services\Disallow copying of user input methods to the system account for sign-in
+        scored: true
