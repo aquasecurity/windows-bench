@@ -4036,3 +4036,38 @@ groups:
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Administrative Templates\System\User Profiles\Turn off the advertising ID
         scored: true
+      - id: 18.9.50.1
+        description: "Ensure 'Enable Windows NTP Client' is set to 'Enabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\W32Time\TimeProviders\NtpClient' Enabled
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\W32Time\TimeProviders\NtpClient' Enabled
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "1"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\System\Windows Time Service\Time Providers\Enable Windows NTP Client
+        scored: true
+      - id: 18.9.50.2
+        description: "Ensure 'Enable Windows NTP Server' is set to 'Disabled' (MS only) (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\W32Time\TimeProviders\NtpServer' Enabled
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\System\Windows Time Service\Time Providers\Enable Windows NTP Server
+        scored: true
