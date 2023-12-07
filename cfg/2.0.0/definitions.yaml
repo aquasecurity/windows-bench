@@ -3784,6 +3784,42 @@ groups:
                 value: "0"
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
              Computer Configuration\Policies\Administrative Templates\System\Logon\Turn off picture password sign-in
+        scored: true
+      - id: 18.9.30.1
+        description: "Ensure 'Allow Clipboard synchronization across devices' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' AllowCrossDeviceClipboard
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' AllowCrossDeviceClipboard
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
+             Computer Configuration\Policies\Administrative Templates\System\OS Policies\Allow Clipboard synchronization across devices
+        scored: true
+      - id: 18.9.30.2
+        description: "Ensure 'Allow upload of User Activities' is set to 'Disabled' (Automated)"
+        audittype: powershell
+        audit:
+          cmd:
+            DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' UploadUserActivities
+            MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\System' UploadUserActivities
+        tests:
+          test_items:
+            - flag: ""
+              compare:
+                op: eq
+                value: "0"
+              set: true
+        remediation: >
+          To establish the recommended configuration via GP, set the following UI path to 'Enabled':
+             Computer Configuration\Policies\Administrative Templates\System\OS Policies\Allow upload of User Activities
         scored: true
