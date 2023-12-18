@@ -158,8 +158,7 @@ func (p *PowerShell) executeCommand() (string, error) {
 func (p *PowerShell) commandForRuntimeOS() (string, error) {
 	cmd, found := p.Cmd[p.osType]
 	if !found {
-		err := errors.New(errWrongOSType.Error())
-		return "", errors.Wrap(err, fmt.Sprintf("Unable to find matching command for OS Type: %q", p.osType))
+		return "", errors.Wrap(errWrongOSType, fmt.Sprintf("Unable to find matching command for OS Type: %q", p.osType))
 	}
 	return cmd, nil
 }
