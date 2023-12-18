@@ -1,11 +1,12 @@
 module github.com/aquasecurity/windows-bench
 
-go 1.20
+go 1.19
 
 require (
 	github.com/aquasecurity/bench-common v0.4.7-0.20230803133806-c7b9760f4082
 	github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847
 	github.com/golang/glog v1.2.0
+	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.1
 )

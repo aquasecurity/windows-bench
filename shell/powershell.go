@@ -15,14 +15,13 @@
 package shell
 
 import (
-	"errors"
 	"fmt"
-	"strings"
-
 	"github.com/aquasecurity/bench-common/check"
 	ps "github.com/aquasecurity/go-powershell"
 	"github.com/aquasecurity/go-powershell/backend"
 	"github.com/golang/glog"
+	"github.com/pkg/errors"
+	"strings"
 )
 
 const TypePowershell = "powershell"
@@ -159,7 +158,7 @@ func (p *PowerShell) executeCommand() (string, error) {
 func (p *PowerShell) commandForRuntimeOS() (string, error) {
 	cmd, found := p.Cmd[p.osType]
 	if !found {
-		return "", errors.Join(errWrongOSType, fmt.Errorf("Unable to find matching command for OS Type: %q", p.osType))
+		return "", errors.Wrap(errWrongOSType, fmt.Sprintf("Unable to find matching command for OS Type: %q", p.osType))
 	}
 	return cmd, nil
 }
