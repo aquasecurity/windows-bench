@@ -32,15 +32,19 @@ func runChecks(b commonCheck.Bench) error {
 	} else {
 		version = "2.0.0"
 	}
-	path, err := loadConfig(version)
-	if err != nil {
-		return err
+
+	if cfgFile == "" {
+		cfgFile, err = loadConfig(version)
+		if err != nil {
+			return err
+		}
 	}
-	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", path))
+
+	glog.V(1).Info(fmt.Sprintf("Using benchmark file: %s\n", cfgFile))
 
 	// No Constraints for now
 	constraints := make([]string, 0)
-	controls, err := getControls(b, path, constraints)
+	controls, err := getControls(b, cfgFile, constraints)
 	if err != nil {
 		return err
 	}
