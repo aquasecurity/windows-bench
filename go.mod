@@ -1,6 +1,6 @@
 module github.com/aquasecurity/windows-bench
 
-go 1.20
+go 1.19
 
 require (
 	github.com/aquasecurity/bench-common v0.4.7-0.20230803133806-c7b9760f4082
