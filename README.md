@@ -6,7 +6,6 @@
 [![GitHub Release Actions][release-action-img]][actions]
 [![release-snapshot](https://github.com/aquasecurity/windows-bench/actions/workflows/release-snapshot.yml/badge.svg)](https://github.com/aquasecurity/windows-bench/actions/workflows/release-snapshot.yml)
 
-# This Repo is Still Work in Progress
 
 windows-bench is a Go application that checks whether the windows operating system is configured securely by running the checks documented in the CIS Distribution Independent windows Benchmark.
 
