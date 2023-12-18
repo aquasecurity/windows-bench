@@ -93,7 +93,6 @@ func init() {
 	// Cobra supports Persistent Flags, which, if defined here,
 	// will be global for your application.
 
-	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.windows-bench.yaml)")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	RootCmd.PersistentFlags().BoolVar(&noResults, "noresults", false, "Disable printing of results section")
@@ -101,6 +100,7 @@ func init() {
 	RootCmd.PersistentFlags().BoolVar(&noRemediations, "noremediations", false, "Disable printing of remediations section")
 	RootCmd.Flags().StringVarP(&windowsCisVersion, "version", "", "2.0.0", "Specify windows cis version, automatically detected if unset")
 	RootCmd.Flags().StringVarP(&cfgDir, "config-dir", "D", "cfg", "directory to get benchmark definitions")
+	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is empty, will be used 'cfg/<version>/definitions.yaml')")
 	RootCmd.PersistentFlags().BoolVar(&jsonFmt, "json", false, "Prints the results as JSON")
 	RootCmd.PersistentFlags().BoolVar(&includeTestOutput, "include-test-output", false, "Prints the test's output")
 	RootCmd.PersistentFlags().StringVar(&outputFile, "outputfile", "", "Writes the JSON results to output file")
