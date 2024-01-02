@@ -3,7 +3,7 @@ module github.com/aquasecurity/windows-bench
 go 1.19
 
 require (
-	github.com/aquasecurity/bench-common v0.4.7-0.20230803133806-c7b9760f4082
+	github.com/aquasecurity/bench-common v0.4.7
 	github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847
 	github.com/golang/glog v1.2.0
 	github.com/pkg/errors v0.9.1
@@ -19,6 +19,7 @@ require (
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
+	go.uber.org/zap v1.24.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 )
 
