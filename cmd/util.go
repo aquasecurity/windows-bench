@@ -65,13 +65,13 @@ func updateControlCheck(controls *check.Controls, osType string) *check.Controls
 			if group.Checks[i].State == commonCheck.SKIP {
 				group.Checks = append(group.Checks[:i], group.Checks[i+1:]...)
 			}
-			group.Checks[i].Audit = getServerAudit(group.Checks[i].Audit, osType)
+			group.Checks[i].Audit = getOsTypeAuditCommand(group.Checks[i].Audit, osType)
 		}
 	}
 	return controls
 }
 
-func getServerAudit(audit interface{}, serverType string) string {
+func getOsTypeAuditCommand(audit interface{}, serverType string) string {
 	if a, ok := audit.(map[interface{}]interface{}); ok {
 		if cmd, ok := a["cmd"].(map[interface{}]interface{}); ok {
 			if val, ok := cmd[serverType].(string); ok {
