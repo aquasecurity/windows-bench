@@ -52,6 +52,12 @@ func runChecks(b commonCheck.Bench, serverType string) error {
 
 	summary := runControls(controls, checkList)
 
+	controls = updateControlCheck(controls, serverType)
+
+	return outputResults(controls, summary)
+}
+
+func updateControlCheck(controls *check.Controls, osType string) *check.Controls {
 	// `runControls` can detect some items without correct `cmd`, and the state will be set `SKIP`
 	// We should remove skipped controls, because there is no way to print them.
 	for _, group := range controls.Groups {
@@ -59,17 +65,7 @@ func runChecks(b commonCheck.Bench, serverType string) error {
 			if group.Checks[i].State == commonCheck.SKIP {
 				group.Checks = append(group.Checks[:i], group.Checks[i+1:]...)
 			}
-		}
-	}
-	controls = updateControlCheck(controls, serverType)
-
-	return outputResults(controls, summary)
-}
-
-func updateControlCheck(controls *check.Controls, osType string) *check.Controls {
-	for _, group := range controls.Groups {
-		for _, check := range group.Checks {
-			check.Audit = getOsTypeAuditCommand(check.Audit, osType)
+			group.Checks[i].Audit = getOsTypeAuditCommand(group.Checks[i].Audit, osType)
 		}
 	}
 	return controls
