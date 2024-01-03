@@ -146,7 +146,7 @@ func TestExecute(t *testing.T) {
 					osTypeCmd: testSpace + testPShellCommand + testSpace, // surrounded by spaces
 				},
 				sh:     &mockShell{},
-				osType: osTypeCmd,
+				OsType: osTypeCmd,
 			},
 			expectedResult: testPShellCommand,
 			fail:           false,
@@ -157,7 +157,7 @@ func TestExecute(t *testing.T) {
 					osTypeCmd: testSpace + testPShellCommand + testNewLine, // starts with space end with new lines
 				},
 				sh:     &mockShell{},
-				osType: osTypeCmd,
+				OsType: osTypeCmd,
 			},
 			expectedResult: testPShellCommand,
 			fail:           false,

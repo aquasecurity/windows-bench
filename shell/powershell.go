@@ -46,7 +46,7 @@ var memberServerRoles = []string{
 type PowerShell struct {
 	Cmd    map[string]string
 	sh     ps.Shell
-	osType string
+	OsType string
 }
 
 type shellStarter interface {
@@ -80,9 +80,9 @@ func NewPowerShell() (*PowerShell, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Failed to get operating system type: %w", err)
 	}
-	p.osType = osType
+	p.OsType = osType
 	if osType == "Server" {
-		p.osType, err = getServerType(p)
+		p.OsType, err = getServerType(p)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get server type: %w", err)
 		}
@@ -156,9 +156,9 @@ func (p *PowerShell) executeCommand() (string, error) {
 }
 
 func (p *PowerShell) commandForRuntimeOS() (string, error) {
-	cmd, found := p.Cmd[p.osType]
+	cmd, found := p.Cmd[p.OsType]
 	if !found {
-		return "", errors.Wrap(errWrongOSType, fmt.Sprintf("Unable to find matching command for OS Type: %q", p.osType))
+		return "", errors.Wrap(errWrongOSType, fmt.Sprintf("Unable to find matching command for OS Type: %q", p.OsType))
 	}
 	return cmd, nil
 }
