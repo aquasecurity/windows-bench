@@ -18,12 +18,13 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/aquasecurity/bench-common/check"
 	commonCheck "github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/bench-common/util"
 	"github.com/golang/glog"
 )
 
-func runChecks(b commonCheck.Bench) error {
+func runChecks(b commonCheck.Bench, serverType string) error {
 	var version string
 	var err error
 
@@ -51,6 +52,12 @@ func runChecks(b commonCheck.Bench) error {
 
 	summary := runControls(controls, checkList)
 
+	controls = updateControlCheck(controls, serverType)
+
+	return outputResults(controls, summary)
+}
+
+func updateControlCheck(controls *check.Controls, serverType string) *check.Controls {
 	// `runControls` can detect some items without correct `cmd`, and the state will be set `SKIP`
 	// We should remove skipped controls, because there is no way to print them.
 	for _, group := range controls.Groups {
@@ -58,10 +65,21 @@ func runChecks(b commonCheck.Bench) error {
 			if group.Checks[i].State == commonCheck.SKIP {
 				group.Checks = append(group.Checks[:i], group.Checks[i+1:]...)
 			}
+			group.Checks[i].Audit = getServerAudit(group.Checks[i].Audit, serverType)
 		}
 	}
-	return outputResults(controls, summary)
+	return controls
+}
 
+func getServerAudit(audit interface{}, serverType string) string {
+	if a, ok := audit.(map[interface{}]interface{}); ok {
+		if cmd, ok := a["cmd"].(map[interface{}]interface{}); ok {
+			if val, ok := cmd[serverType].(string); ok {
+				return val
+			}
+		}
+	}
+	return fmt.Sprintf("%v", audit)
 }
 
 // loadConfig finds the correct config dir based on the kubernetes version,

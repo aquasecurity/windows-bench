@@ -63,7 +63,7 @@ var RootCmd = &cobra.Command{
 			glog.V(2).Info("Returning a PowerShell (Auditer) \n")
 			return ps
 		})
-		return runChecks(b)
+		return runChecks(b, ps.OsType)
 	},
 }
 
