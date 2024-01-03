@@ -1,5 +1,5 @@
-github.com/aquasecurity/bench-common v0.4.7 h1:MOt4Z9yKJH9fx6HNKiHDmuyysQLMUW9IrWSUbV5LGDo=
-github.com/aquasecurity/bench-common v0.4.7/go.mod h1:AOo70Re/p5o+07y1ctVZ7uEpj1ATIujXqrU8ak3F+fI=
+github.com/aquasecurity/bench-common v0.4.8 h1:KtZYPZ9G4tooSOdzDxfiZin02Sa3iOYjPQN223+qzHg=
+github.com/aquasecurity/bench-common v0.4.8/go.mod h1:AOo70Re/p5o+07y1ctVZ7uEpj1ATIujXqrU8ak3F+fI=
 github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847 h1:e1w2q4MqhHsmBDe5WavHKdGqXbmlvd3f6tH8Qrgn5KA=
 github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847/go.mod h1:uTcLN1HYZA/abvodzFT8Sx0HupFF7sfsYPCFHFSSgF8=
 github.com/benbjohnson/clock v1.1.0 h1:Q92kusRqC1XV2MjkWETPvjJVqKetz1OzxZB7mHJLju8=
