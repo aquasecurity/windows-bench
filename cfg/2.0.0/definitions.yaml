@@ -2089,7 +2089,6 @@ groups:
         audit:
           cmd:
             DomainController: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' AllowOnlineTips
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer' AllowOnlineTips
         tests:
           test_items:
             - flag: ""
