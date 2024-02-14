@@ -27,6 +27,7 @@ import (
 
 const TypePowershell = "powershell"
 const osTypePowershellCommand = `(Get-CimInstance -ClassName Win32_OperatingSystem).ProductType`
+const supressError = "$ErrorActionPreference = 'SilentlyContinue'"
 
 var errWrongOSType = errors.New("wrongOSType")
 
@@ -47,7 +48,8 @@ func NewPowerShell() (*PowerShell, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	// supress errors
+	_, _ = p.performExec(supressError)
 	osType, err := p.performExec(osTypePowershellCommand)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to get server type: %w", err)
