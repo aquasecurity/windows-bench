@@ -16,14 +16,13 @@ package cmd
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
 	"testing"
 
-	"github.com/aquasecurity/bench-common/check"
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v2"
 )
 
 func TestLoadConfig(t *testing.T) {
@@ -65,31 +64,14 @@ func TestRunChecks(t *testing.T) {
 }
 
 func TestUpdateControl(t *testing.T) {
-	here, _ := os.Getwd()
-	// cfgDir is defined in root.go
-	type TestCase struct {
-		version string
-		cfgPath string
-		want    string
-	}
+	audit := `{
+"cmd":{"DomainController":"Get-ItemPropertyValue 'HKLM:SOFTWAREMicrosoftWindowsCurrentVersionPoliciesExplorer' AllowOnlineTips",
+"Server":"Get-ItemPropertyValue'HKLM:SOFTWAREMicrosoftWindowsCurrentVersionPoliciesExplorer' AllowOnlineTips"
+}}`
+	var aud interface{}
+	err := json.Unmarshal([]byte(audit), &aud)
+	assert.NoError(t, err)
+	got := getOsTypeAuditCommand(aud, "DomainController")
+	assert.Equal(t, "Get-ItemPropertyValue 'HKLM:SOFTWAREMicrosoftWindowsCurrentVersionPoliciesExplorer' AllowOnlineTips", got)
 
-	testCases := []TestCase{
-		{
-			version: "2.0.0",
-			cfgPath: fmt.Sprintf("%s/../cfg", here),
-			want:    "cfg/2.0.0/definitions.yaml",
-		},
-	}
-	for _, tc := range testCases {
-		cfgDir = tc.cfgPath
-		config, err := loadConfig(tc.version)
-		assert.NoError(t, err)
-		f, err := os.ReadFile(config)
-		assert.NoError(t, err)
-		var c check.Controls
-		err = yaml.Unmarshal(f, &c)
-		assert.NoError(t, err)
-		got := updateControlCheck(&c, "DomainController")
-		assert.Equal(t, got.Groups[0].Checks[0].Audit.(string), "Get-ADDefaultDomainPasswordPolicy -Current LocalComputer | Select -ExpandProperty PasswordHistoryCount")
-	}
 }

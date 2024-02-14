@@ -16,32 +16,19 @@ package shell
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/aquasecurity/bench-common/check"
 	ps "github.com/aquasecurity/go-powershell"
 	"github.com/aquasecurity/go-powershell/backend"
 	"github.com/golang/glog"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 const TypePowershell = "powershell"
-const osTypePowershellCommand = `Get-ComputerInfo -Property "os*" | Select -ExpandProperty OsProductType`
-const roleStatePowershellCommand = "Get-WindowsOptionalFeature -Online -FeatureName %s | Select-Object -ExpandProperty State"
+const osTypePowershellCommand = `(Get-CimInstance -ClassName Win32_OperatingSystem).ProductType`
 
 var errWrongOSType = errors.New("wrongOSType")
-
-var memberServerRoles = []string{
-	"ADCertificateServicesRole",
-	"DNS-Server-Full-Role",
-	"DHCPServer",
-	"FileAndStorage-Services",
-	"Microsoft-Hyper-V",
-	"NPAS-Role",
-	"Printing-Server-Role",
-	"RemoteAccessServer",
-	"Remote-Desktop-Services",
-	"IIS-WebServer",
-}
 
 type PowerShell struct {
 	Cmd    map[string]string
@@ -55,21 +42,6 @@ type shellStarter interface {
 
 type localShellStarter struct{}
 
-func getServerType(cmd *PowerShell) (string, error) {
-	// if any of these roles are enabled we'll detect it as 'MemberServer'
-	for _, role := range memberServerRoles {
-		// we can ignore error here, because `performExec` already logs it
-		res, err := cmd.performExec(fmt.Sprintf(roleStatePowershellCommand, role))
-		if err != nil {
-			return "", err
-		}
-		if res == "Enabled" {
-			return "MemberServer", nil
-		}
-	}
-	return "Server", nil
-}
-
 func NewPowerShell() (*PowerShell, error) {
 	p, err := constructShell(&localShellStarter{})
 	if err != nil {
@@ -78,14 +50,15 @@ func NewPowerShell() (*PowerShell, error) {
 
 	osType, err := p.performExec(osTypePowershellCommand)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to get operating system type: %w", err)
+		return nil, fmt.Errorf("Failed to get server type: %w", err)
 	}
-	p.OsType = osType
-	if osType == "Server" {
-		p.OsType, err = getServerType(p)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get server type: %w", err)
-		}
+	switch osType {
+	case "1":
+		p.OsType = "MemberServer"
+	case "2":
+		p.OsType = "DomainController"
+	case "3":
+		p.OsType = "Server"
 	}
 	return p, nil
 }

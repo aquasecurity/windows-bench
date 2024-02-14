@@ -76,8 +76,8 @@ func updateControlCheck(controls *check.Controls, osType string) *check.Controls
 }
 
 func getOsTypeAuditCommand(audit interface{}, serverType string) string {
-	if a, ok := audit.(map[interface{}]interface{}); ok {
-		if cmd, ok := a["cmd"].(map[interface{}]interface{}); ok {
+	if a, ok := audit.(map[string]interface{}); ok {
+		if cmd, ok := a["cmd"].(map[string]interface{}); ok {
 			if val, ok := cmd[serverType].(string); ok {
 				return val
 			}
