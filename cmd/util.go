@@ -16,26 +16,36 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
+	"regexp"
 
 	"github.com/aquasecurity/bench-common/check"
 	commonCheck "github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/bench-common/util"
 	"github.com/golang/glog"
+	"gopkg.in/yaml.v2"
 )
 
-func runChecks(b commonCheck.Bench, serverType string) error {
-	var version string
+func runChecks(b commonCheck.Bench, serverType, serverCaption string) error {
+	var cisVersion string
 	var err error
 
 	if windowsCisVersion != "" {
-		version = windowsCisVersion
+		cisVersion = windowsCisVersion
 	} else {
-		version = "2.0.0"
+		cisVersion = "2.0.0"
 	}
 
 	if cfgFile == "" {
-		cfgFile, err = loadConfig(version)
+		sc := regexp.MustCompile(`Microsoft Windows Server (\d+)`)
+		match := sc.FindStringSubmatch(serverCaption)
+		if len(match) < 2 {
+			return fmt.Errorf("Invalid Microsoft Windows Server caption: %s.\nAre you running windows-bench on a Microsoft Windows Server?", serverCaption)
+		}
+		serverVersion := match[1]
+
+		cfgFile, err = loadConfig(cisVersion, serverVersion, serverType)
 		if err != nil {
 			return err
 		}
@@ -86,17 +96,28 @@ func getOsTypeAuditCommand(audit interface{}, serverType string) string {
 	return fmt.Sprintf("%v", audit)
 }
 
-// loadConfig finds the correct config dir based on the kubernetes version,
-// merges any specific config.yaml file found with the main config
-// and returns the benchmark file to use.
-func loadConfig(version string) (string, error) {
+// loadConfig finds the correct Window sbenchmark based on the Windows Server version,
+// the Server type and the CIS version mapping in `version_map.yaml`.
+func loadConfig(cisVersion, serverVersion, serverType string) (string, error) {
 	var err error
-	path, err := getConfigFilePath(version, definitionsFile)
+	versionMap := make(map[string]string)
+	key := fmt.Sprintf("%s_%s_%s", serverVersion, serverType, cisVersion)
+	path := filepath.Join(rootDir, "version_map.yaml")
+	in, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
 
-	return filepath.Join(path, definitionsFile), nil
+	if err = yaml.Unmarshal(in, versionMap); err != nil {
+		return "", err
+	}
+
+	cfgFile, exists := versionMap[key]
+	if !exists {
+		return "", fmt.Errorf("No benchmark found for %s %s v%s", serverVersion, serverType, cisVersion)
+	}
+
+	return filepath.Join(cfgDir, cfgFile), nil
 }
 
 func outputResults(controls *commonCheck.Controls, summary commonCheck.Summary) error {
