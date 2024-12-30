@@ -85,6 +85,7 @@ func TestConstructShell(t *testing.T) {
 
 	for _, testCase := range testCases {
 		powerShell, err := constructShell(testCase.mss)
+		//nolint:gocritic
 		if testCase.mss.fail {
 			if err == nil {
 				t.Errorf("Expected Error")
@@ -166,6 +167,7 @@ func TestExecute(t *testing.T) {
 
 	for _, testCase := range testCases {
 		result, em, st := testCase.ps.Execute()
+		//nolint:gocritic
 		if testCase.fail {
 			if st != check.SKIP {
 				t.Errorf("Expected FAIL state but instead got %q", st)

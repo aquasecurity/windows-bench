@@ -17,44 +17,66 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"os"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestLoadConfig(t *testing.T) {
-	here, _ := os.Getwd()
-	// cfgDir is defined in root.go
 	type TestCase struct {
-		version     string
-		cfgPath     string
-		want        string
-		expectError bool
+		cisVersion    string
+		serverType    string
+		serverVersion string
+		want          string
 	}
 
 	testCases := []TestCase{
 		{
-			version:     "2.0.0",
-			cfgPath:     fmt.Sprintf("%s/../cfg", here),
-			want:        "cfg/2.0.0/definitions.yaml",
-			expectError: false,
+			cisVersion:    "2.0.0",
+			serverType:    "Server",
+			serverVersion: "2019",
+			want:          "CIS_Microsoft_Windows_Server_2019_Stand-alone_v2.0.0.yaml",
+		},
+		{
+			cisVersion:    "2.0.0",
+			serverType:    "MemberServer",
+			serverVersion: "2019",
+			want:          "CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml",
+		},
+		{
+			cisVersion:    "2.0.0",
+			serverType:    "DomainController",
+			serverVersion: "2019",
+			want:          "CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml",
+		},
+		{
+			cisVersion:    "2.0.0",
+			serverType:    "DomainController",
+			serverVersion: "2022",
+			want:          "CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml",
+		},
+		{
+			cisVersion:    "2.0.0",
+			serverType:    "Server",
+			serverVersion: "2022",
+			want:          "",
+		},
+		{
+			cisVersion:    "x.y.z",
+			serverType:    "whois",
+			serverVersion: "bad",
+			want:          "",
 		},
 	}
 	for _, tc := range testCases {
-		cfgDir = tc.cfgPath
-		got, _ := loadConfig(tc.version)
-		if tc.expectError {
-			assert.True(t, strings.Contains(got, tc.want))
-		}
+		out, _ := loadConfig(tc.cisVersion, tc.serverVersion, tc.serverType)
+		assert.Contains(t, out, tc.want)
 	}
 }
 
 func TestRunChecks(t *testing.T) {
 	b := getMockBench()
-	err := runChecks(b, "Server")
+	err := runChecks(b, "Server", "Microsoft Windows Server 2019")
 	var write bytes.Buffer
 	outputWriter = &write
 	if err != nil {

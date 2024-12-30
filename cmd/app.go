@@ -15,13 +15,10 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/aquasecurity/bench-common/check"
 	"github.com/aquasecurity/bench-common/util"
-	"github.com/golang/glog"
 )
 
 func runControls(controls *check.Controls, checkList string) check.Summary {
@@ -49,36 +46,4 @@ func getControls(bench check.Bench, path string, constraints []string) (*check.C
 	}
 
 	return controls, err
-}
-
-func getDefinitionFilePath(version, filename string) (string, error) {
-
-	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s filename: %s\n", version, filename))
-	path := filepath.Join(cfgDir, version)
-	file := filepath.Join(path, filename)
-
-	glog.V(2).Info(fmt.Sprintf("Looking for config file: %s\n", file))
-
-	_, err := os.Stat(file)
-	if err != nil {
-		return "", err
-	}
-
-	return file, nil
-}
-
-// getConfigFilePath locates the config files we should be using based on either the specified
-// version, or the running version of kubernetes if not specified
-func getConfigFilePath(fileVersion string, filename string) (path string, err error) {
-
-	glog.V(2).Info(fmt.Sprintf("Looking for config for version %s", fileVersion))
-
-	path = filepath.Join(cfgDir, fileVersion)
-	file := filepath.Join(path, string(filename))
-	glog.V(2).Info(fmt.Sprintf("Looking for config file: %s\n", file))
-
-	if _, err = os.Stat(file); !os.IsNotExist(err) {
-		return path, err
-	}
-	return "", fmt.Errorf("file %s not found", filename)
 }

@@ -25,9 +25,7 @@ import (
 )
 
 var (
-	ver                = "2.0.0"
-	testDefinitionFile = "definitions.yaml"
-	path               string
+	testDefinitionFile = "CIS_Microsoft_Windows_Server_2019_Stand-alone_v2.0.0.yaml"
 )
 
 type mockPowerShell struct{}
@@ -38,51 +36,14 @@ func (p mockPowerShell) Execute(customConfig ...interface{}) (result string, err
 
 func init() {
 	here, _ := os.Getwd()
-	// cfgDir is defined in root.go
-	cfgDir = fmt.Sprintf("%s/../cfg", here)
-}
-
-// Tests all standard windows-bench definition files
-func TestGetDefinitionFilePath(t *testing.T) {
-	d, err := os.Open(cfgDir)
-	if err != nil {
-		t.Errorf("unexpected error: %s\n", err)
-	}
-
-	vers, err := d.Readdirnames(-1)
-	if err != nil {
-		t.Errorf("unexpected error: %s\n", err)
-	}
-
-	for _, ver := range vers {
-
-		verDir := fmt.Sprintf("%s/%s", cfgDir, ver)
-		cfvd, err := os.Open(verDir)
-		if err != nil {
-			t.Errorf("unexpected error: %s\n", err)
-		}
-		files, err := cfvd.Readdirnames(-1)
-		if err != nil {
-			t.Errorf("unexpected error: %s\n", err)
-		}
-
-		for _, file := range files {
-			_, err := getDefinitionFilePath(ver, file)
-			if err != nil {
-				t.Errorf("unexpected error: %s\n", err)
-			}
-		}
-
-	}
+	// cfgDir and rootDir are defined in root.go
+	rootDir = fmt.Sprintf("%s/..", here)
+	cfgDir = fmt.Sprintf("%s/cfg", rootDir)
 }
 
 func TestGetControls(t *testing.T) {
 	var err error
-	path, err = getDefinitionFilePath(ver, testDefinitionFile)
-	if err != nil {
-		t.Errorf("unexpected error: %s\n", err)
-	}
-
+	path := fmt.Sprintf("%s/%s", cfgDir, testDefinitionFile)
 	b := getMockBench()
 	_, err = getControls(b, path, nil)
 	if err != nil {
@@ -92,8 +53,7 @@ func TestGetControls(t *testing.T) {
 
 func TestRunControls(t *testing.T) {
 	b := getMockBench()
-	path, err := loadConfig("2.0.0")
-	assert.NoError(t, err)
+	path := fmt.Sprintf("%s/%s", cfgDir, testDefinitionFile)
 	control, err := getControls(b, path, nil)
 	if err != nil {
 		t.Errorf("unexpected error: %s\n", err)

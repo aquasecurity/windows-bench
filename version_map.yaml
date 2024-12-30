@@ -1,0 +1,16 @@
+---
+
+# Map Windows server version and type to corresponding CIS benchmark file
+# The key is the version and type of the Windows server, and the value is the corresponding CIS benchmark file
+# Format: serverVersion_serverType_CISBenchmarkVersion: 'CISBenchmarkFileName'
+#   serverVesion = 2019|2022|...
+#   serverType = DomainController|MemberServer|Server
+
+# Microsoft Windows Server 2019 Benchmarks
+2019_DomainController_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'
+2019_MemberServer_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'
+2019_Server_2.0.0: 'CIS_Microsoft_Windows_Server_2019_Stand-alone_v2.0.0.yaml'
+
+# Microsoft Windows Server 2022 Benchmarks
+2022_DomainController_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'
+2022_MemberServer_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'

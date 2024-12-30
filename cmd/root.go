@@ -35,12 +35,12 @@ var (
 
 	windowsCisVersion string
 	cfgDir            string
+	rootDir           string
 	cfgFile           string
 	checkList         string
 	jsonFmt           bool
 	includeTestOutput bool
 	outputFile        string
-	definitionsFile             = "definitions.yaml"
 	outputWriter      io.Writer = os.Stdout
 	errWriter         io.Writer = os.Stderr
 )
@@ -63,7 +63,7 @@ var RootCmd = &cobra.Command{
 			glog.V(2).Info("Returning a PowerShell (Auditer) \n")
 			return ps
 		})
-		return runChecks(b, ps.OsType)
+		return runChecks(b, ps.OsType, ps.ServerCaption)
 	},
 }
 
@@ -116,6 +116,12 @@ func init() {
 		RootCmd.PersistentFlags().AddGoFlag(goflag)
 	})
 
+	// Initialize global variables
+	var err error
+	rootDir, err = os.Getwd()
+	if err != nil {
+		glog.Fatalf("Failed to get the current working directory: %v", err)
+	}
 }
 
 // initConfig reads in config file and ENV variables if set.

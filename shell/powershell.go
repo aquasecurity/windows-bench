@@ -27,14 +27,16 @@ import (
 
 const TypePowershell = "powershell"
 const osTypePowershellCommand = `(Get-CimInstance -ClassName Win32_OperatingSystem).ProductType`
+const serverCaptionPowershellCommand = `(Get-CimInstance -ClassName Win32_OperatingSystem).Caption`
 const supressError = "$ErrorActionPreference = 'SilentlyContinue'"
 
 var errWrongOSType = errors.New("wrongOSType")
 
 type PowerShell struct {
-	Cmd    map[string]string
-	sh     ps.Shell
-	OsType string
+	Cmd           map[string]string
+	sh            ps.Shell
+	OsType        string
+	ServerCaption string
 }
 
 type shellStarter interface {
@@ -61,6 +63,11 @@ func NewPowerShell() (*PowerShell, error) {
 		p.OsType = "DomainController"
 	case "3":
 		p.OsType = "Server"
+	}
+
+	p.ServerCaption, err = p.performExec(serverCaptionPowershellCommand)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to get server caption: %w", err)
 	}
 	return p, nil
 }
