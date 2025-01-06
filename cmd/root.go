@@ -35,7 +35,6 @@ var (
 
 	windowsCisVersion string
 	cfgDir            string
-	rootDir           string
 	cfgFile           string
 	checkList         string
 	jsonFmt           bool
@@ -115,13 +114,6 @@ func init() {
 	goflag.CommandLine.VisitAll(func(goflag *goflag.Flag) {
 		RootCmd.PersistentFlags().AddGoFlag(goflag)
 	})
-
-	// Initialize global variables
-	var err error
-	rootDir, err = os.Getwd()
-	if err != nil {
-		glog.Fatalf("Failed to get the current working directory: %v", err)
-	}
 }
 
 // initConfig reads in config file and ENV variables if set.
