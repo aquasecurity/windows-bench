@@ -20,4 +20,3 @@ archives:
       }}v{{.Arm }}{{ end }}"
     files:
       - cfg/*
-      - version_map.yaml

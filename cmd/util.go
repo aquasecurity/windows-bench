@@ -102,7 +102,7 @@ func loadConfig(cisVersion, serverVersion, serverType string) (string, error) {
 	var err error
 	versionMap := make(map[string]string)
 	key := fmt.Sprintf("%s_%s_%s", serverVersion, serverType, cisVersion)
-	path := filepath.Join(rootDir, "version_map.yaml")
+	path := filepath.Join(cfgDir, "version_map.yaml")
 	in, err := os.ReadFile(path)
 	if err != nil {
 		return "", err

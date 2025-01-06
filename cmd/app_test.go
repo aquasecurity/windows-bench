@@ -36,9 +36,8 @@ func (p mockPowerShell) Execute(customConfig ...interface{}) (result string, err
 
 func init() {
 	here, _ := os.Getwd()
-	// cfgDir and rootDir are defined in root.go
-	rootDir = fmt.Sprintf("%s/..", here)
-	cfgDir = fmt.Sprintf("%s/cfg", rootDir)
+	// cfgDir is defined in root.go
+	cfgDir = fmt.Sprintf("%s/../cfg", here)
 }
 
 func TestGetControls(t *testing.T) {
