@@ -4023,8 +4023,8 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Internet Communication Management\Internet Communication settings\Turn off Internet download for Web publishing and online ordering wizards
 
           Note: This Group Policy path is provided by the Group Policy template ICM.admx/adml
-          that is included with all versions of the Microsoft Windows Administrative Templates.             
-        scored: true
+          that is included with all versions of the Microsoft Windows Administrative Templates.
+          scored: true
       - id: 18.9.20.1.6
         description: "Ensure 'Turn off printing over HTTP' is set to 'Enabled' (Automated)"
         audittype: powershell
@@ -4969,9 +4969,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to
           'Enabled: Diagnostic data off (not recommended)'' or 'Enabled: Send required diagnostic data':
-          
-            Computer Configuration\Policies\Administrative Templates\Windows Components\Data Collection and Preview Builds\Allow Diagnostic Data
-
+          Computer Configuration\Policies\Administrative Templates\Windows Components\Data Collection and Preview Builds\Allow Diagnostic Data
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template DataCollection.admx/adml that is included with the Microsoft Windows 10
           RTM (Release 1507) Administrative Templates (or newer).
@@ -5684,9 +5682,7 @@ groups:
           'be9ba2d9-53ea-4cdc-84e5-9b1eeee46550', 'd3e037e1-3eb8-44c8-a917-
           57927947596d', 'd4f940ab-401b-4efc-aadc-ad5f3c50688a', and 'e6db77e5-3df2-
           4cf1-b95a-636979351e5b' are each set to a value of 1:
-            
-            Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Microsoft Defender Exploit Guard\Attack Surface Reduction\Configure Attack Surface Reduction rules: Set the state for each ASR rule
-
+          Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Microsoft Defender Exploit Guard\Attack Surface Reduction\Configure Attack Surface Reduction rules: Set the state for each ASR rule 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 10
           Release 1709 Administrative Templates (or newer).
@@ -5839,8 +5835,7 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Disabled': 
-            Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Reporting\Configure Watson events
-
+          Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Reporting\Configure Watson events
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
           and Server 2012 R2 Administrative Templates (or newer).
@@ -6236,7 +6231,7 @@ groups:
           TerminalServer.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
         scored: true
-      - id: 18.10.56.3.9.5
+     - id: 18.10.56.3.9.5
         description: "Ensure 'Set client connection encryption level' is set to 'Enabled: High Level' (Automated)"
         audittype: powershell
         audit:
@@ -6698,7 +6693,7 @@ groups:
           template PowerShellExecutionPolicy.admx/adml that is included with the Microsoft
           Windows 10 RTM (Release 1507) Administrative Templates (or newer).
         scored: true
-      - id: 18.10.88.1.1
+     - id: 18.10.88.1.1
         description: "Ensure 'Allow Basic authentication' is set to 'Disabled' (Automated)"
         audittype: powershell
         audit:
@@ -7428,8 +7423,7 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
-            User Configuration\Policies\Administrative Templates\Windows Components\Windows Media Player\Playback\Prevent Codec Download
-
+          User Configuration\Policies\Administrative Templates\Windows Components\Windows Media Player\Playback\Prevent Codec Download
           Note: This Group Policy path is provided by the Group Policy template
           WindowsMediaPlayer.admx/adml that is included with all versions of the Microsoft
           Windows Administrative Templates.
