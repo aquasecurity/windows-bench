@@ -99,7 +99,7 @@ groups:
         audit:
           cmd:
             Server: >
-              SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet; 
+              SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet;
               (Get-Content seccfg | Select-String -Pattern "PasswordComplexity") -replace '[a-zA-Z:()= ]+', '';
               Remove-Item seccfg
         tests:
@@ -3860,7 +3860,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\System\Device Guard\Turn On Virtualization Based Security: Secure Launch Configuration
-          
+            
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template DeviceGuard.admx/adml that is included with the Microsoft Windows 10
           Release 1809 and Server 2019 Administrative Templates (or newer).
