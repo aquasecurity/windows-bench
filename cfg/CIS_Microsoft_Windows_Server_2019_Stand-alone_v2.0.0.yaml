@@ -15,7 +15,7 @@ groups:
           cmd:
             Server: >
               SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet;
-              (Get-Content seccfg | Select-String -Pattern '^PasswordHistorySize') -replace '[a-zA-Z:()= ]+', '';
+              (Get-Content seccfg | Select-String -Pattern 'PasswordHistorySize') -replace '[a-zA-Z:()= ]+', '';
               Remove-Item seccfg
         tests:
           test_items:
@@ -80,10 +80,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet;
-              (Get-Content seccfg | Select-String -Pattern '^MinimumPasswordLength') -replace '[a-zA-Z:()= ]+', '';
-              Remove-Item seccfg
+            Server: "(net accounts | Select-String -Pattern 'Minimum password length') -replace '[a-zA-Z: ]+', ''"
         tests:
           test_items:
             - flag: ""
@@ -92,7 +89,8 @@ groups:
                 value: 14
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to 14 or more character(s):
+          To establish the recommended configuration via GP, set the
+          following UI path to 14 or more character(s):
               Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Minimum password length
         scored: true
       - id: 1.1.5
@@ -121,10 +119,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^ClearTextPassword") -replace '[a-zA-Z:()= ]+', '';
-              Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet ; (Get-Content seccfg | Select-String -Pattern "ClearTextPassword") -replace '[a-zA-Z:()= ]+', ''; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -133,7 +128,8 @@ groups:
                 value: 0
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to Disabled:
+          To establish the recommended configuration via GP, set the following UI path to
+          Disabled:
             Computer Configuration\Policies\Windows Settings\Security Settings\Account Policies\Password Policy\Store passwords using reversible encryption
         scored: true
   - id: 1.2
@@ -144,10 +140,11 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet;
-              (Get-Content seccfg | Select-String -Pattern '^LockoutDuration') -replace '[a-zA-Z:()= ]+', '';
-              Remove-Item seccfg
+            DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+               Select -ExpandProperty LockoutDuration | Select -ExpandProperty Minutes
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+               Select -ExpandProperty LockoutDuration | Select -ExpandProperty Minutes
+            Server: "(net accounts | Select-String -Pattern 'Lockout duration') -replace '[a-zA-Z(): ]+', ''"
         tests:
           test_items:
             - flag: ""
@@ -164,10 +161,11 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet;
-              (Get-Content seccfg | Select-String -Pattern '^LockoutBadCount') -replace '[a-zA-Z:()= ]+', '';
-              Remove-Item seccfg
+            DomainController: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+               Select -ExpandProperty LockoutThreshold
+            MemberServer: Get-ADDefaultDomainPasswordPolicy -Current LocalComputer |
+               Select -ExpandProperty LockoutThreshold
+            Server: "(net accounts | Select-String -Pattern 'Lockout threshold') -replace '[a-zA-Z: ]+', ''"
         tests:
           test_items:
             - flag: ""
@@ -189,10 +187,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet ;
-              (Get-Content seccfg | Select-String -Pattern "^AllowAdministratorLockout") -replace '[a-zA-Z= ]+' ;
-              Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet ; (Get-Content seccfg | Select-String -Pattern "AllowAdministratorLockout") -replace '[a-zA-Z= ]+' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas SECURITYPOLICY /quiet ; (Get-Content seccfg | Select-String -Pattern "AllowAdministratorLockout") -replace '[a-zA-Z= ]+' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -212,10 +208,9 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              Get-Content seccfg | Select-String -Pattern "^SeTrustedCredManAccessPrivilege";
-              Remove-Item seccfg
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTrustedCredManAccessPrivilege" ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -232,10 +227,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^SeNetworkLogonRight") -replace '^.*= |[*]';
-              Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeNetworkLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -252,10 +244,9 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              Get-Content seccfg | Select-String -Pattern "^SeTcbPrivilege";
-              Remove-Item seccfg
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; Get-Content seccfg | Select-String -Pattern "SeTcbPrivilege" ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -272,10 +263,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^SeIncreaseQuotaPrivilege") -replace '^.*= |[*]';
-              Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeIncreaseQuotaPrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeIncreaseQuotaPrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -284,7 +273,8 @@ groups:
                 value: "S-1-5-19,S-1-5-20,S-1-5-32-544"
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to Administrators, LOCAL SERVICE, NETWORK SERVICE:
+          To establish the recommended configuration via GP, set the following UI path to
+          Administrators, LOCAL SERVICE, NETWORK SERVICE:
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Adjust memory quotas for a process
         scored: true
       - id: 2.2.5
@@ -292,10 +282,9 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^SeInteractiveLogonRight") -replace '^.*= |[*]';
-              Remove-Item seccfg
+            DomainController: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeInteractiveLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeInteractiveLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeInteractiveLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -312,12 +301,9 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^SeRemoteInteractiveLogonRight") -replace '^.*= |[*]';
-              Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeRemoteInteractiveLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeRemoteInteractiveLogonRight") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
-          bin_op: or
           test_items:
             - flag: ""
               compare:
@@ -328,6 +314,7 @@ groups:
                 op: eq
                 value: ""
               set: true
+          bin_op: or
         remediation: >
           To establish the recommended configuration via GP, configure the following UI path:
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Allow log on through Remote Desktop Services
@@ -337,10 +324,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^SeBackupPrivilege") -replace '^.*= |[*]';
-              Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeBackupPrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeBackupPrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -357,10 +342,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^SeSystemtimePrivilege") -replace '^.*= |[*]';
-              Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeSystemtimePrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeSystemtimePrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -377,10 +360,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >
-              SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet;
-              (Get-Content seccfg | Select-String -Pattern "^SeTimeZonePrivilege") -replace '^.*= |[*]';
-              Remove-Item seccfg
+            MemberServer: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeTimeZonePrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
+            Server: SecEdit /export /cfg seccfg /areas USER_RIGHTS /quiet ; (Get-Content seccfg | Select-String -Pattern "SeTimeZonePrivilege") -replace '^.*= |[*]' ; Remove-Item seccfg
         tests:
           test_items:
             - flag: ""
@@ -389,7 +370,8 @@ groups:
                 value: "S-1-5-19,S-1-5-32-544"
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to Administrators, LOCAL SERVICE:
+          To establish the recommended configuration via GP, set the following UI path to
+          Administrators, LOCAL SERVICE:
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Change the time zone
         scored: true
       - id: 2.2.10
@@ -1116,13 +1098,13 @@ groups:
         audit:
           cmd:
             MemberServer: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
-            Server: Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText
+            Server: (Get-ItemPropertyValue 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' LegalNoticeText) -replace '\x00', "NA"
         tests:
           test_items:
             - flag: ""
               compare:
                 op: noteq
-                value: "\x00"
+                value: "NA"
               set: true
         remediation: >
           To establish the recommended configuration via GP, configure the following UI path to a value that is consistent with the security and operational requirements of your organization:
@@ -1509,14 +1491,8 @@ groups:
             Software\Microsoft\Windows NT\CurrentVersion\Perflib
             System\CurrentControlSet\Services\SysmonLog
 
-            Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network access: Remotely accessible registry paths and sub-paths
-
-          When a server holds the Active Directory Certificate Services Role with Certification
-          Authority Role Service, the above list should also include:
-            System\CurrentControlSet\Services\CertSvc.
-
-          When a server has the WINS Server Feature installed, the above list should also include:
-            System\CurrentControlSet\Services\WINS
+            Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network access: Remotely accessible registry paths and sub-paths When a server holds the Active Directory Certificate Services Role with Certification Authority Role Service, the above list should also include: System\CurrentControlSet\Services\CertSvc.
+            When a server has the WINS Server Feature installed, the above list should also include: System\CurrentControlSet\Services\WINS
         scored: true
       - id: 2.3.10.9
         description: "Ensure 'Network access: Restrict anonymous access to Named Pipes and Shares' is set to 'Enabled' (Automated)"
@@ -1569,7 +1545,7 @@ groups:
                 value: ""
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to <blank> (i.e. None):
+          To establish the recommended configuration via GP, set the following UI path to blank (i.e. None):
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network access: Shares that can be accessed anonymously
         scored: true
       - id: 2.3.10.12
@@ -1701,7 +1677,7 @@ groups:
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network security: Force logoff when logon hours expire
         scored: true
       - id: 2.3.11.7
-        description: "Ensure 'Network security: LAN Manager authentication level' is set to 'Send NTLMv2 response only. Refuse LM & NTLM' (Automated)"
+        description: "Ensure 'Network security: LAN Manager authentication level' is set to 'Send NTLMv2 response only. Refuse LM and NTLM' (Automated)"
         audittype: powershell
         audit:
           cmd:
@@ -1716,7 +1692,7 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to: Send
-          NTLMv2 response only. Refuse LM & NTLM:
+          NTLMv2 response only. Refuse LM and NTLM:
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network security: LAN Manager authentication level
         scored: true
       - id: 2.3.11.8
@@ -3877,11 +3853,10 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
-            Computer Configuration\Policies\Administrative Templates\System\Device Guard\Turn On Virtualization Based Security: Secure Launch Configuration
-
+          Computer Configuration\Policies\Administrative Templates\System\Device Guard\Turn On Virtualization Based Security: Secure Launch Configuration
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template DeviceGuard.admx/adml that is included with the Microsoft Windows 10
-          Release 1809 & Server 2019 Administrative Templates (or newer).
+          Release 1809 and Server 2019 Administrative Templates (or newer).
         scored: true
   - id: 18.9
     description: System
@@ -3942,7 +3917,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template GroupPolicy.admx/adml that is included with the Microsoft Windows 10
-          Release 1607 & Server 2016 Administrative Templates (or newer).
+          Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 18.9.20.1.1
         description: "Ensure 'Turn off downloading of print drivers over HTTP' is set to 'Enabled' (Automated)"
@@ -3984,7 +3959,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Internet Communication Management\Internet Communication settings\Turn off handwriting personalization data sharing
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template ShapeCollector.admx/adml that is included with the Microsoft Windows 7 &
+          template ShapeCollector.admx/adml that is included with the Microsoft Windows 7 and
           Server 2008 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.9.20.1.3
@@ -4004,8 +3979,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Administrative Templates\System\Internet Communication Management\Internet Communication settings\Turn off handwriting recognition error reporting
-
-          Note: This Group Policy path is provided by the Group Policy template
+             Note: This Group Policy path is provided by the Group Policy template
           InkWatson.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
         scored: true
@@ -4050,7 +4024,7 @@ groups:
 
           Note: This Group Policy path is provided by the Group Policy template ICM.admx/adml
           that is included with all versions of the Microsoft Windows Administrative Templates.
-        scored: true
+          scored: true
       - id: 18.9.20.1.6
         description: "Ensure 'Turn off printing over HTTP' is set to 'Enabled' (Automated)"
         audittype: powershell
@@ -4267,7 +4241,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template DmaGuard.admx/adml that is included with the Microsoft Windows 10 Release
-          1809 & Server 2019 Administrative Templates (or newer).
+          1809 and Server 2019 Administrative Templates (or newer).
         scored: true
       - id: 18.9.27.1
         description: "Ensure 'Disallow copying of user input methods to the system account for sign-in' is set to 'Enabled' (Automated)"
@@ -4288,7 +4262,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\System\Locale Services\Disallow copying of user input methods to the system account for sign-in
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template Globalization.admx/adml that is included with the Microsoft Windows 8.0 &
+          template Globalization.admx/adml that is included with the Microsoft Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.28.1
@@ -4311,7 +4285,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template Logon.admx/adml that is included with the Microsoft Windows 10 Release
-          1607 & Server 2016 Administrative Templates (or newer).
+          1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 18.9.28.2
         description: "Ensure 'Do not display network selection UI' is set to 'Enabled' (Automated)"
@@ -4332,7 +4306,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Logon\Do not display network selection UI
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template Logon.admx/adml that is included with the Microsoft Windows 8.1 & Server
+          template Logon.admx/adml that is included with the Microsoft Windows 8.1 and Server
           2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.9.28.3
@@ -4354,7 +4328,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Logon\Turn off app notifications on the lock screen
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template Logon.admx/adml that is included with the Microsoft Windows 8.1 & Server
+          template Logon.admx/adml that is included with the Microsoft Windows 8.1 and Server
           2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.9.28.4
@@ -4377,7 +4351,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template CredentialProviders.admx/adml that is included with the Microsoft
-          Windows 8.0 & Server 2012 (non-R2) Administrative Templates (or newer).
+          Windows 8.0 and Server 2012 (non-R2) Administrative Templates (or newer).
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
           named Turn on PIN sign-in, but it was renamed starting with the Windows 10 Release
@@ -4402,7 +4376,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\OS Policies\Allow Clipboard synchronization across devices
 
           Note: This Group Policy path is provided by the Group Policy template
-          OSPolicy.admx/adml that is included with the Microsoft Windows 10 Release 1809 &
+          OSPolicy.admx/adml that is included with the Microsoft Windows 10 Release 1809 and
           Server 2019 Administrative Templates (or newer).
         scored: true
       - id: 18.9.31.2
@@ -4424,7 +4398,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\OS Policies\Allow upload of User Activities
 
           Note: This Group Policy path is provided by the Group Policy template
-          OSPolicy.admx/adml that is included with the Microsoft Windows 10 Release 1809 &
+          OSPolicy.admx/adml that is included with the Microsoft Windows 10 Release 1809 and
           Server 2019 Administrative Templates (or newer).
         scored: true
       - id: 18.9.33.6.1
@@ -4447,7 +4421,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template Power.admx/adml that is included with the Microsoft Windows 10 Release
-          1607 & Server 2016 Administrative Templates (or newer).
+          1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 18.9.33.6.2
         description: "Ensure 'Allow network connectivity during connected-standby (plugged in)' is set to 'Disabled' (Automated)"
@@ -4469,7 +4443,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template Power.admx/adml that is included with the Microsoft Windows 10 Release
-          1607 & Server 2016 Administrative Templates (or newer).
+          1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 18.9.33.6.3
         description: "Ensure 'Require a password when a computer wakes (on battery)' is set to 'Enabled' (Automated)"
@@ -4490,7 +4464,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Power Management\Sleep Settings\Require a password when a computer wakes (on battery)
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template Power.admx/adml that is included with the Microsoft Windows 8.0 & Server
+          template Power.admx/adml that is included with the Microsoft Windows 8.0 and Server
           2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.33.6.4
@@ -4512,7 +4486,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Power Management\Sleep Settings\Require a password when a computer wakes (plugged in)
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template Power.admx/adml that is included with the Microsoft Windows 8.0 & Server
+          template Power.admx/adml that is included with the Microsoft Windows 8.0 and Server
           2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.35.1
@@ -4535,7 +4509,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template RemoteAssistance.admx/adml that is included with the Microsoft Windows
-          8.0 & Server 2012 (non-R2) Administrative Templates (or newer).
+          8.0 and Server 2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.35.2
         description: "Ensure 'Configure Solicited Remote Assistance' is set to 'Disabled' (Automated)"
@@ -4557,7 +4531,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template RemoteAssistance.admx/adml that is included with the Microsoft Windows
-          8.0 & Server 2012 (non-R2) Administrative Templates (or newer).
+          8.0 and Server 2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.36.1
         description: "Ensure 'Enable RPC Endpoint Mapper Client Authentication' is set to 'Enabled' (MS only) (Automated)"
@@ -4578,7 +4552,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Remote Procedure Call\Enable RPC Endpoint Mapper Client Authentication
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template RPC.admx/adml that is included with the Microsoft Windows 8.0 & Server 2012
+          template RPC.admx/adml that is included with the Microsoft Windows 8.0 and Server 2012
           (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.36.2
@@ -4600,7 +4574,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Remote Procedure Call\Restrict Unauthenticated RPC clients
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template RPC.admx/adml that is included with the Microsoft Windows 8.0 & Server 2012
+          template RPC.admx/adml that is included with the Microsoft Windows 8.0 and Server 2012
           (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.47.5.1
@@ -4622,7 +4596,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\Troubleshooting and Diagnostics\Microsoft Support Diagnostic Tool\Microsoft Support Diagnostic Tool: Turn on MSDT interactive communication with support provider
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template MSDT.admx/adml that is included with the Microsoft Windows 8.0 & Server
+          template MSDT.admx/adml that is included with the Microsoft Windows 8.0 and Server
           2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.9.47.11.1
@@ -4645,7 +4619,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template PerformancePerftrack.admx/adml that is included with the Microsoft
-          Windows 7 & Server 2008 R2 Administrative Templates (or newer).
+          Windows 7 and Server 2008 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.9.49.1
         description: "Ensure 'Turn off the advertising ID' is set to 'Enabled' (Automated)"
@@ -4666,7 +4640,7 @@ groups:
              Computer Configuration\Policies\Administrative Templates\System\User Profiles\Turn off the advertising ID
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template UserProfiles.admx/adml that is included with the Microsoft Windows 8.1 &
+          template UserProfiles.admx/adml that is included with the Microsoft Windows 8.1 and
           Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.9.51.1.1
@@ -4735,7 +4709,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\App runtime\Allow Microsoft accounts to be optional
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template AppXRuntime.admx/adml that is included with the Microsoft Windows 8.1 &
+          template AppXRuntime.admx/adml that is included with the Microsoft Windows 8.1 and
           Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.7.1
@@ -4757,7 +4731,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\AutoPlay Policies\Disallow Autoplay for non-volume devices
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template AutoPlay.admx/adml that is included with the Microsoft Windows 8.0 &
+          template AutoPlay.admx/adml that is included with the Microsoft Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.10.7.2
@@ -4779,7 +4753,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\AutoPlay Policies\Set the default behavior for AutoRun
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template AutoPlay.admx/adml that is included with the Microsoft Windows 8.0 &
+          template AutoPlay.admx/adml that is included with the Microsoft Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.10.7.3
@@ -4826,7 +4800,7 @@ groups:
           template Biometrics.admx/adml that is included with the Microsoft Windows 10
           Release 1511 Administrative Templates (or newer).
 
-          Note #2: In the Windows 10 Release 1511 and Windows 10 Release 1607 & Server
+          Note #2: In the Windows 10 Release 1511 and Windows 10 Release 1607 and Server
           2016 Administrative Templates, this setting was initially named Use enhanced anti-
           spoofing when available. It was renamed to Configure enhanced anti-spoofing starting
           with the Windows 10 Release 1703 Administrative Templates.
@@ -4851,7 +4825,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template Camera.admx/adml that is included with the Microsoft Windows 10 Release
-          1607 & Server 2016 Administrative Templates (or newer).
+          1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 18.10.12.1
         description: "Ensure 'Turn off cloud consumer account state content' is set to 'Enabled' (Automated)"
@@ -4923,7 +4897,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WirelessDisplay.admx/adml that is included with the Microsoft Windows 10
-          Release 1607 & Server 2016 Administrative Templates (or newer). The new Choose
+          Release 1607 and Server 2016 Administrative Templates (or newer). The new Choose
           one of the following actions sub-option was later added as of the Windows 10
           Release 1809 Administrative Templates. Choosing Enabled in the older templates is
           the equivalent of choosing 'Enabled: First Time' in the newer templates.
@@ -4947,7 +4921,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\Credential User Interface\Do not display the password reveal button
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template CredUI.admx/adml that is included with the Microsoft Windows 8.0 & Server
+          template CredUI.admx/adml that is included with the Microsoft Windows 8.0 and Server
           2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.10.14.2
@@ -4995,9 +4969,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to
           'Enabled: Diagnostic data off (not recommended)'' or 'Enabled: Send required diagnostic data':
-
-            Computer Configuration\Policies\Administrative Templates\Windows Components\Data Collection and Preview Builds\Allow Diagnostic Data
-
+          Computer Configuration\Policies\Administrative Templates\Windows Components\Data Collection and Preview Builds\Allow Diagnostic Data
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template DataCollection.admx/adml that is included with the Microsoft Windows 10
           RTM (Release 1507) Administrative Templates (or newer).
@@ -5271,7 +5243,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Retain old events, but it was renamed starting with the Windows 8.0 & Server
+          named Retain old events, but it was renamed starting with the Windows 8.0 and Server
           2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.25.1.2
@@ -5297,7 +5269,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 &
+          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.25.2.1
@@ -5323,7 +5295,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Retain old events, but it was renamed starting with the Windows 8.0 & Server
+          named Retain old events, but it was renamed starting with the Windows 8.0 and Server
           2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.25.2.2
@@ -5349,7 +5321,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 &
+          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.25.3.1
@@ -5375,7 +5347,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Retain old events, but it was renamed starting with the Windows 8.0 & Server
+          named Retain old events, but it was renamed starting with the Windows 8.0 and Server
           2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.25.3.2
@@ -5401,7 +5373,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 &
+          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.25.4.1
@@ -5427,7 +5399,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Retain old events, but it was renamed starting with the Windows 8.0 & Server
+          named Retain old events, but it was renamed starting with the Windows 8.0 and Server
           2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.25.4.2
@@ -5453,7 +5425,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
-          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 &
+          named Maximum Log Size (KB), but it was renamed starting with the Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.28.2
@@ -5475,7 +5447,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\File Explorer\Turn off Data Execution Prevention for Explorer
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template Explorer.admx/adml that is included with the Microsoft Windows 7 & Server
+          template Explorer.admx/adml that is included with the Microsoft Windows 7 and Server
           2008 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.28.3
@@ -5541,7 +5513,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\Location and Sensors\Turn off location
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template Sensors.admx/adml that is included with the Microsoft Windows 7 & Server
+          template Sensors.admx/adml that is included with the Microsoft Windows 7 and Server
           2008 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.40.1
@@ -5608,7 +5580,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.5.2
         description: "Ensure 'Join Microsoft MAPS' is set to 'Disabled' (Automated)"
@@ -5636,7 +5608,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.6.1.1
         description: "Ensure 'Configure Attack Surface Reduction rules' is set to 'Enabled' (Automated)"
@@ -5709,10 +5681,7 @@ groups:
           7d60-472f-ba1a-a39ef669e4b2', 'b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4',
           'be9ba2d9-53ea-4cdc-84e5-9b1eeee46550', 'd3e037e1-3eb8-44c8-a917-
           57927947596d', 'd4f940ab-401b-4efc-aadc-ad5f3c50688a', and 'e6db77e5-3df2-
-          4cf1-b95a-636979351e5b' are each set to a value of 1:
-
-            Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Microsoft Defender Exploit Guard\Attack Surface Reduction\Configure Attack Surface Reduction rules: Set the state for each ASR rule
-
+          4cf1-b95a-636979351e5b' are each set to a value of 1: Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Microsoft Defender Exploit Guard\Attack Surface Reduction\Configure Attack Surface Reduction rules: Set the state for each ASR rule
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 10
           Release 1709 Administrative Templates (or newer).
@@ -5734,8 +5703,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled: Block':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Microsoft Defender Exploit Guard\Network Protection\Prevent users and apps from accessing dangerous websites
-
-          Note: This Group Policy path may not exist by default. It is provided by the Group Policy
+            Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 10
           Release 1709 Administrative Templates (or newer).
         scored: true
@@ -5781,7 +5749,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.10.2
         description: "Ensure 'Turn off real-time protection' is set to 'Disabled' (Automated)"
@@ -5803,7 +5771,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.10.3
         description: "Ensure 'Turn on behavior monitoring' is set to 'Enabled' (Automated)"
@@ -5822,10 +5790,9 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Real-Time Protection\Turn on behavior monitoring
-
-          Note: This Group Policy path may not exist by default. It is provided by the Group Policy
+            Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.10.4
         description: "Ensure 'Turn on script scanning' is set to 'Enabled' (Automated)"
@@ -5865,11 +5832,10 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Disabled':
-            Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Reporting\Configure Watson events
-
+          Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Reporting\Configure Watson events
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.13.1
         description: "Ensure 'Scan packed executables' is set to 'Enabled' (Automated)"
@@ -5913,7 +5879,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.13.3
         description: "Ensure 'Turn on e-mail scanning' is set to 'Enabled' (Automated)"
@@ -5935,7 +5901,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
-          & Server 2012 R2 Administrative Templates (or newer).
+          and Server 2012 R2 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.16
         description: "Ensure 'Configure detection for potentially unwanted applications' is set to 'Enabled: Block' (Automated)"
@@ -5957,7 +5923,7 @@ groups:
 
           Note: This Group Policy path is provided by the Group Policy template
           WindowsDefender.admx/adml that is included with the Microsoft Windows 10 Release
-          1809 & Server 2019 Administrative Templates (or newer).
+          1809 and Server 2019 Administrative Templates (or newer).
         scored: true
       - id: 18.10.42.17
         description: "Ensure 'Turn off Microsoft Defender AntiVirus' is set to 'Disabled' (Automated)"
@@ -6005,11 +5971,11 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\OneDrive\Prevent the usage of OneDrive for file storage
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template SkyDrive.admx/adml that is included with the Microsoft Windows 8.1 &
+          template SkyDrive.admx/adml that is included with the Microsoft Windows 8.1 and
           Server 2012 R2 Administrative Templates (or newer). However, we strongly
           recommend you only use the version included with the Microsoft Windows 10 Release
-          1607 & Server 2016 Administrative Templates (or newer). Older versions of the
-          templates had conflicting settings in different template files for both OneDrive &
+          1607 and Server 2016 Administrative Templates (or newer). Older versions of the
+          templates had conflicting settings in different template files for both OneDrive and
           SkyDrive, until it was cleaned up properly in the above version.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was named
@@ -6084,7 +6050,7 @@ groups:
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was named
           Restrict Terminal Services users to a single remote session, but it was renamed starting
-          with the Windows 7 & Server 2008 R2 Administrative Templates.
+          with the Windows 7 and Server 2008 R2 Administrative Templates.
         scored: true
       - id: 18.10.56.3.3.1
         description: "Ensure 'Do not allow COM port redirection' is set to 'Enabled' (Automated)"
@@ -6169,8 +6135,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Device and Resource Redirection\Do not allow supported Plug and Play device redirection
-
-          Note: This Group Policy path is provided by the Group Policy template
+            Note: This Group Policy path is provided by the Group Policy template
           TerminalServer.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
         scored: true
@@ -6257,7 +6222,6 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Security\Require user authentication for remote connections by using Network Level Authentication
-
           Note: This Group Policy path is provided by the Group Policy template
           TerminalServer.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
@@ -6314,7 +6278,7 @@ groups:
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was named
           Set time limit for active but idle Terminal Services sessions, but it was renamed starting
-          with the Windows 7 & Server 2008 R2 Administrative Templates.
+          with the Windows 7 and Server 2008 R2 Administrative Templates.
         scored: true
       - id: 18.10.56.3.10.2
         description: "Ensure 'Set time limit for disconnected sessions' is set to 'Enabled: 1 minute' (Automated)"
@@ -6361,7 +6325,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was named
-          Do not delete temp folder upon exit, but it was renamed starting with the Windows 8.0 &
+          Do not delete temp folder upon exit, but it was renamed starting with the Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.56.3.11.2
@@ -6410,7 +6374,7 @@ groups:
           Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was named
-          Turn off downloading of enclosures, but it was renamed starting with the Windows 8.0 &
+          Turn off downloading of enclosures, but it was renamed starting with the Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.58.2
@@ -6526,7 +6490,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsExplorer.admx/adml that is included with the Microsoft Windows 8.0
-          & Server 2012 (non-R2) Administrative Templates (or newer).
+          and Server 2012 (non-R2) Administrative Templates (or newer).
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
           named Configure Windows SmartScreen, but it was renamed starting with the Windows
@@ -6552,7 +6516,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsInkWorkspace.admx/adml that is included with the Microsoft
-          Windows 10 Release 1607 & Server 2016 Administrative Templates (or newer).
+          Windows 10 Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 18.10.79.2
         description: "Ensure 'Allow Windows Ink Workspace' is set to 'Enabled: On, but disallow access above lock' OR 'Enabled: Disabled' (Automated)"
@@ -6581,7 +6545,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsInkWorkspace.admx/adml that is included with the Microsoft
-          Windows 10 Release 1607 & Server 2016 Administrative Templates (or newer).
+          Windows 10 Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 18.10.80.1
         description: "Ensure 'Allow user control over installs' is set to 'Disabled' (Automated)"
@@ -6605,7 +6569,7 @@ groups:
           that is included with all versions of the Microsoft Windows Administrative Templates.
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was named
-          Enable user control over installs, but it was renamed starting with the Windows 8.0 &
+          Enable user control over installs, but it was renamed starting with the Windows 8.0 and
           Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.80.2
@@ -6652,7 +6616,7 @@ groups:
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
           named Disable IE security prompt for Windows Installer scripts, but it was renamed
-          starting with the Windows 8.0 & Server 2012 (non-R2) Administrative Templates.
+          starting with the Windows 8.0 and Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.81.1
         description: "Ensure 'Sign-in and lock last interactive user automatically after a restart' is set to 'Disabled' (Automated)"
@@ -6673,7 +6637,7 @@ groups:
             Computer Configuration\Policies\Administrative Templates\Windows Components\Windows Logon Options\Sign-in and lock last interactive user automatically after a restart
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
-          template WinLogon.admx/adml that is included with the Microsoft Windows 8.1 &
+          template WinLogon.admx/adml that is included with the Microsoft Windows 8.1 and
           Server 2012 R2 Administrative Templates (or newer).
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
@@ -6719,8 +6683,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Windows PowerShell\Turn on PowerShell Transcription
-
-          Note: This Group Policy path may not exist by default. It is provided by the Group Policy
+            Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template PowerShellExecutionPolicy.admx/adml that is included with the Microsoft
           Windows 10 RTM (Release 1507) Administrative Templates (or newer).
         scored: true
@@ -6836,7 +6799,7 @@ groups:
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
           named Allow automatic configuration of listeners, but it was renamed starting with the
-          Windows 8.0 & Server 2012 (non-R2) Administrative Templates.
+          Windows 8.0 and Server 2012 (non-R2) Administrative Templates.
         scored: true
       - id: 18.10.88.2.3
         description: "Ensure 'Allow unencrypted traffic' is set to 'Disabled' (Automated)"
@@ -6880,7 +6843,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsRemoteManagement.admx/adml that is included with the Microsoft
-          Windows 8.0 & Server 2012 (non-R2) Administrative Templates (or newer).
+          Windows 8.0 and Server 2012 (non-R2) Administrative Templates (or newer).
         scored: true
       - id: 18.10.89.1
         description: "Ensure 'Allow Remote Shell Access' is set to 'Disabled' (Automated)"
@@ -6950,7 +6913,7 @@ groups:
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
           named No auto-restart for scheduled Automatic Updates installations, but it was
-          renamed starting with the Windows 7 & Server 2008 R2 Administrative Templates.
+          renamed starting with the Windows 7 and Server 2008 R2 Administrative Templates.
         scored: true
       - id: 18.10.92.2.1
         description: "Ensure 'Configure Automatic Updates' is set to 'Enabled' (Automated)"
@@ -7043,7 +7006,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsUpdate.admx/adml that is included with the Microsoft Windows 10
-          Release 1607 & Server 2016 Administrative Templates (or newer).
+          Release 1607 and Server 2016 Administrative Templates (or newer).
 
           Note #2: In older Microsoft Windows Administrative Templates, this setting was initially
           named Select when Feature Updates are received, but it was renamed to Select when
@@ -7075,7 +7038,7 @@ groups:
 
           Note: This Group Policy path does not exist by default. An updated Group Policy
           template (WindowsUpdate.admx/adml) is required - it is included with the Microsoft
-          Windows 10 Release 1607 & Server 2016 Administrative Templates (or newer).
+          Windows 10 Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 19.5.1.1
         description: "Ensure 'Turn off toast notifications on the lock screen' is set to 'Enabled' (Automated)"
@@ -7235,7 +7198,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template CloudContent.admx/adml that is included with the Microsoft Windows 10
-          Release 1607 & Server 2016 Administrative Templates (or newer).
+          Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 19.7.8.2
         description: "Ensure 'Do not suggest third-party content in Windows spotlight' is set to 'Enabled' (Automated)"
@@ -7267,7 +7230,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template CloudContent.admx/adml that is included with the Microsoft Windows 10
-          Release 1607 & Server 2016 Administrative Templates (or newer).
+          Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 19.7.8.3
         description: "Ensure 'Do not suggest third-party content in Windows spotlight' is set to 'Enabled' (Automated)"
@@ -7331,7 +7294,7 @@ groups:
 
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template CloudContent.admx/adml that is included with the Microsoft Windows 10
-          Release 1607 & Server 2016 Administrative Templates (or newer).
+          Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 19.7.8.5
         description: "Ensure 'Turn off Spotlight collection on Desktop' is set to 'Enabled' (Automated)"
@@ -7454,9 +7417,7 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
-            User Configuration\Policies\Administrative Templates\Windows Components\Windows Media Player\Playback\Prevent Codec Download
-
+          User Configuration\Policies\Administrative Templates\Windows Components\Windows Media Player\Playback\Prevent Codec Download
           Note: This Group Policy path is provided by the Group Policy template
-          WindowsMediaPlayer.admx/adml that is included with all versions of the Microsoft
-          Windows Administrative Templates.
+          WindowsMediaPlayer.admx/adml that is included with all versions of the Microsoft Windows Administrative Templates.
         scored: true
