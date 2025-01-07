@@ -5834,7 +5834,7 @@ groups:
                 value: "1"
               set: true
         remediation: >
-          To establish the recommended configuration via GP, set the following UI path to 'Disabled': 
+          To establish the recommended configuration via GP, set the following UI path to 'Disabled':
           Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Reporting\Configure Watson events
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
@@ -6226,7 +6226,6 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Security\Require user authentication for remote connections by using Network Level Authentication
-          
           Note: This Group Policy path is provided by the Group Policy template
           TerminalServer.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
@@ -7428,3 +7427,4 @@ groups:
           WindowsMediaPlayer.admx/adml that is included with all versions of the Microsoft
           Windows Administrative Templates.
         scored: true
+        
