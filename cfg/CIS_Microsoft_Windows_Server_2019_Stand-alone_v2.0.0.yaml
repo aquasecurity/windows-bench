@@ -6227,7 +6227,7 @@ groups:
           TerminalServer.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
         scored: true
-     - id: 18.10.56.3.9.5
+      - id: 18.10.56.3.9.5
         description: "Ensure 'Set client connection encryption level' is set to 'Enabled: High Level' (Automated)"
         audittype: powershell
         audit:
@@ -6684,8 +6684,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Windows PowerShell\Turn on PowerShell Transcription
-          
-          Note: This Group Policy path may not exist by default. It is provided by the Group Policy
+            Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template PowerShellExecutionPolicy.admx/adml that is included with the Microsoft
           Windows 10 RTM (Release 1507) Administrative Templates (or newer).
         scored: true
