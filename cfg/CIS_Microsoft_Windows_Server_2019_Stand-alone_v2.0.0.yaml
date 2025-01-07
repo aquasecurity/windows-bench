@@ -3853,8 +3853,7 @@ groups:
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
-            Computer Configuration\Policies\Administrative Templates\System\Device Guard\Turn On Virtualization Based Security: Secure Launch Configuration
-            
+          Computer Configuration\Policies\Administrative Templates\System\Device Guard\Turn On Virtualization Based Security: Secure Launch Configuration
           Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template DeviceGuard.admx/adml that is included with the Microsoft Windows 10
           Release 1809 and Server 2019 Administrative Templates (or newer).
@@ -3980,8 +3979,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
              Computer Configuration\Policies\Administrative Templates\System\Internet Communication Management\Internet Communication settings\Turn off handwriting recognition error reporting
-      
-          Note: This Group Policy path is provided by the Group Policy template
+             Note: This Group Policy path is provided by the Group Policy template
           InkWatson.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
         scored: true
