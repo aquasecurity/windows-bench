@@ -1491,14 +1491,8 @@ groups:
             Software\Microsoft\Windows NT\CurrentVersion\Perflib
             System\CurrentControlSet\Services\SysmonLog
 
-            Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network access: Remotely accessible registry paths and sub-paths
-          
-          When a server holds the Active Directory Certificate Services Role with Certification
-          Authority Role Service, the above list should also include:
-            System\CurrentControlSet\Services\CertSvc.
-
-          When a server has the WINS Server Feature installed, the above list should also include:
-            System\CurrentControlSet\Services\WINS
+            Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network access: Remotely accessible registry paths and sub-paths When a server holds the Active Directory Certificate Services Role with Certification Authority Role Service, the above list should also include: System\CurrentControlSet\Services\CertSvc.
+            When a server has the WINS Server Feature installed, the above list should also include: System\CurrentControlSet\Services\WINS
         scored: true
       - id: 2.3.10.9
         description: "Ensure 'Network access: Restrict anonymous access to Named Pipes and Shares' is set to 'Enabled' (Automated)"
