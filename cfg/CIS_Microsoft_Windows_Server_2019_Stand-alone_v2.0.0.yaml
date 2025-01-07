@@ -5704,8 +5704,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled: Block':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Microsoft Defender Exploit Guard\Network Protection\Prevent users and apps from accessing dangerous websites
-          
-          Note: This Group Policy path may not exist by default. It is provided by the Group Policy
+            Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 10
           Release 1709 Administrative Templates (or newer).
         scored: true
@@ -5792,8 +5791,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Microsoft Defender Antivirus\Real-Time Protection\Turn on behavior monitoring
-          
-          Note: This Group Policy path may not exist by default. It is provided by the Group Policy
+            Note: This Group Policy path may not exist by default. It is provided by the Group Policy
           template WindowsDefender.admx/adml that is included with the Microsoft Windows 8.1
           and Server 2012 R2 Administrative Templates (or newer).
         scored: true
@@ -6138,8 +6136,7 @@ groups:
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to 'Enabled':
             Computer Configuration\Policies\Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Device and Resource Redirection\Do not allow supported Plug and Play device redirection
-          
-          Note: This Group Policy path is provided by the Group Policy template
+            Note: This Group Policy path is provided by the Group Policy template
           TerminalServer.admx/adml that is included with all versions of the Microsoft Windows
           Administrative Templates.
         scored: true
@@ -7427,4 +7424,3 @@ groups:
           WindowsMediaPlayer.admx/adml that is included with all versions of the Microsoft
           Windows Administrative Templates.
         scored: true
-        
