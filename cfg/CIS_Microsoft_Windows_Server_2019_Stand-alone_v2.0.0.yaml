@@ -6688,7 +6688,7 @@ groups:
           template PowerShellExecutionPolicy.admx/adml that is included with the Microsoft
           Windows 10 RTM (Release 1507) Administrative Templates (or newer).
         scored: true
-     - id: 18.10.88.1.1
+      - id: 18.10.88.1.1
         description: "Ensure 'Allow Basic authentication' is set to 'Disabled' (Automated)"
         audittype: powershell
         audit:
