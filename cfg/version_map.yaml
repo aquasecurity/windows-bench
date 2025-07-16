@@ -14,3 +14,4 @@
 # Microsoft Windows Server 2022 Benchmarks
 2022_DomainController_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'
 2022_MemberServer_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'
+2022_Server_1.0.0: 'CIS_Microsoft_Windows_Server_2022_Stand-alone_v1.0.0.yaml'
