@@ -6,6 +6,7 @@
 #   serverVesion = 2019|2022|...
 #   serverType = DomainController|MemberServer|Server
 
+
 # Microsoft Windows Server 2019 Benchmarks
 2019_DomainController_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'
 2019_MemberServer_2.0.0: 'CIS_Microsoft_Windows_Server_2022_Benchmark_v2.0.0.yaml'
