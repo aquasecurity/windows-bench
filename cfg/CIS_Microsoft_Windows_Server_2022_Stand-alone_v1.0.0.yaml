@@ -900,7 +900,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: (Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa").LimitBlankPasswordUse
+            Server: (Get-ItemProperty -PATH "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa").LimitBlankPasswordUse
         tests:
           test_items:
             - flag: ""
@@ -956,7 +956,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: (Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa").SCENoApplyLegacyAuditPolicy
+            Server: (Get-ItemProperty -PATH "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa").SCENoApplyLegacyAuditPolicy
         tests:
           test_items:
             - flag: ""
@@ -973,7 +973,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: (Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa").CrashOnAuditFail
+            Server: (Get-ItemProperty -PATH "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa").CrashOnAuditFail
         tests:
           test_items:
             - flag: ""
@@ -997,7 +997,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: (Get-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers').AddPrinterDrivers
+            Server: (Get-ItemProperty -PATH 'HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers').AddPrinterDrivers
         tests:
           test_items:
             - flag: ""
@@ -3851,7 +3851,7 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: (Get-ItemPropertyValue -PATH 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard').HVCIMATRequired
+            Server: (Get-ItemProperty -PATH 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard').HVCIMATRequired
         tests:
           test_items:
             - flag: ""
@@ -8058,7 +8058,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" NoToastApplicationNotificationOnLockScreen;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications" NoToastApplicationNotificationOnLockScreen;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8110,7 +8110,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\Assistance\Client\1.0" NoImplicitFeedback;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\Assistance\Client\1.0" NoImplicitFeedback;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8155,7 +8155,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments" SaveZoneInformation;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments" SaveZoneInformation;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8181,7 +8181,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments" ScanWithAntiVirus;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Microsoft\Windows\CurrentVersion\Policies\Attachments" ScanWithAntiVirus;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8217,7 +8217,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" ConfigureWindowsSpotlight;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" ConfigureWindowsSpotlight;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8243,7 +8243,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" DisableThirdPartySuggestions;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" DisableThirdPartySuggestions;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8269,7 +8269,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" DisableTailoredExperiencesWithDiagnosticData;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" DisableTailoredExperiencesWithDiagnosticData;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8295,7 +8295,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" DisableWindowsSpotlightFeatures;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\Windows\CloudContent" DisableWindowsSpotlightFeatures;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8321,7 +8321,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\SOFTWARE\Policies\Microsoft\Windows\CloudContent" DisableSpotlightCollectionOnDesktop;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\SOFTWARE\Policies\Microsoft\Windows\CloudContent" DisableSpotlightCollectionOnDesktop;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8402,7 +8402,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" NoInplaceSharing;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" NoInplaceSharing;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8482,7 +8482,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\Windows\Installer" AlwaysInstallElevated;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\Windows\Installer" AlwaysInstallElevated;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
@@ -8521,7 +8521,7 @@ groups:
               $User=New-Object System.Security.Principal.NTAccount($env:UserName);
               $sid=$User.Translate([System.Security.Principal.SecurityIdentifier]).value;
               New-PSDrive HKU Registry HKEY_USERS | Out-Null;
-              Get-ItemPropertyValue -Path "HKU:\${sid}\Software\Policies\Microsoft\WindowsMediaPlayer" PreventCodecDownload;
+              Get-ItemPropertyValue -PATH "HKU:\${sid}\Software\Policies\Microsoft\WindowsMediaPlayer" PreventCodecDownload;
               Remove-PSDrive -Name HKU
         tests:
           test_items:
