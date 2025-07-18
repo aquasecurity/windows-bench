@@ -119,8 +119,8 @@ groups:
         audittype: powershell
         audit:
           cmd:
-            Server: >-
-              $reg = Get-ItemPropertyValue "HKLM:\System\CurrentControlSet\Control\SAM" RelaxMinimumPasswordLengthLimits
+            Server: >
+              Get-ItemPropertyValue "HKLM:\System\CurrentControlSet\Control\SAM" RelaxMinimumPasswordLengthLimits
         tests:
           test_items:
             - flag: ""
@@ -853,7 +853,7 @@ groups:
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\User Rights Assignment\Shut down the system
         scored: true
       - id: 2.2.37
-        description: Ensure 'Shut down the system' is set to 'Administrators' (Automated)
+        description: Ensure 'Take ownership of files or other objects' is set to 'Administrators' (Automated)
         audittype: powershell
         audit:
           cmd:
@@ -950,6 +950,7 @@ groups:
         scored: true
       - id: 2.3.2
         description: "Audit"
+        type: "skip"
         checks:
       - id: 2.3.2.1
         description: "Ensure 'Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings' is set to 'Enabled' (Automated)"
@@ -1288,11 +1289,16 @@ groups:
           cmd:
             Server: (Get-ItemProperty -PATH 'HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters').SMBServerNameHardeningLevel -replace '^$', '0'
         tests:
+          bin_op: or
           test_items:
             - flag: ""
               compare:
-                op: gt
-                value: "0"
+                op: eq
+                value: 1
+            - flag: ""
+              compare:
+                op: eq
+                value: 2
               set: true
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to Accept
@@ -1622,13 +1628,7 @@ groups:
         audit:
           cmd:
             Server: SecEdit /export /cfg seccfg /areas SecurityPolicy /quiet ; (Get-Content seccfg | Select-String -Pattern "ForceLogoffWhenHourExpire") -replace '^.*= |[*]' ; Remove-Item seccfg
-        tests:
-          test_items:
-            - flag: ""
-              compare:
-                op: eq
-                value: "1"
-              set: true
+        type: manual
         remediation: >
           To establish the recommended configuration via GP, set the following UI path to Enabled.
             Computer Configuration\Policies\Windows Settings\Security Settings\Local Policies\Security Options\Network security: Force logoff when logon hours expire
@@ -4114,7 +4114,7 @@ groups:
 
           Note: This Group Policy path is provided by the Group Policy template ICM.admx/adml
           that is included with all versions of the Microsoft Windows Administrative Templates.
-          scored: true
+        scored: true
       - id: 18.9.20.1.6
         description: "Ensure 'Turn off printing over HTTP' is set to 'Enabled' (Automated)"
         audittype: powershell
@@ -5450,7 +5450,7 @@ groups:
           Windows 11 Release 22H2 Administrative Templates v1.0 (or newer).
         scored: true
       - id: 18.10.18.2
-        description: "Ensure 'Enable App Installer' is set to 'Disabled' (Automated)"
+        description: "Ensure 'Enable App Installer Experimental' is set to 'Disabled' (Automated)"
         audittype: powershell
         audit:
           cmd:
@@ -8261,7 +8261,7 @@ groups:
           Release 1607 and Server 2016 Administrative Templates (or newer).
         scored: true
       - id: 19.7.8.3
-        description: "Ensure 'Do not suggest third-party content in Windows spotlight' is set to 'Enabled' (Automated)"
+        description: "Ensure 'Do not use diagnostic data for tailored experiences' is set to 'Enabled' (Automated)"
         audittype: powershell
         audit:
           cmd:
