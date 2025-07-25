@@ -1,5 +1,5 @@
 ---
-version: 2.0.0
+version: "Windows Server 2019 Stand-Alone v2.0.0"
 id: 1
 description: Account Policies
 type: server

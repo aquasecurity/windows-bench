@@ -1,5 +1,5 @@
 ---
-version: 1.0.0
+version: "Windows Server 2022 Stand-Alone v1.0.0"
 id: 1
 description: Account Policies
 type: server
@@ -327,11 +327,6 @@ groups:
               compare:
                 op: valid_elements
                 value: "S-1-5-32-544,S-1-5-32-555"
-            - flag: ""
-              compare:
-                op: eq
-                value: ""
-              set: true
           bin_op: or
         remediation: >
           To establish the recommended configuration via GP, configure the following UI path:
@@ -470,7 +465,7 @@ groups:
           test_items:
             - flag: ""
               compare:
-                op: has
+                op: valid_elements
                 value: "S-1-5-83-0,S-1-5-32-544"
               set: true
         remediation: >
