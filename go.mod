@@ -1,6 +1,6 @@
 module github.com/aquasecurity/windows-bench
 
-go 1.21
+go 1.24.5
 
 require (
 	github.com/aquasecurity/bench-common v0.4.9-0.20250714075640-1dbae7d8053a
@@ -13,6 +13,9 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
+	github.com/jinzhu/gorm v1.9.16 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
