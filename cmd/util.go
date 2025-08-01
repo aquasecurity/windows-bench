@@ -44,6 +44,9 @@ func runChecks(b commonCheck.Bench, serverType, serverCaption string) error {
 			return fmt.Errorf("Invalid Microsoft Windows Server caption: %s.\nAre you running windows-bench on a Microsoft Windows Server?", serverCaption)
 		}
 		serverVersion := match[1]
+		if serverVersion == "2022" && serverType == "Server" {
+			cisVersion = "1.0.0"
+		}
 
 		cfgFile, err = loadConfig(cisVersion, serverVersion, serverType)
 		if err != nil {
