@@ -1,5 +1,5 @@
 ---
-version: "Windows Server 2022 v2.0.0"
+version: 2.0.0
 id: 1
 description: Account Policies
 type: domain-controller
