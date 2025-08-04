@@ -5,7 +5,7 @@ go 1.24.5
 require (
 	github.com/aquasecurity/bench-common v0.4.9-0.20250714075640-1dbae7d8053a
 	github.com/aquasecurity/go-powershell v0.0.0-20190807165005-070591d67847
-	github.com/golang/glog v1.2.0
+	github.com/golang/glog v1.2.5
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
